@@ -104,6 +104,7 @@ export default {
             alert("The username and / or password are / is incorrect");
           } else {
             let token = response.data;
+            console.log("here the login is done correctly");
             this.retrieveCourses(token, this.user.username);
           }
         });
