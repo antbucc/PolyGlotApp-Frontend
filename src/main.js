@@ -17,6 +17,7 @@ import axios from 'axios'
 
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue';
 import PencilOutlineIcon from 'vue-material-design-icons/PencilOutline.vue';
+import QuestionIcon from 'vue-material-design-icons/BellRingOutline.vue';
 import LoginIcon from 'vue-material-design-icons/LoginVariant.vue';
 import LogoutIcon from 'vue-material-design-icons/LogoutVariant.vue';
 import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft.vue';
@@ -54,6 +55,7 @@ Vue.component('send-request-icon', SendRequest);
 Vue.component('privacy-icon', Privacy);
 Vue.component('back-icon', Back);
 Vue.component('credits-icon', Credits);
+Vue.component('question-icon', QuestionIcon);
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 const router = new Router({ routes: routes, mode: 'history' })

@@ -317,16 +317,27 @@
             >
           </router-link>
 
-          <router-link to="/campagne" v-if="auth">
+          <router-link to="/campagne">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
               :class="{ active: page && page.title === 'Campagne' }"
               ><span class="mr-2">
                 <list-campaigns-icon />
               </span>
-              <span>Campagne</span></span
+              <span>Corsi</span></span
             >
           </router-link>
+          
+          <router-link to="/assignment">
+            <span
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Assignment' }"
+              ><span class="mr-2">
+                <question-icon />
+              </span>
+              <span>Assignment</span></span>
+          </router-link>
+
           <router-link to="/info">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
@@ -337,7 +348,6 @@
               <span>Info</span></span
             ></router-link>
            
-          
           <router-link to="/contatti"> 
           <span
             class="flex items-center p-4 hover:bg-white hover:text-primary"
@@ -370,7 +380,9 @@
               <span>Esci</span></span
             >
           </router-link>
+
         </div>
+
         <div v-if="campagna">
           <router-link to="/campagne" v-on:click.native="indietro">
             <span

@@ -12,6 +12,7 @@ import Rules from "./Pagine/Campagna/Rules.vue";
 import Callback from "./Pagine/Callback.vue";
 import Logout from "./Pagine/Logout.vue";
 import MyPerformance from "./Pagine/Campagna/MyPerformance.vue";
+import Assignment from "./Pagine/Assignment.vue";
 import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
  import store from './store/store'
 
@@ -25,6 +26,11 @@ const routes = [
       path: '/info',
       name: 'info',
       component: Info
+    },
+    {
+      path: '/assignment',
+      name: 'assignment',
+      component: Assignment
     },
     {
       path: '/contatti',

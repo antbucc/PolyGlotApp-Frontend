@@ -83,7 +83,7 @@
             ></template>
           </div>
         </div>
-        <div id="chart_container" v-show="mode == 'ALL'" class="">
+        <div id="chart_container" v-show="mode == 'ALL'" class="justify-center text-center w-full text-xl">
           <div
             class="
               flex flex-col
@@ -225,6 +225,7 @@ export default {
         });
       }
       return toRtn;
+      
     },
   },
   created() {
