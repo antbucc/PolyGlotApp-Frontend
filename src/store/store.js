@@ -4,86 +4,85 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+
   state: {
     idToken: null,
     user: null,
-    campagna:null,
-    page:null
+    campagna: null,
+    page: null
   },
   mutations: {
-      initApp (state) {
-        state.idToken=null;
-        state.user=null;
-        state.campagna=null;
-      },
-    authUser (state, userData) {
+    initApp(state) {
+
+      state.idToken = null;
+      state.user = null;
+      state.campagna = null;
+    },
+    authUser(state, userData) {
       state.idToken = userData.token
     },
-    storeUser (state, user) {
+    storeUser(state, user) {
       state.user = user
     },
-    clearAuthData (state) {
+    clearAuthData(state) {
       state.idToken = null
     },
-    storeCampagna (state,campagna) {
-        state.campagna = campagna
+    storeCampagna(state, campagna) {
+      state.campagna = campagna
     },
     exitCampagna(state) {
       state.campagna = null
-  },
-    storePage (state,page) {
+    },
+    storePage(state, page) {
       state.page = page
-  },
-  resetPage (state) {
-    state.page = null
-}
-   
+    },
+    resetPage(state) {
+      state.page = null
+    }
+
   },
   actions: {
-      initApp({commit}) {
-        commit('initApp')
+    initApp({ commit }) {
+      commit('initApp')
 
     },
-    storeCampagna ({commit}, campagna) {
-      commit('storeCampagna',campagna)
-  },
-  
-    exitCampagna ({commit}) {
-        commit('exitCampagna')
+    storeCampagna({ commit }, campagna) {
+      commit('storeCampagna', campagna)
     },
-    storePage ({commit}, page) {
-      commit('storePage',page)
-  },
-  
-  resetPage ({commit}) {
-        commit('resetPage')
+
+    exitCampagna({ commit }) {
+      commit('exitCampagna')
     },
-    setLogoutTimer ({commit}, expirationTime) {
+    storePage({ commit }, page) {
+      commit('storePage', page)
+    },
+
+    resetPage({ commit }) {
+      commit('resetPage')
+    },
+    setLogoutTimer({ commit }, expirationTime) {
       setTimeout(() => {
         commit('clearAuthData')
       }, expirationTime * 1000)
     },
-    
-    storeUser({commit}, user) {
+
+    storeUser({ commit }, user) {
       commit('storeUser', user)
     },
 
-    loginWithToken ({commit}, dataToken) {
-      
+    loginWithToken({ commit }, dataToken) {
       sessionStorage.setItem('token', dataToken.idToken)
-        commit('authUser', {
-          token: dataToken.idToken
-        })
-  },
-    login ({commit}, authData) {
-           console.log(authData)
- 
-           sessionStorage.setItem('token', authData.idToken)
-          commit('authUser', {
-            token: authData.idToken
-          })
+      commit('authUser', {
+        token: dataToken.idToken
+      })
     },
-    tryAutoLogin ({commit}) {
+    login({ commit }, authData) {
+      sessionStorage.setItem('token', authData.idToken)
+      commit('authUser', {
+        token: authData.idToken
+      })
+    },
+    tryAutoLogin({ commit }) {
       const token = sessionStorage.getItem('token')
       if (!token) {
         return false
@@ -94,11 +93,11 @@ export default new Vuex.Store({
       })
       return true
     },
-    logout ({commit}) {
+    logout({ commit }) {
       commit('clearAuthData')
       sessionStorage.removeItem('token')
     },
-   },
+  },
   getters: {
     user: state => {
       return state.user
@@ -107,7 +106,7 @@ export default new Vuex.Store({
       return state.idToken !== null
     },
     campagna: state => {
-        return state.campagna
+      return state.campagna
     },
     page: state => {
       return state.page

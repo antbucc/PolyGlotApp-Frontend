@@ -194,7 +194,6 @@ export default {
           // here I need to add the course at the player courses
           console.log("Course Added: " + response);
           self.$alert("Course added with success");
-          this.$router.go(0);
         })
         .catch(function (error) {
           console.log(error);

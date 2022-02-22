@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="">
     <menu-header></menu-header>
-    <router-view class="pt-16 lg:pt-16 lg:pl-64 min-h-screen padding-bottom"></router-view>
+    <router-view
+      class="pt-16 lg:pt-16 lg:pl-64 min-h-screen padding-bottom"
+    ></router-view>
     <snack-bar />
     <app-footer />
   </div>
@@ -16,7 +18,7 @@ export default {
   components: {
     menuHeader: MenuHeader,
     "snack-bar": SnackBar,
-    "app-footer":Footer
+    "app-footer": Footer,
   },
 
   created() {
@@ -30,7 +32,6 @@ export default {
 <style>
 body {
   @apply bg-background;
-  
 }
 
 #app {

@@ -104,9 +104,12 @@ export default {
             alert("The username and / or password are / is incorrect");
           } else {
             let token = response.data;
-            process.env.TOKEN = token;
             console.log("here the login is done correctly");
-            this.retrieveCourses(token, this.user.username);
+            this.$store
+              .dispatch("loginWithToken", { idToken: token })
+              .then(() => {
+                this.retrieveCourses(token, this.user.username);
+              });
           }
         });
       } else {

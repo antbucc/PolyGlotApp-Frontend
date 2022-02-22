@@ -83,7 +83,11 @@
             ></template>
           </div>
         </div>
-        <div id="chart_container" v-show="mode == 'ALL'" class="justify-center text-center w-full text-xl">
+        <div
+          id="chart_container"
+          v-show="mode == 'ALL'"
+          class="justify-center text-center w-full text-xl"
+        >
           <div
             class="
               flex flex-col
@@ -163,7 +167,9 @@ export default {
       this.mode = mode;
     },
     retrieveCourses() {
-      let token = this.$route.params.finalToken;
+      const token = sessionStorage.getItem("token");
+
+      //   let token = this.$route.params.finalToken;
       // courses at which the player is registered
       let registeredCourses = this.$route.params.courses;
 
@@ -225,7 +231,6 @@ export default {
         });
       }
       return toRtn;
-      
     },
   },
   created() {
