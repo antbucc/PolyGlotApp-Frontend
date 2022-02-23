@@ -1,17 +1,17 @@
 <template>
-  <div class="flex flex-col lg:flex-row bg-primary contact">
+  <div class="flex flex-col lg:flex-row bg-primary contact" >
     <div
       class=" pb-6 lg:w-7/12 lg:my-2 text-white text-center lg:text-left md:pl-6 lg:pb-0 lg:pl-12"
     >
-      <h1 class="text-6xl font-bold">Contact Us!</h1>
-      <h2 class="text-2xl pb-2 font-semibold">
+      <h1 class="text-6xl font-bold" style="font-size:2vw">Contact Us!</h1>
+      <h2 class="text-2xl pb-2 font-semibold" style="font-size:1vw">
         We'll be happy to answer your questions.
       </h2>
-      <p>
+      <p style="font-size:1vw">
         Contact us by this email address:
         <a class="font-bold" href="mailto: email@fbk.eu">email@fbk.eu</a>.
       </p>
-      <p>
+      <p style="font-size:1vw">
         Otherwise, compile this form and we will contact you as soon as possible.
       </p>
 
@@ -19,11 +19,11 @@
         <img class="object-cover md:object-scale-down h-auto bg-opacity-0" />
       </div>
     </div>
-    <div class="lg:w-4/12 lg:my-2" style="border-color:#ffa700; margin-left:auto; margin-right:auto">
+    <div class="lg:w-4/12 lg:my-2" style="border-color:#ffa700; margin-left:auto; margin-right:auto; position:relative;">
       <form
-        style="margin-top:auto; margin-bottom:auto ; width:30vw"
+        style="width: 35em; height: 35em; margin-right:auto"
         action=""
-        class="form flex flex-col bg-white p-6 relative lg:rounded-xl justify-center "
+        class="form flex flex-col bg-white p-6 absolute lg:rounded-xl justify-center "
       >
         <div
           class="flex flex-col md:flex-row  mt-3 justify-stretch lg:flex-col"

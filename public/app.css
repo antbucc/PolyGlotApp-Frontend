@@ -228,8 +228,8 @@ li.incorrect{
     margin-top: 50px;
 }
 .btn-class button{
-    width: 150px;
-    height: 35px;
+    width: 8vw;
+    height: 2vw;
     outline: none;
     border: 0;
     color: white;
@@ -238,6 +238,7 @@ li.incorrect{
     border-radius: 15px;
     margin: auto;
     background-color:#ffa700;
+    position: absolute;
 }
 .btn-home{
     display: flex;

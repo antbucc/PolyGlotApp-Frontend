@@ -14,12 +14,12 @@
           src="@/assets/images/home.png"
         />
       </div>
-      <div class="lg:text-4xl text-xl lg:mt-8 mt-2 text-white">
+      <div class="lg:text-4xl text-xl lg:mt-8 mt-2 text-white" style="font-size:2vw">
         POLYGLOT, A NEW FRONTIER IN LEARNING
       </div>
       <div
         class="lg:text-xl text-l lg:mt-4 mt-2 text-white"
-        style="text-align: center; margin: auto"
+        style="text-align: center; margin: auto; font-size:1vw"
       >
         <b>Teachers</b> assign rewards like points, levels or bonuses for
         completing exercises successfully. <b>Incentivize students</b>, keep
@@ -30,8 +30,8 @@
         class="w-5/12 mt-4 lg:mt-8 m-auto"
         variant="green"
         style="
-          width: 150px;
-          height: 35px;
+          width: 10em;
+          height: 2em;
           outline: none;
           border: 0;
           color: white;
@@ -39,6 +39,7 @@
           cursor: pointer;
           border-radius: 15px;
           background-color: #ffa700;
+          font-size: 1vw;
         "
         ><login-icon />
         <p class="text-center w-full" @click="$router.push('/login')">

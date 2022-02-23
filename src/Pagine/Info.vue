@@ -29,7 +29,7 @@
         <h2 style="margin:auto; font-size:1.5vw; margin-bottom:10px">What is PolyGlot?</h2>
     <div class="text-center">
     </div>
-    <p style="margin-bottom:auto">
+    <p style="margin-bottom:auto; font-size:0.9vw">
      PolyGlot is an app born to increase and incentivize students's attention during lessons, following the concept of Gamification (using game-design elements in contexts different from games to achieve some goals). In particular, <b>Teachers</b> create quizzes 
      about their lesson topics and share it to their students, which respond. The app then assign rewards like points, levels or bonuses for completing exercises successfully.
      This <b>incentivize students</b>, keep them <b>engaged</b>, and <b>encourage healthy competition</b> among classmates and peers.

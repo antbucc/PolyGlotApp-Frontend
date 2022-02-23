@@ -9,8 +9,8 @@
       >
         Classes
       </h1> -->
-      <div class="text-md">
-        <nav class="flex flex-row text-white bg-primary">
+      <div class="text-md w-full">
+        <nav class="flex flex-row text-white bg-primary" >
           <button
             class="
               flex-1
@@ -21,7 +21,9 @@
               font-medium
               sm:bg-green-400
               hover:bg-blue-700
+              w-full
             "
+            
             :class="
               mode == 'MY' ? 'border-blue-300 border-b-4 text-blue-300' : ''
             "

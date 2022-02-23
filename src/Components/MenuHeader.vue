@@ -258,7 +258,7 @@
         <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" />
       </div>
       <div class="flex items-center" v-if="page" style="justify-content:center">
-        <span class="text-xl" style="font-size:30px;"><b>{{ page.title }}</b></span>
+        <span class="text-xl" style="font-size:1.5vw;"><b>{{ page.title }}</b></span>
       </div>
       <div class="flex items-center">
         <div class="hidden md:block md:flex md:justify-between md:bg-transparent">
@@ -266,8 +266,9 @@
             <button
               title="Info"
               class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
+              style="font-size:1vw;"
             >
-              <info-outline-icon />
+              <info-outline-icon class="mr-2" />
               <span>Info</span>
             </button>
           </router-link>
@@ -275,8 +276,9 @@
           <button
             title="Contacts"
             class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
+            style="font-size:1vw;"
           >
-            <pencil-outline-icon />
+            <pencil-outline-icon class="mr-2" />
 
             <span>Contacts</span>
           </button>
@@ -296,7 +298,7 @@
 
       <!-- questi sono i router della barra a sinistra -->
       <aside
-        class="transform top-0 left-0 w-64 bg-primary text-white fixed h-full ease-in-out transition-all duration-300 z-30"  style="background-color: #0a4e7e; width:15vw; font-size:0.9vw"
+        class="transform top-0 left-0 w-64 bg-primary text-white fixed h-full ease-in-out transition-all duration-300 z-30"  style="background-color: #0a4e7e; width:15em; font-size:0.9vw"
       >
         <span class="flex w-full items-center p-4">
           <img
@@ -304,14 +306,14 @@
             alt="Logo"
             class="h-auto w-32 mx-auto"
             @click="$router.push('/')"
-            style="cursor: pointer; width:5vw"
+            style="cursor: pointer; width:5em"
           />
         </span>
         <div v-if="!campagna">
           <router-link to="/login" v-if="!auth">
             <span class="flex items-center p-4 hover:bg-white hover:text-primary"
-              ><span class="mr-2">
-                <login-icon />
+              ><span class="mr-2"   >
+                <login-icon  />
               </span>
               <span>Login</span></span
             >

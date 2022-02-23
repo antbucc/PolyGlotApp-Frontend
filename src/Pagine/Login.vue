@@ -1,25 +1,17 @@
 
 
 <template>
-  <div class="flex flex-col lg:flex-row bg-primary contact">
-    <div class="lg:w-4/12 lg:my-2" style="border-color: #ffa700; margin: auto">
+  <div class="flex flex-col lg:flex-row bg-primary contact" >
+    <div class="lg:w-4/12 lg:my-2" style=" margin: auto; font-size:0.9vw;">
       <form
         action=""
-        class="
-          form
-          flex flex-col
-          bg-white
-          p-6
-          relative
-          lg:rounded-xl
-          justify-center
-        "
-        style="width: 30vw; height: 30vw"
+        class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
+        style="width: 35em; height: 35em; margin-right:auto"
       >
         <img
           style="
-            margin-top: 50px;
-            margin-bottom: 50px;
+            margin-top: 2vw;
+            margin-bottom: 2vw;
             margin-left: auto;
             margin-right: auto;
             max-height: 100px;
@@ -27,7 +19,7 @@
           src="../../public/logo.png"
           alt="PolyGlot"
         />
-        <h2 style="margin: auto; font-size: 30px; margin-bottom: 10px">
+        <h2 style="margin-left:auto; margin-right:auto; font-size: 1em; margin-bottom: 10px">
           Insert your credentials:
         </h2>
         <div
@@ -39,10 +31,9 @@
             v-model="user.username"
             placeholder="Insert your Email"
             style="
-              height: 2.5vw;
-              width: 15vw;
-              margin-left: auto;
-              margin-right: auto;
+              height: 3em;
+              width: 20em;
+              margin: auto;
               margin-bottom: 50px;
               border-color: #ffa700;
             "
@@ -53,17 +44,18 @@
             v-model="user.password"
             placeholder="Insert your Password"
             style="
-              height: 2.5vw;
-              width: 15vw;
+              height: 3em;
+              width: 20em;
               border-color: #ffa700;
-              margin-left: auto;
-              margin-right: auto;
+              margin: auto;
+              font-size:1em;
             "
           />
         </div>
         <div
           class="btn-class"
-          style="width: 10vw; margin-left: auto; margin-right: auto"
+          style="height: 3em;
+              width: 10em; margin:auto"
         >
           <button class="btn-class" @click.prevent="login()">Log In</button>
         </div>

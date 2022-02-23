@@ -4,7 +4,7 @@
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="text-align: center; width: 30vw; height: 30vw"
+        style="text-align: center; width: 35em; height: 35em"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -23,7 +23,7 @@
           </div>
           <div class="box-answers">
             <!-- Box delle risposte alla suddetta domanda -->
-            <ul>
+            <ul style="width: 30em">
               <li></li>
               <!-- Uso li vuoto come linea di divisione tra domanda e risposte -->
               <li>
@@ -34,28 +34,21 @@
               <li>answer2</li>
               <li>answer3</li>
               <li>answer4</li>
+              <li></li>
             </ul>
           </div>
         </div>
-        <div class="box-score" v-if="score_show">
-          <!-- Box del punteggio SOLO quando sono finite le domande -->
-          <h2>Punteggio:</h2>
-          <h2>{{ score }}/{{ questions.length }}</h2>
-          <div class="btn-class">
-            <!-- Bottone per andare alla classifica SOLO quando sono finite le domande -->
-            <button @click="$router.push('classifica')">Classifica</button>
-          </div>
-        </div>
-        <div class="quiz-footer">
+        
           <!-- Parte ai piedi della card, in cui avrò il bottone per procedere di domanda , da aggiungere poi  v-if="score_show == false" -->
-          <div class="box-button">
+          <div class="btn-class"
+          style="height: 3em;
+              width: 10em; margin-left: auto; margin-right: auto; margin-top:auto; margin-bottom:auto; ">
             <!-- Ci sarà bottone solo se il quiz non sarà completo, da aggiungere poi v-if="progress < 100"-->
-            <button :style="next ? 'background-color:#0890d3' : ''">
+            <button class="btn-class" style="font-size:1vw">
               Avanti
             </button>
             <!-- da aggiungere poi @click="nextQuestion" -->
           </div>
-        </div>
       </form>
     </div>
   </div>
