@@ -1,8 +1,8 @@
 <!-- posso trasformare campagne in studenti/corsi e mettere le statistiche/classifiche al posto delle statistiche di bici-->
 
 <template>
-  <div class="">
-    <div class="flex flex-col">
+  <div class="bg-primary ">
+    <div class="flex flex-col bg-primary  "  >
       <!-- tmp-->
       <!-- <h1
         class="justify-self-center text-center text-5xl pt-2 lg:text-6xl font-semibold pb-4"

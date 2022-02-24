@@ -3,15 +3,15 @@
     <div
       class=" pb-6 lg:w-7/12 lg:my-2 text-white text-center lg:text-left md:pl-6 lg:pb-0 lg:pl-12"
     >
-      <h1 class="text-6xl font-bold" style="font-size:2vw">Contact Us!</h1>
-      <h2 class="text-2xl pb-2 font-semibold" style="font-size:1vw">
+      <h1 class="text-6xl font-bold" style="font-size:2em">Contact Us!</h1>
+      <h2 class="text-2xl pb-2 font-semibold" style="font-size:1em">
         We'll be happy to answer your questions.
       </h2>
-      <p style="font-size:1vw">
+      <p style="font-size:1em">
         Contact us by this email address:
         <a class="font-bold" href="mailto: email@fbk.eu">email@fbk.eu</a>.
       </p>
-      <p style="font-size:1vw">
+      <p style="font-size:1em">
         Otherwise, compile this form and we will contact you as soon as possible.
       </p>
 
@@ -19,24 +19,15 @@
         <img class="object-cover md:object-scale-down h-auto bg-opacity-0" />
       </div>
     </div>
-    <div class="lg:w-4/12 lg:my-2" style="border-color:#ffa700; margin-left:auto; margin-right:auto; position:relative;">
+    <div class="lg:w-4/12 lg:my-2 justify-center" style=" margin-left: 0; margin-right:0; font-size:0.9em; ">
       <form
-        style="width: 35em; height: 35em; margin-right:auto"
+        style="width: 25em; height: 30em; text-align:center; margin:auto"
         action=""
-        class="form flex flex-col bg-white p-6 absolute lg:rounded-xl justify-center "
+        class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"  
       >
         <div
           class="flex flex-col md:flex-row  mt-3 justify-stretch lg:flex-col"
         >
-          <input
-            type="text"
-            name=""
-            id=""
-            required
-            placeholder="Nome e Cognome * "
-            class=" focus:border-blue-600  border-2  p-2  mb-2 md:mb-0 lg:mb-2 flex-1 md:mr-2 lg:mr-0"
-            style="border-color: #ffa700;"
-          />
           <input
             type="email"
             name=""
@@ -60,7 +51,7 @@
         <p class="font-bold text-sm mt-3">Privacy Policy *</p>
         <div class="flex items-baseline space-x-2 mt-2">
           <input type="checkbox" name="" id="" required class="inline-block check-campaign" />
-          <p class="text-gray-600 text-xs ">
+          <p class="text-gray-600 text-xs " style="font-size:0.7em">
 
             Pursuant to art. 13 of the EU Regulation n. 2016/679 (GDPR), the personal data provided will be processed in order to be able to respond to your request through manual, IT and telematic tools, however suitable for guaranteeing the security and confidentiality of the data. The complete Privacy Policy is available at the following link
             {LINK}. I declare that I have read and understood the information on the processing of personal data.
@@ -68,22 +59,16 @@
 
           </p>
         </div>
-        <input
-          type="submit"
-          value="Send Email"
-          class=" mt-6 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-3 md:self-end flex-1 lg:mx-8"
-          style="
-            width: 150px;
-            height: 35px;
-            outline: none;
-            border: 0;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 15px;
-            margin: auto;
-            background-color:#ffa700;"
-        />
+        <div
+          class="btn-class"
+          style="height: 3em;
+              width: 10em;margin:auto"
+        >
+          <button class="btn-class" style="
+          font-size: 1em; 
+          width: 10em;
+          height: 2em;">Submit</button>
+        </div>
       </form>
     </div>
   </div>

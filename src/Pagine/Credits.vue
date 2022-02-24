@@ -1,7 +1,7 @@
 <template>
 
 <div class="flex flex-col lg:flex-row bg-primary contact">
-    <div class="lg:w-4/12 lg:my-2" style=" margin: auto; position:relative">
+    <div class="lg:w-4/12 lg:my-2" style=" margin: auto;font-size:0.9em">
       <form
         action=""
         class="
@@ -12,7 +12,7 @@
           lg:rounded-xl
           justify-center
         "
-        style=" text-align:center; height:35em; width:35em;"
+        style=" text-align:center; width:25em; height:40em; margin:auto"
       >
         <img
           style="

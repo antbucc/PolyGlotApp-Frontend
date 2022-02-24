@@ -2,19 +2,19 @@
 
 <template>
   <div class="flex flex-col lg:flex-row bg-primary contact" >
-    <div class="lg:w-4/12 lg:my-2" style=" margin: auto; font-size:0.9vw;">
+    <div class="lg:w-4/12 lg:my-2" style=" margin: auto; font-size:0.9em;">
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 35em; height: 35em; margin-right:auto"
+        style="width: 25em; height: 40em; text-align:center; margin:auto"
       >
         <img
           style="
-            margin-top: 2vw;
-            margin-bottom: 2vw;
+            margin-top: 2em;
+            margin-bottom: 2em;
             margin-left: auto;
             margin-right: auto;
-            max-height: 100px;
+            height:5em;
           "
           src="../../public/logo.png"
           alt="PolyGlot"
@@ -55,9 +55,12 @@
         <div
           class="btn-class"
           style="height: 3em;
-              width: 10em; margin:auto"
+              width: 10em;margin-left:auto; margin-right:auto"
         >
-          <button class="btn-class" @click.prevent="login()">Log In</button>
+          <button class="btn-class" @click.prevent="login()" style="
+          font-size: 1em; 
+          width: 10em;
+          height: 2em;">Log In</button>
         </div>
       </form>
     </div>

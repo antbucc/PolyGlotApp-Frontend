@@ -3,21 +3,21 @@
     <div class=" bg-white text-primary px-4 lg:ml-64">
       <hr class="mb-6 border-b-1 border-white" />
       <div
-        class="flex flex-wrap items-center md:justify-between justify-center"
+        class="flex flex-row items-center md:justify-between justify-center"
       >
          <div class="w-full lg:w-2/12 px-4 text-center lg:text-right">
-          <div class="text-sm text-primary font-semibold py-1" style="font-size:0.8vw">
+          <div class="text-sm text-primary font-semibold py-1" style="font-size:0.7em">
             Created by:
           </div>
         </div>
         <div class="w-full lg:w-2/12 px-4">
           <div class="text-sm text-primary font-semibold py-1">
-            <img src="@/assets/images/logoUNITN.png" alt="fbk" class="object-contain h-12 w-auto p-1 m-auto lg:ml-1" @click="openTab('https://www.unitn.it')"  style="width:10vw; height: 2.5vw"  />
+            <img src="@/assets/images/logoUNITN.png" alt="fbk" class="object-contain h-12 w-auto p-1 m-auto lg:ml-1" @click="openTab('https://www.unitn.it')"  style="width:10em; height: 2.5em"  />
           </div>
         </div>
         <div class="w-full lg:w-2/12 px-4">
           <div class="text-sm text-primary font-semibold py-1">
-            <img src="@/assets/images/fbk.png" alt="fbk" class="object-contain h-12 w-auto p-1 m-auto lg:ml-1" @click="openTab('https://www.fbk.eu')" style="width:10vw; height:2vw"   />
+            <img src="@/assets/images/fbk.png" alt="fbk" class="object-contain h-12 w-auto p-1 m-auto lg:ml-1" @click="openTab('https://www.fbk.eu')" style="width:10em; height:2em"   />
           </div>
         </div>
         

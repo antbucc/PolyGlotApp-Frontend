@@ -1,9 +1,9 @@
 <template>
   <div>
     <nav
-      class="visible lg:invisible flex fixed w-full items-center justify-between px-6 h-16 bg-primary text-white text-gray-700 z-10" 
+      class="visible lg:invisible flex fixed w-full items-center justify-between px-6 h-16 bg-primary text-white text-gray-700 z-10"  
     >
-      <div class="flex items-center" v-if="page && page.back == false">
+      <div class="flex items-center" v-if="page && page.back == false" >
         <button class="mr-2" aria-label="Open Menu" @click="drawer">
           <svg
             fill="none"
@@ -17,7 +17,8 @@
             <path d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
-        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" />
+        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" 
+            @click="$router.push('/')" />
       </div>
       <div class="flex items-center" v-if="page && page.back == true">
         <button class="mr-2" aria-label="Open Menu" @click="backPage">
@@ -34,43 +35,22 @@
           </svg> -->
           <back-icon />
         </button>
-        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" />
+        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" 
+            @click="$router.push('/')"/>
       </div>
       <div class="flex items-center" v-if="page">
         <span class="text-xl">{{ page.title }}</span>
       </div>
       <div class="flex items-center">
         <div class="hidden md:block md:flex md:justify-between md:bg-transparent">
-          <router-link to="/info">
-            <button
-              title="Info"
-              class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
+          <router-link to="/" v-on:click.native="onLogout" v-if="auth">
+            <span @ class="flex items-center p-4 hover:bg-white hover:text-primary"
+              ><span class="mr-2">
+                <logout-icon />
+              </span>
+              <span>Exit</span></span
             >
-              <info-outline-icon />
-              <span>Info</span>
-            </button>
           </router-link>
-          <!-- <router-link to="/contatti"> -->
-          <button
-            @click="contacts()"
-            title="Contacts"
-            class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-          >
-            <pencil-outline-icon />
-
-            <span>Contacts</span>
-          </button>
-          <!-- </router-link> -->
-          <router-link to="/login">
-            <button
-              title="Login"
-              class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-            >
-              <credits-icon />
-
-              <span>Login</span>
-            </button>
-          </router-link> 
         </div>
       </div>
 
@@ -103,6 +83,7 @@
           <img
             src="@/assets/images/logopolyglot.png"
             alt="Logo"
+            @click="$router.push('/')"
             class="h-auto w-32 mx-auto"
           />
         </span>
@@ -111,6 +92,7 @@
             <span
               @click="isOpen = false"
               class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Login' }"
               ><span class="mr-2">
                 <login-icon />
               </span>
@@ -126,21 +108,36 @@
               ><span class="mr-2">
                 <list-campaigns-icon />
               </span>
-              <span>Campagne</span></span
+              <span>Courses</span></span
             >
           </router-link>
-          <router-link to="/info" :class="{ active: page && page.title === 'Info' }">
+
+          <router-link to="/assignment" v-if="auth">
+            <span
+            
+              @click="isOpen = false"
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Assignment' }"
+              ><span class="mr-2">
+                <question-icon />
+              </span>
+              <span>Assignment</span></span>
+          </router-link>
+          <router-link to="/info" >
             <span
               @click="isOpen = false"
               class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Info' }"
               ><span class="mr-2">
                 <info-outline-icon />
               </span>
               <span>Info</span></span
             ></router-link
           >
-          <router-link to="/contatti" :class="{active:page && page.title === 'Contatti'}"> 
-          <span
+          <router-link to="/contatti" > 
+          <span 
+              @click="isOpen = false"
+          :class="{active:page && page.title === 'Contacts'}"
             class="flex items-center p-4 hover:bg-white hover:text-primary"
           >
             <span class="mr-2">
@@ -149,6 +146,19 @@
             <span>Contacts</span></span
           >
          </router-link>
+         <router-link to="/credits">
+            <span
+            
+              @click="isOpen = false"
+            class="flex items-center p-4 hover:bg-white hover:text-primary"
+            :class="{ active: page && page.title === 'Credits' } "
+          >
+            <span class="mr-2">
+              <credits-icon />
+            </span>
+            <span>Credits</span></span
+          >
+          </router-link>
           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
             <span
               @click="isOpen = false"
@@ -262,37 +272,14 @@
       </div>
       <div class="flex items-center">
         <div class="hidden md:block md:flex md:justify-between md:bg-transparent">
-          <router-link to="/info">
-            <button
-              title="Info"
-              class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-              style="font-size:1vw;"
+           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
+            <span @ class="flex items-center p-4 hover:bg-white hover:text-primary"
+              ><span class="mr-2">
+                <logout-icon />
+              </span>
+              <span>Exit</span></span
             >
-              <info-outline-icon class="mr-2" />
-              <span>Info</span>
-            </button>
           </router-link>
-          <router-link to="/contatti"> 
-          <button
-            title="Contacts"
-            class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-            style="font-size:1vw;"
-          >
-            <pencil-outline-icon class="mr-2" />
-
-            <span>Contacts</span>
-          </button>
-          </router-link>
-          <!-- <router-link to="/credits">
-            <button
-              title="Credits"
-              class="flex items-center p-3 font-medium mr-2 text-center bg-gray-300 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-            >
-              <credits-icon />
-
-              <span>Credits</span>
-            </button>
-          </router-link> -->
         </div>
       </div>
 
@@ -319,18 +306,18 @@
             >
           </router-link>
 
-          <router-link to="/campagne">
+          <router-link to="/campagne" v-if="auth">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
               :class="{ active: page && page.title === 'Campagne' }"
               ><span class="mr-2">
                 <list-campaigns-icon />
               </span>
-              <span>Corsi</span></span
+              <span>Courses</span></span
             >
           </router-link>
           
-          <router-link to="/assignment">
+          <router-link to="/assignment" v-if="auth">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
               :class="{ active: page && page.title === 'Assignment' }"
@@ -358,7 +345,7 @@
             <span class="mr-2">
               <pencil-outline-icon />
             </span>
-            <span>Contacts</span></span
+            <span>Contact us</span></span
           >
           </router-link>
           
@@ -374,14 +361,7 @@
           >
           </router-link>
 
-          <router-link to="/" v-on:click.native="onLogout" v-if="auth">
-            <span @ class="flex items-center p-4 hover:bg-white hover:text-primary"
-              ><span class="mr-2">
-                <logout-icon />
-              </span>
-              <span>Esci</span></span
-            >
-          </router-link>
+         
 
         </div>
 
@@ -431,7 +411,7 @@
               <span>Regolamento</span></span
             >
           </router-link>
-          <!-- <router-link
+           <router-link
             :to="{ name: 'sendrequest', params: { id: campagna.id } }"
           >
             <span

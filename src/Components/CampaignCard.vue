@@ -14,6 +14,8 @@
       justify-cente
       shadow-xl
     "
+    style="height:10em; width:10em; 
+    word-wrap: break-word;"
   >
     <div class="flex flex-col align-middle p-2 pt-0 h-40">
       <img
@@ -25,7 +27,7 @@
 
     <div class="flex flex-col py-6 lg:mx-2 justify-center">
       <div class="px-2">
-        <h2 class="text-2xl font-semibold break-normal">
+        <h2 class="text-2xl font-semibold break-normal" style="font-size: 1em; ">
           {{ dTitolo }}
         </h2>
 
@@ -54,10 +56,11 @@
               py-1
               px-2
             "
+            
+            style="margin:auto; width:50%"
             @click="performance"
           >
-            <performance-icon class="pr-1" />
-            Performance
+            <performance-icon class="pr-1" />Board
           </button>
           <button
             type="button"
@@ -75,11 +78,14 @@
               py-1
               px-2
             "
+            
+            
+            style="margin:auto;  width:50%"
           >
             <info-outline-icon class="pr-1" />Info
           </button>
         </template>
-        <template v-else-if="!dRegistered">
+        <template v-else-if="!dRegistered" >
           <button
             type="button"
             @click="addCourse"
@@ -97,8 +103,9 @@
               py-1
               px-2
             "
+            style="margin:auto"
           >
-            <join-icon class="pr-1" />Partecipa
+            <join-icon class="pr-1"  />Partecipa
           </button>
         </template>
       </div>
