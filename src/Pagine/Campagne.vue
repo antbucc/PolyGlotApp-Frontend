@@ -1,7 +1,7 @@
 <!-- posso trasformare campagne in studenti/corsi e mettere le statistiche/classifiche al posto delle statistiche di bici-->
 
 <template>
-  <div class="bg-primary ">
+  <div class="bg-primary " >
     <div class="flex flex-col bg-primary  "  >
       <!-- tmp-->
       <!-- <h1
@@ -72,9 +72,9 @@
                 There are no courses.
               </div>
             </template>
-            <template v-else v-for="campaign in this.myCampaigns">
+            <template v-else v-for="campaign in this.myCampaigns" >
               <!-- gestire no courses se mycampaign è vuoto -->
-              <template
+              <template style="overflow:hidden"
                 ><campaign-card
                   class=""
                   :key="campaign.id"
@@ -95,7 +95,7 @@
               flex flex-col
               sm:flex-row sm:flex-wrap sm:justify-center
               md:px-12
-            "
+            " 
           >
             <template v-if="!this.allCampaigns.length">
               <div

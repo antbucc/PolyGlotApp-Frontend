@@ -61,7 +61,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "Assignment",
+  name: "Quiz",
   methods: {
     retrieveQuestion() {
       // here I retrieve the list of courses
@@ -75,8 +75,8 @@ export default {
         method: "get",
         url: url,
       };
-      var self = this;
-      axios(config)
+      //var self = this;
+      axios(config)/*
         .then(function (response) {
           // here I need to extract the content of a question retrieved with Title, description, etc..
           self.$alert(
@@ -86,14 +86,14 @@ export default {
               " Question Text: " +
               response.data.questiontext
           );
-        })
+        })*/
         .catch(function (error) {
           console.log(error);
         });
     },
   },
   created() {
-    this.$store.dispatch("storePage", { title: "Assignment", back: false });
+    this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
   },
 };

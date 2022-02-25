@@ -26,25 +26,6 @@
         them <b>engaged</b>, and <b>encourage healthy competition</b> among
         classmates and peers
       </div>
-      <t-button v-if="!auth"
-        class="w-5/12 mt-4 lg:mt-8 m-auto"
-        variant="green"
-        style="
-          width: 10em;
-          height: 2em;
-          outline: none;
-          border: 0;
-          color: white;
-          cursor: pointer;
-          border-radius: 15px;
-          background-color: #ffa700;
-          font-size: 1em;
-        "
-        ><login-icon />
-        <p class="text-center w-full" @click="$router.push('/login')">
-          Login
-        </p></t-button
-      >
     </div>
   </div>
 </template>
