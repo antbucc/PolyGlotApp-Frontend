@@ -12,7 +12,7 @@ import Rules from "./Pagine/Campagna/Rules.vue";
 import Callback from "./Pagine/Callback.vue";
 import Logout from "./Pagine/Logout.vue";
 import MyPerformance from "./Pagine/Campagna/MyPerformance.vue";
-import Assignment from "./Pagine/Assignment.vue";
+import Quiz from "./Pagine/Quiz.vue";
 import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
 import store from './store/store'
 
@@ -28,9 +28,9 @@ const routes = [
     component: Info
   },
   {
-    path: '/assignment',
-    name: 'assignment',
-    component: Assignment
+    path: '/quiz',
+    name: 'quiz',
+    component: Quiz
   },
   {
     path: '/contatti',
@@ -74,7 +74,6 @@ const routes = [
     name: 'campagna',
     component: Campagna,
     beforeEnter(to, from, next) {
-      alert("arrivo qui");
       if (store.getters.isAuthenticated) {
         next()
       } else {

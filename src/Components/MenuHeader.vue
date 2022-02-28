@@ -112,16 +112,16 @@
             >
           </router-link>
 
-          <router-link to="/assignment" v-if="auth">
+          <router-link to="/quiz" v-if="auth">
             <span
             
               @click="isOpen = false"
               class="flex items-center p-4 hover:bg-white hover:text-primary"
-              :class="{ active: page && page.title === 'Assignment' }"
+              :class="{ active: page && page.title === 'Quiz' }"
               ><span class="mr-2">
                 <question-icon />
               </span>
-              <span>Assignment</span></span>
+              <span>Quiz</span></span>
           </router-link>
           <router-link to="/info" >
             <span
@@ -317,14 +317,14 @@
             >
           </router-link>
           
-          <router-link to="/assignment" v-if="auth">
+          <router-link to="/quiz" v-if="auth">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
-              :class="{ active: page && page.title === 'Assignment' }"
+              :class="{ active: page && page.title === 'Quiz' }"
               ><span class="mr-2">
                 <question-icon />
               </span>
-              <span>Assignment</span></span>
+              <span>Quiz</span></span>
           </router-link>
 
           <router-link to="/info">

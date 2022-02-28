@@ -1,4 +1,3 @@
-<!-- posso trasformare campagne in studenti/corsi e mettere le statistiche/classifiche al posto delle statistiche di bici-->
 
 <template>
   <div class="bg-primary">
@@ -73,7 +72,7 @@
             </template>
             <template v-else v-for="campaign in this.myCampaigns">
               <!-- gestire no courses se mycampaign è vuoto -->
-              <template
+              <template style="overflow: hidden"
                 ><campaign-card
                   class=""
                   :key="campaign.id"
