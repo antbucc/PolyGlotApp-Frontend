@@ -1,8 +1,8 @@
 <!-- posso trasformare campagne in studenti/corsi e mettere le statistiche/classifiche al posto delle statistiche di bici-->
 
 <template>
-  <div class="bg-primary ">
-    <div class="flex flex-col bg-primary  "  >
+  <div class="bg-primary">
+    <div class="flex flex-col bg-primary">
       <!-- tmp-->
       <!-- <h1
         class="justify-self-center text-center text-5xl pt-2 lg:text-6xl font-semibold pb-4"
@@ -10,7 +10,7 @@
         Classes
       </h1> -->
       <div class="text-md w-full">
-        <nav class="flex flex-row text-white bg-primary" >
+        <nav class="flex flex-row text-white bg-primary">
           <button
             class="
               flex-1
@@ -23,7 +23,6 @@
               hover:bg-blue-700
               w-full
             "
-            
             :class="
               mode == 'MY' ? 'border-blue-300 border-b-4 text-blue-300' : ''
             "
@@ -143,11 +142,8 @@
 </template>
 
 <script>
-//import DataApi from "../communication/dataApi";
-// import ContextMenu from "../Components/ContextMenu.vue";
 import CampaignCard from "../Components/CampaignCard.vue";
 import axios from "axios";
-//import EventBus from "../communication/eventBus";
 export default {
   name: "Campagne",
   components: { CampaignCard },
@@ -158,9 +154,7 @@ export default {
       myCampaigns: [],
       allCampaigns: [],
       courses: true,
-      // currentView: "my",
       mode: "MY",
-      // user:{}
     };
   },
   methods: {
@@ -173,7 +167,10 @@ export default {
 
       //   let token = this.$route.params.finalToken;
       // courses at which the player is registered
-      let registeredCourses = this.$route.params.courses;
+      // let registeredCourses = this.$route.params.courses;
+      let registeredCourses = this.$store.getters.courses;
+
+      // let str = JSON.stringify(registeredCourses[0], null, 2);
 
       //let username = this.$route.params.playerName;
       /* let loader = this.$loading.show({
@@ -190,7 +187,7 @@ export default {
           console.log("Error during courses extraction");
         } else {
           let allCourses = response.data;
-          let registered = registeredCourses;
+          let registered = registeredCourses[0];
 
           // here I filter the courses where the player is registered and the courses where he/she is not registered
           var obj = 0;
@@ -200,8 +197,8 @@ export default {
             var currentAll = allCourses[obj];
             var found = false;
             var obj1 = 0;
-            for (obj1 in registered) {
-              var currentRegistered = registered[obj1];
+            for (obj1 in registered.courses) {
+              var currentRegistered = registered.courses[obj1];
 
               if (currentRegistered.id == currentAll.id) {
                 this.myCampaigns.push(currentRegistered);
@@ -236,7 +233,8 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("storePage", { title: "Courses", back: false });
+    alert("qui creo pagina Campagne");
+    //   this.$store.dispatch("storePage", { title: "Courses", back: false });
     this.response = this.retrieveCourses();
   },
   mounted() {},

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     idToken: null,
     user: null,
     campagna: null,
+    courses: [],
     page: null
   },
   mutations: {
@@ -27,7 +28,16 @@ export default new Vuex.Store({
     clearAuthData(state) {
       state.idToken = null
     },
+    storeCourse(state, course) {
+      state.courses.push(course);
+    },
+    storeCourses(state, courses) {
+      state.courses.push(courses);
+    },
+
+
     storeCampagna(state, campagna) {
+
       state.campagna = campagna
     },
     exitCampagna(state) {
@@ -49,7 +59,12 @@ export default new Vuex.Store({
     storeCampagna({ commit }, campagna) {
       commit('storeCampagna', campagna)
     },
-
+    storeCourse({ commit }, course) {
+      commit('storeCourse', course)
+    },
+    storeCourses({ commit }, courses) {
+      commit('storeCourses', courses)
+    },
     exitCampagna({ commit }) {
       commit('exitCampagna')
     },
@@ -107,6 +122,9 @@ export default new Vuex.Store({
     },
     campagna: state => {
       return state.campagna
+    },
+    courses: state => {
+      return state.courses
     },
     page: state => {
       return state.page

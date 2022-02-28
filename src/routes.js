@@ -14,121 +14,123 @@ import Logout from "./Pagine/Logout.vue";
 import MyPerformance from "./Pagine/Campagna/MyPerformance.vue";
 import Assignment from "./Pagine/Assignment.vue";
 import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
- import store from './store/store'
+import store from './store/store'
 
 const routes = [
-    {
-      path: '/',
-      name: 'homepage',
-      component: Homepage
-    },
-    {
-      path: '/info',
-      name: 'info',
-      component: Info
-    },
-    {
-      path: '/assignment',
-      name: 'assignment',
-      component: Assignment
-    },
-    {
-      path: '/contatti',
-      name: 'contatti',
-      component: Contatti
-    },
-    {
-      path: '/credits',
-      name: 'credits',
-      component: Credits
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/campagne',
-      name: 'campagne',
-      component: Campagne, 
-     // beforeEnter (to, from, next) {
-       // if (store.getters.isAuthenticated) {
-         // next()
-        //} else {
-        //  next('/')
-       // }
-     // }
-    },
-    {
-      path: '/callback',
-      name: 'callback',
-      component: Callback
-    },
-    {
-      path: '/logout',
-      name: 'logout',
-      component: Logout
-    },
-    {
-      path: '/campagna/:id',
-      name: 'campagna',
-      component: Campagna,
-      beforeEnter (to, from, next) {
-        if (store.getters.isAuthenticated) {
-          next()
-        } else {
-          next('/')
-        }
-      }
-    },
-    {
-      path: '/la-mia-performance/:id',
-      name: 'myperformance',
-      component: MyPerformance,
-      beforeEnter (to, from, next) {
-        if (store.getters.isAuthenticated) {
-          next()
-        } else {
-          next('/')
-        }
-      }
-    },
-    {
-      path: '/rules/:id',
-      name: 'rules',
-      component: Rules,
-      beforeEnter (to, from, next) {
-        if (store.getters.isAuthenticated) {
-          next()
-        } else {
-          next('/')
-        }
-      }
-    },
-    {
-      path: '/send-request/:id',
-      name: 'sendrequest',
-      component: InviaRichiesta,
-      beforeEnter (to, from, next) {
-        if (store.getters.isAuthenticated) {
-          next()
-        } else {
-          next('/')
-        }
-      }},
-    {
-      path: '/privacy/:id',
-      name: 'privacy',
-      component: Privacy,
-      beforeEnter (to, from, next) {
-        if (store.getters.isAuthenticated) {
-          next()
-        } else {
-          next('/')
-        }
+  {
+    path: '/',
+    name: 'homepage',
+    component: Homepage
+  },
+  {
+    path: '/info',
+    name: 'info',
+    component: Info
+  },
+  {
+    path: '/assignment',
+    name: 'assignment',
+    component: Assignment
+  },
+  {
+    path: '/contatti',
+    name: 'contatti',
+    component: Contatti
+  },
+  {
+    path: '/credits',
+    name: 'credits',
+    component: Credits
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/campagne',
+    name: 'campagne',
+    component: Campagne,
+    // beforeEnter (to, from, next) {
+    // if (store.getters.isAuthenticated) {
+    // next()
+    //} else {
+    //  next('/')
+    // }
+    // }
+  },
+  {
+    path: '/callback',
+    name: 'callback',
+    component: Callback
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: Logout
+  },
+  {
+    path: '/campagna/:id',
+    name: 'campagna',
+    component: Campagna,
+    beforeEnter(to, from, next) {
+      alert("arrivo qui");
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/')
       }
     }
-    
-  ];
+  },
+  {
+    path: '/la-mia-performance/:id',
+    name: 'myperformance',
+    component: MyPerformance,
+    beforeEnter(to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
+    }
+  },
+  {
+    path: '/rules/:id',
+    name: 'rules',
+    component: Rules,
+    beforeEnter(to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
+    }
+  },
+  {
+    path: '/send-request/:id',
+    name: 'sendrequest',
+    component: InviaRichiesta,
+    beforeEnter(to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
+    }
+  },
+  {
+    path: '/privacy/:id',
+    name: 'privacy',
+    component: Privacy,
+    beforeEnter(to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
+    }
+  }
 
-  export default routes;
+];
+
+export default routes;

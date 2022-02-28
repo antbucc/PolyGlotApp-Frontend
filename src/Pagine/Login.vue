@@ -1,12 +1,12 @@
 
 
 <template>
-  <div class="flex flex-col lg:flex-row bg-primary contact" >
-    <div class="lg:w-4/12 lg:my-2" style=" margin: auto; font-size:0.9em;">
+  <div class="flex flex-col lg:flex-row bg-primary contact">
+    <div class="lg:w-4/12 lg:my-2" style="margin: auto; font-size: 0.9em">
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 25em; height: 40em; text-align:center; margin:auto"
+        style="width: 25em; height: 40em; text-align: center; margin: auto"
       >
         <img
           style="
@@ -14,12 +14,19 @@
             margin-bottom: 2em;
             margin-left: auto;
             margin-right: auto;
-            height:5em;
+            height: 5em;
           "
           src="../../public/logo.png"
           alt="PolyGlot"
         />
-        <h2 style="margin-left:auto; margin-right:auto; font-size: 1em; margin-bottom: 10px">
+        <h2
+          style="
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1em;
+            margin-bottom: 10px;
+          "
+        >
           Insert your credentials:
         </h2>
         <div
@@ -48,19 +55,26 @@
               width: 20em;
               border-color: #ffa700;
               margin: auto;
-              font-size:1em;
+              font-size: 1em;
             "
           />
         </div>
         <div
           class="btn-class"
-          style="height: 3em;
-              width: 10em;margin-left:auto; margin-right:auto"
+          style="
+            height: 3em;
+            width: 10em;
+            margin-left: auto;
+            margin-right: auto;
+          "
         >
-          <button class="btn-class" @click.prevent="login()" style="
-          font-size: 1em; 
-          width: 10em;
-          height: 2em;">Log In</button>
+          <button
+            class="btn-class"
+            @click.prevent="login()"
+            style="font-size: 1em; width: 10em; height: 2em"
+          >
+            Log In
+          </button>
         </div>
       </form>
     </div>
@@ -126,14 +140,22 @@ export default {
       axios(config)
         .then(function (response) {
           // here I receive the courses at which the player is registered
-          self.$router.push({
-            name: "campagne",
-            params: {
-              finalToken: token,
-              playerName: self.user.username,
-              courses: response.data,
-            },
-          });
+
+          self.$store
+            .dispatch("storeCourses", { courses: response.data })
+            .then(() => {
+              //go to the courses page
+              self.$router.push({
+                name: "campagne",
+                params: {
+                  finalToken: token,
+                  playerName: self.user.username,
+                },
+              });
+            })
+            .catch(function (error) {
+              console.log("Login Page: " + error);
+            });
         })
         .catch(function (error) {
           console.log(error);
