@@ -354,7 +354,7 @@
               ><span class="mr-2">
                 <logout-icon />
               </span>
-              <span>ttt</span></span
+              <span>Exit</span></span
             >
           </router-link>
         </div>
