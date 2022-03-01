@@ -1,9 +1,22 @@
 <template>
   <div>
     <nav
-      class="visible lg:invisible flex fixed w-full items-center justify-between px-6 h-16 bg-primary text-white text-gray-700 z-10"  
+      class="
+        visible
+        lg:invisible
+        flex
+        fixed
+        w-full
+        items-center
+        justify-between
+        px-6
+        h-16
+        bg-primary
+        text-white text-gray-700
+        z-10
+      "
     >
-      <div class="flex items-center" v-if="page && page.back == false" >
+      <div class="flex items-center" v-if="page && page.back == false">
         <button class="mr-2" aria-label="Open Menu" @click="drawer">
           <svg
             fill="none"
@@ -17,8 +30,12 @@
             <path d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
-        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" 
-            @click="$router.push('/')" />
+        <img
+          src="@/assets/images/logopolyglot.png"
+          alt="Logo"
+          class="h-auto w-12"
+          @click="$router.push('/')"
+        />
       </div>
       <div class="flex items-center" v-if="page && page.back == true">
         <button class="mr-2" aria-label="Open Menu" @click="backPage">
@@ -35,16 +52,24 @@
           </svg> -->
           <back-icon />
         </button>
-        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" 
-            @click="$router.push('/')"/>
+        <img
+          src="@/assets/images/logopolyglot.png"
+          alt="Logo"
+          class="h-auto w-12"
+          @click="$router.push('/')"
+        />
       </div>
       <div class="flex items-center" v-if="page">
         <span class="text-xl">{{ page.title }}</span>
       </div>
       <div class="flex items-center">
-        <div class="hidden md:block md:flex md:justify-between md:bg-transparent">
+        <div
+          class="hidden md:block md:flex md:justify-between md:bg-transparent"
+        >
           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
-            <span @ class="flex items-center p-4 hover:bg-white hover:text-primary"
+            <span
+              @
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
               ><span class="mr-2">
                 <logout-icon />
               </span>
@@ -54,7 +79,7 @@
         </div>
       </div>
 
-<!-- queste sono quelle del menu a tendina via cell -->
+      <!-- queste sono quelle del menu a tendina via cell -->
       <transition
         enter-class="opacity-0"
         enter-active-class="ease-out transition-medium"
@@ -76,10 +101,28 @@
         </div>
       </transition>
       <aside
-        class="shadow-xl transform top-0 left-0 w-64 bg-primary text-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
+        class="
+          shadow-xl
+          transform
+          top-0
+          left-0
+          w-64
+          bg-primary
+          text-white
+          fixed
+          h-full
+          overflow-auto
+          ease-in-out
+          transition-all
+          duration-300
+          z-30
+        "
         :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
       >
-        <span @click="isOpen = false" class="flex w-full items-center p-4 border-b">
+        <span
+          @click="isOpen = false"
+          class="flex w-full items-center p-4 border-b"
+        >
           <img
             src="@/assets/images/logopolyglot.png"
             alt="Logo"
@@ -114,16 +157,16 @@
 
           <router-link to="/quiz" v-if="auth">
             <span
-            
               @click="isOpen = false"
               class="flex items-center p-4 hover:bg-white hover:text-primary"
               :class="{ active: page && page.title === 'Quiz' }"
               ><span class="mr-2">
                 <question-icon />
               </span>
-              <span>Quiz</span></span>
+              <span>Quiz</span></span
+            >
           </router-link>
-          <router-link to="/info" >
+          <router-link to="/info">
             <span
               @click="isOpen = false"
               class="flex items-center p-4 hover:bg-white hover:text-primary"
@@ -134,30 +177,29 @@
               <span>Info</span></span
             ></router-link
           >
-          <router-link to="/contatti" > 
-          <span 
-              @click="isOpen = false"
-          :class="{active:page && page.title === 'Contacts'}"
-            class="flex items-center p-4 hover:bg-white hover:text-primary"
-          >
-            <span class="mr-2">
-              <pencil-outline-icon />
-            </span>
-            <span>Contacts</span></span
-          >
-         </router-link>
-         <router-link to="/credits">
+          <router-link to="/contatti">
             <span
-            
               @click="isOpen = false"
-            class="flex items-center p-4 hover:bg-white hover:text-primary"
-            :class="{ active: page && page.title === 'Credits' } "
-          >
-            <span class="mr-2">
-              <credits-icon />
-            </span>
-            <span>Credits</span></span
-          >
+              :class="{ active: page && page.title === 'Contacts' }"
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+            >
+              <span class="mr-2">
+                <pencil-outline-icon />
+              </span>
+              <span>Contacts</span></span
+            >
+          </router-link>
+          <router-link to="/credits">
+            <span
+              @click="isOpen = false"
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Credits' }"
+            >
+              <span class="mr-2">
+                <credits-icon />
+              </span>
+              <span>Credits</span></span
+            >
           </router-link>
           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
             <span
@@ -166,7 +208,7 @@
               ><span class="mr-2">
                 <logout-icon />
               </span>
-              <span>Esci</span></span
+              <span>Logout</span></span
             >
           </router-link>
         </div>
@@ -174,7 +216,15 @@
           <router-link to="/campagne" v-on:click.native="indietro">
             <span
               @click="isOpen = false"
-              class="flex items-center p-4 hover:bg-white hover:text-primary m-2 border-white border-2 rounded"
+              class="
+                flex
+                items-center
+                p-4
+                hover:bg-white hover:text-primary
+                m-2
+                border-white border-2
+                rounded
+              "
               ><span class="mr-2">
                 <arrow-left-icon />
               </span>
@@ -261,23 +311,50 @@
       </aside>
     </nav>
     <nav
-      class="invisible lg:visible flex fixed w-full items-center justify-between px-6 h-16 bg-primary text-white text-gray-700 z-10 " 
+      class="
+        invisible
+        lg:visible
+        flex
+        fixed
+        w-full
+        items-center
+        justify-between
+        px-6
+        h-16
+        bg-primary
+        text-white text-gray-700
+        z-10
+      "
     >
-    <!-- questi sono i route della barra superiore (alto a dx) che secondo me si può anche togliere in quanto è ripetizione di quella a sinistra molto più user friendly-->
+      <!-- questi sono i route della barra superiore (alto a dx) che secondo me si può anche togliere in quanto è ripetizione di quella a sinistra molto più user friendly-->
       <div class="flex items-center">
-        <img src="@/assets/images/logopolyglot.png" alt="Logo" class="h-auto w-12" />
+        <img
+          src="@/assets/images/logopolyglot.png"
+          alt="Logo"
+          class="h-auto w-12"
+        />
       </div>
-      <div class="flex items-center" v-if="page" style="justify-content:center">
-        <span class="text-xl" style="font-size:1.5vw;"><b>{{ page.title }}</b></span>
+      <div
+        class="flex items-center"
+        v-if="page"
+        style="justify-content: center"
+      >
+        <span class="text-xl" style="font-size: 1.5vw"
+          ><b>{{ page.title }}</b></span
+        >
       </div>
       <div class="flex items-center">
-        <div class="hidden md:block md:flex md:justify-between md:bg-transparent">
-           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
-            <span @ class="flex items-center p-4 hover:bg-white hover:text-primary"
+        <div
+          class="hidden md:block md:flex md:justify-between md:bg-transparent"
+        >
+          <router-link to="/" v-on:click.native="onLogout" v-if="auth">
+            <span
+              @
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
               ><span class="mr-2">
                 <logout-icon />
               </span>
-              <span>Exit</span></span
+              <span>ttt</span></span
             >
           </router-link>
         </div>
@@ -285,7 +362,21 @@
 
       <!-- questi sono i router della barra a sinistra -->
       <aside
-        class="transform top-0 left-0 w-64 bg-primary text-white fixed h-full ease-in-out transition-all duration-300 z-30"  style="background-color: #0a4e7e; width:15em; font-size:0.9vw"
+        class="
+          transform
+          top-0
+          left-0
+          w-64
+          bg-primary
+          text-white
+          fixed
+          h-full
+          ease-in-out
+          transition-all
+          duration-300
+          z-30
+        "
+        style="background-color: #0a4e7e; width: 15em; font-size: 0.9vw"
       >
         <span class="flex w-full items-center p-4">
           <img
@@ -293,14 +384,15 @@
             alt="Logo"
             class="h-auto w-32 mx-auto"
             @click="$router.push('/')"
-            style="cursor: pointer; width:5em"
+            style="cursor: pointer; width: 5em"
           />
         </span>
         <div v-if="!campagna">
           <router-link to="/login" v-if="!auth">
-            <span class="flex items-center p-4 hover:bg-white hover:text-primary"
-              ><span class="mr-2"   >
-                <login-icon  />
+            <span
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              ><span class="mr-2">
+                <login-icon />
               </span>
               <span>Login</span></span
             >
@@ -316,7 +408,7 @@
               <span>Courses</span></span
             >
           </router-link>
-          
+
           <router-link to="/quiz" v-if="auth">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
@@ -324,7 +416,8 @@
               ><span class="mr-2">
                 <question-icon />
               </span>
-              <span>Quiz</span></span>
+              <span>Quiz</span></span
+            >
           </router-link>
 
           <router-link to="/info">
@@ -335,41 +428,47 @@
                 <info-outline-icon />
               </span>
               <span>Info</span></span
-            ></router-link>
-           
-          <router-link to="/contatti"> 
-          <span
-            class="flex items-center p-4 hover:bg-white hover:text-primary"
-            :class="{ active: page && page.title === 'Contatti' }"
+            ></router-link
           >
-            <span class="mr-2">
-              <pencil-outline-icon />
-            </span>
-            <span>Contact us</span></span
-          >
+
+          <router-link to="/contatti">
+            <span
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Contatti' }"
+            >
+              <span class="mr-2">
+                <pencil-outline-icon />
+              </span>
+              <span>Contact us</span></span
+            >
           </router-link>
-          
+
           <router-link to="/credits">
             <span
-            class="flex items-center p-4 hover:bg-white hover:text-primary"
-            :class="{ active: page && page.title === 'Credits' } "
-          >
-            <span class="mr-2">
-              <credits-icon />
-            </span>
-            <span>Credits</span></span
-          >
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Credits' }"
+            >
+              <span class="mr-2">
+                <credits-icon />
+              </span>
+              <span>Credits</span></span
+            >
           </router-link>
-
-         
-
         </div>
 
         <div v-if="campagna">
           <router-link to="/campagne" v-on:click.native="indietro">
             <span
               @click="isOpen = false"
-              class="flex items-center p-4 hover:bg-white hover:text-primary m-2 border-white border-2 rounded"
+              class="
+                flex
+                items-center
+                p-4
+                hover:bg-white hover:text-primary
+                m-2
+                border-white border-2
+                rounded
+              "
               ><span class="mr-2">
                 <arrow-left-icon />
               </span>
@@ -411,7 +510,7 @@
               <span>Regolamento</span></span
             >
           </router-link>
-           <router-link
+          <router-link
             :to="{ name: 'sendrequest', params: { id: campagna.id } }"
           >
             <span
@@ -422,7 +521,8 @@
               </span>
               <span>Richiedi Supporto</span></span
             >
-          </router-link> -->
+          </router-link>
+          -->
           <span
             @click="sendRequest()"
             class="flex items-center p-4 hover:bg-white hover:text-primary"
@@ -443,7 +543,9 @@
           </router-link>
           <div v-if="campagna.userInCampaign">
             <div @click="leaveCampaign">
-              <span @ class="flex items-center p-4 hover:bg-white hover:text-primary"
+              <span
+                @
+                class="flex items-center p-4 hover:bg-white hover:text-primary"
                 ><span class="mr-2">
                   <unsubscribe-icon />
                 </span>
@@ -466,24 +568,48 @@
         name="unsub"
         action=""
         v-on:submit.prevent=""
-        class="bg-white form flex flex-col p-6 relative lg:rounded-xl justify-center"
+        class="
+          bg-white
+          form
+          flex flex-col
+          p-6
+          relative
+          lg:rounded-xl
+          justify-center
+        "
       >
         <div class="flex flex-col md:flex-row mt-3 justify-stretch lg:flex-col">
           <span>
-            Una volta confermata la cancellazione dalla campagna Il Partecipante non potrà
-            più accumulare i Km in bici e riceverà dalla propria azienda soltanto gli
-            incentivi maturati nel periodo di partecipazione.<br />
+            Una volta confermata la cancellazione dalla campagna Il Partecipante
+            non potrà più accumulare i Km in bici e riceverà dalla propria
+            azienda soltanto gli incentivi maturati nel periodo di
+            partecipazione.<br />
             Sei sicuro di voler cancellare l'iscrizione?
-
           </span>
           <button
-            class="mt-6 bg-primary hover:bg-blue-500 text-white font-semibold p-3 flex-1"
+            class="
+              mt-6
+              bg-primary
+              hover:bg-blue-500
+              text-white
+              font-semibold
+              p-3
+              flex-1
+            "
             @click="confirmLeave"
           >
             Conferma
           </button>
           <button
-            class="mt-6 bg-primary hover:bg-blue-500 text-white font-semibold p-3 flex-1"
+            class="
+              mt-6
+              bg-primary
+              hover:bg-blue-500
+              text-white
+              font-semibold
+              p-3
+              flex-1
+            "
             @click="modalUnsubscribeShowing = false"
           >
             Chiudi
@@ -514,7 +640,9 @@ export default {
       for (var i = 0; i < this.user.roles.length; i++) {
         if (this.user.roles[i].role == "ROLE_APP_USER") {
           for (var k = 0; k < this.user.roles[i].subscriptions.length; k++) {
-            if (this.user.roles[i].subscriptions[k].campaign == this.campagna.id) {
+            if (
+              this.user.roles[i].subscriptions[k].campaign == this.campagna.id
+            ) {
               var codePartecipation = this.user.roles[i].subscriptions[k].key;
               var userCompany = this.user.roles[i].subscriptions[k].companyCode;
               // var userLocation = this.user.roles[i].locations?this.user.roles[i].locations:"Non definito";
@@ -556,7 +684,8 @@ export default {
           EventBus.$emit(
             "snack-open",
             "Cancellazione Effettuata",
-            "Sei stato rimosso con successo dalla campagna " + this.campagna.title,
+            "Sei stato rimosso con successo dalla campagna " +
+              this.campagna.title,
             0
           );
 

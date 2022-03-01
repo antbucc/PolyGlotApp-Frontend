@@ -140,18 +140,15 @@ export default {
       axios(config)
         .then(function (response) {
           // here I receive the courses at which the player is registered
+          sessionStorage.setItem("courses", JSON.stringify(response.data));
 
-          self.$store
-            .dispatch("storeCourses", { courses: response.data })
-            .then(() => {
-              //go to the courses page
-              self.$router.push({
-                name: "campagne",
-                params: {
-                  finalToken: token,
-                  playerName: self.user.username,
-                },
-              });
+          self.$router
+            .push({
+              name: "campagne",
+              params: {
+                finalToken: token,
+                playerName: self.user.username,
+              },
             })
             .catch(function (error) {
               console.log("Login Page: " + error);

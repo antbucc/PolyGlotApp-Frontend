@@ -109,8 +109,9 @@ export default new Vuex.Store({
       return true
     },
     logout({ commit }) {
-      commit('clearAuthData')
-      sessionStorage.removeItem('token')
+      commit('clearAuthData');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('courses');
     },
   },
   getters: {

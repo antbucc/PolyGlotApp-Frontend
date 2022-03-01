@@ -163,21 +163,14 @@ export default {
     },
     retrieveCourses() {
       const token = sessionStorage.getItem("token");
+      var registeredCourses = JSON.parse(sessionStorage.courses);
 
-      //   let token = this.$route.params.finalToken;
-      // courses at which the player is registered
-      // let registeredCourses = this.$route.params.courses;
-      let registeredCourses = this.$store.getters.courses;
-
-      // let str = JSON.stringify(registeredCourses[0], null, 2);
-
-      //let username = this.$route.params.playerName;
       /* let loader = this.$loading.show({
         canCancel: true,
         backgroundColor: "#000",
         color: "#fff",
       });*/
-      // here I retrieve the list of courses
+      // here I retrieve all the courses available at the university
       var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_COURSES;
       let url = apiUrl + "?token=" + token;
 
@@ -186,7 +179,6 @@ export default {
           console.log("Error during courses extraction");
         } else {
           let allCourses = response.data;
-          let registered = registeredCourses[0];
 
           // here I filter the courses where the player is registered and the courses where he/she is not registered
           var obj = 0;
@@ -196,8 +188,8 @@ export default {
             var currentAll = allCourses[obj];
             var found = false;
             var obj1 = 0;
-            for (obj1 in registered.courses) {
-              var currentRegistered = registered.courses[obj1];
+            for (obj1 in registeredCourses) {
+              var currentRegistered = registeredCourses[obj1];
 
               if (currentRegistered.id == currentAll.id) {
                 this.myCampaigns.push(currentRegistered);
@@ -232,8 +224,6 @@ export default {
     },
   },
   created() {
-    alert("qui creo pagina Campagne");
-    //   this.$store.dispatch("storePage", { title: "Courses", back: false });
     this.response = this.retrieveCourses();
   },
   mounted() {},

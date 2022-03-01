@@ -195,17 +195,19 @@ export default {
       axios(config)
         .then(function (response) {
           // here I need to add the course at the player courses
-          alert("Course Added: " + response);
           //self.$alert("Course added with success");
-          self.$store
-            .dispatch("storeCourse", {
-              id: self.id,
-              title: self.title,
-            })
-            .then(() => {
-              self.$router.push({ name: "campagne" });
-            })
-            .catch(() => {});
+          console.log("response status: " + response.status);
+          let course = {
+            id: courseId,
+            title: courseTitle,
+          };
+
+          var storedCoursesList =
+            JSON.parse(sessionStorage.getItem("courses")) || [];
+
+          storedCoursesList.push(course);
+          sessionStorage.setItem("courses", JSON.stringify(storedCoursesList));
+          self.$router.go(0);
         })
         .catch(function (error) {
           console.log(error);
