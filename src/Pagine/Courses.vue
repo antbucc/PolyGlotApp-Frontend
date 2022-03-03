@@ -73,7 +73,7 @@
             <template v-else v-for="campaign in this.myCampaigns">
               <!-- gestire no courses se mycampaign è vuoto -->
               <template style="overflow: hidden"
-                ><campaign-card
+                ><course-card
                   class=""
                   :key="campaign.id"
                   :id="campaign.id"
@@ -116,7 +116,7 @@
             </template>
             <template v-else v-for="campaign in this.allCampaigns">
               <template
-                ><campaign-card
+                ><course-card
                   class=""
                   :key="campaign.id"
                   :id="campaign.id"
@@ -141,11 +141,11 @@
 </template>
 
 <script>
-import CampaignCard from "../Components/CampaignCard.vue";
+import CourseCard from "../Components/CourseCard.vue";
 import axios from "axios";
 export default {
-  name: "Campagne",
-  components: { CampaignCard },
+  name: "Courses",
+  components: { CourseCard },
 
   data: function () {
     return {

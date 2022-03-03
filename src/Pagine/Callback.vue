@@ -38,7 +38,7 @@ export default {
       )
       .then((res) => {
         this.$store.dispatch("loginWithToken", { idToken: res.data.id_token }).then(() => {
-          this.$router.push("campagne").catch(() => {});
+          this.$router.push("courses").catch(() => {});
         });
       })
       .catch((error) => {

@@ -23,7 +23,7 @@ export default {
 
   created() {
     this.$store.dispatch("tryAutoLogin").then((logged) => {
-      if (logged) this.$router.push("campagne").catch(() => {});
+      if (logged) this.$router.push("courses").catch(() => {});
     });
   },
 };

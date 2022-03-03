@@ -112,7 +112,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "CampaignCard",
+  name: "CourseCard",
   props: {
     id: String,
     title: String,
@@ -191,7 +191,7 @@ export default {
         url: apiUrl,
         data: data,
       };
-      var self = this;
+      //var self = this;
       axios(config)
         .then(function (response) {
           // here I need to add the course at the player courses
@@ -207,7 +207,10 @@ export default {
 
           storedCoursesList.push(course);
           sessionStorage.setItem("courses", JSON.stringify(storedCoursesList));
-          self.$router.go(0);
+          //if(self.$alert("Course " + course.title +" added with success. Good luck!")) self.$router.go(0);      
+            if(!alert("Course " + course.title +" added with success. Good luck!")){window.location.reload();}    //funziona ma è un alert del browser e non dell'app, con titolo "localhost dice" che non si può cambiare e va commentato self=this
+          //if(self.$alert("Course " + course.title +" added with success. Good luck!")){window.location.reload()}
+          
         })
         .catch(function (error) {
           console.log(error);

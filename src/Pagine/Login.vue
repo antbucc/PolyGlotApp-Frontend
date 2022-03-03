@@ -144,7 +144,7 @@ export default {
 
           self.$router
             .push({
-              name: "campagne",
+              name: "courses",
               params: {
                 finalToken: token,
                 playerName: self.user.username,

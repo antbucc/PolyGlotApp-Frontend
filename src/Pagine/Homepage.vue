@@ -29,6 +29,18 @@
         them <b>engaged</b>, and <b>encourage healthy competition</b> among
         classmates and peers
       </div>
+      <t-button class="w-5/12 mt-4 lg:mt-8 m-auto " variant="green" style="width: 150px; 
+            height: 35px;
+            outline: none;
+            border: 0;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 15px;
+            background-color:#ffa700;" v-if="!auth"
+        ><login-icon />
+        <p class="text-center w-full" @click="$router.push('/login')" >Login</p></t-button
+      >
     </div>
   </div>
 </template>
@@ -38,6 +50,11 @@ export default {
   name: "Homepage",
   created() {
     this.$store.dispatch("storePage", { title: "", back: false });
+  },
+  computed: {
+    auth() {
+      return this.$store.getters.isAuthenticated;
+    }
   },
   methods: {
     login() {

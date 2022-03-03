@@ -3,8 +3,8 @@
 import Homepage from "./Pagine/Homepage.vue";
 import Info from "./Pagine/Info.vue";
 import Contatti from "./Pagine/Contatti.vue";
-import Campagne from "./Pagine/Campagne.vue";
-import Campagna from "./Pagine/Campagna/Campagna.vue";
+import Courses from "./Pagine/Courses.vue";
+import Course from "./Pagine/Campagna/Campagna.vue";
 import Privacy from "./Pagine/Campagna/Privacy.vue";
 import Credits from "./Pagine/Credits.vue";
 import Login from "./Pagine/Login.vue";
@@ -48,9 +48,9 @@ const routes = [
     component: Login
   },
   {
-    path: '/campagne',
-    name: 'campagne',
-    component: Campagne,
+    path: '/courses',
+    name: 'courses',
+    component: Courses,
     // beforeEnter (to, from, next) {
     // if (store.getters.isAuthenticated) {
     // next()
@@ -70,9 +70,9 @@ const routes = [
     component: Logout
   },
   {
-    path: '/campagna/:id',
-    name: 'campagna',
-    component: Campagna,
+    path: '/course/:id',
+    name: 'course',
+    component: Course,
     beforeEnter(to, from, next) {
       if (store.getters.isAuthenticated) {
         next()

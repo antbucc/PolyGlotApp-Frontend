@@ -66,6 +66,7 @@
         <div
           class="hidden md:block md:flex md:justify-between md:bg-transparent"
         >
+        <!--
           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
             <span
               @
@@ -76,6 +77,7 @@
               <span>Exit</span></span
             >
           </router-link>
+          -->
         </div>
       </div>
 
@@ -143,11 +145,11 @@
             >
           </router-link>
 
-          <router-link to="/campagne" v-if="auth">
+          <router-link to="/courses" v-if="auth">
             <span
               @click="isOpen = false"
               class="flex items-center p-4 hover:bg-white hover:text-primary"
-              :class="{ active: page && page.title === 'Campagne' }"
+              :class="{ active: page && page.title === 'Courses' }"
               ><span class="mr-2">
                 <list-campaigns-icon />
               </span>
@@ -203,17 +205,17 @@
           </router-link>
           <router-link to="/" v-on:click.native="onLogout" v-if="auth">
             <span
-              @click="isOpen = false"
+              @
               class="flex items-center p-4 hover:bg-white hover:text-primary"
               ><span class="mr-2">
                 <logout-icon />
               </span>
-              <span>Logout</span></span
+              <span>Exit</span></span
             >
           </router-link>
         </div>
         <div v-if="campagna">
-          <router-link to="/campagne" v-on:click.native="indietro">
+          <router-link to="/courses" v-on:click.native="indietro">
             <span
               @click="isOpen = false"
               class="
@@ -326,7 +328,8 @@
         z-10
       "
     >
-      <!-- questi sono i route della barra superiore (alto a dx) che secondo me si può anche togliere in quanto è ripetizione di quella a sinistra molto più user friendly-->
+    <!--
+      //questi sono i route della barra superiore (alto a dx) che secondo me si può anche togliere in quanto è ripetizione di quella a sinistra molto più user friendly
       <div class="flex items-center">
         <img
           src="@/assets/images/logopolyglot.png"
@@ -347,18 +350,10 @@
         <div
           class="hidden md:block md:flex md:justify-between md:bg-transparent"
         >
-          <router-link to="/" v-on:click.native="onLogout" v-if="auth">
-            <span
-              @
-              class="flex items-center p-4 hover:bg-white hover:text-primary"
-              ><span class="mr-2">
-                <logout-icon />
-              </span>
-              <span>Exit</span></span
-            >
-          </router-link>
+          
         </div>
       </div>
+      -->
 
       <!-- questi sono i router della barra a sinistra -->
       <aside
@@ -397,11 +392,11 @@
               <span>Login</span></span
             >
           </router-link>
-
-          <router-link to="/campagne" v-if="auth">
+          
+          <router-link to="/courses" v-if="auth">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
-              :class="{ active: page && page.title === 'Campagne' }"
+              :class="{ active: page && page.title === 'Courses' }"
               ><span class="mr-2">
                 <list-campaigns-icon />
               </span>
@@ -454,10 +449,20 @@
               <span>Credits</span></span
             >
           </router-link>
+          <router-link to="/" v-on:click.native="onLogout" v-if="auth">
+            <span
+              @
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              ><span class="mr-2">
+                <logout-icon />
+              </span>
+              <span>Exit</span></span
+            >
+          </router-link>
         </div>
 
         <div v-if="campagna">
-          <router-link to="/campagne" v-on:click.native="indietro">
+          <router-link to="/courses" v-on:click.native="indietro">
             <span
               @click="isOpen = false"
               class="
@@ -691,7 +696,7 @@ export default {
 
           //todo toast and subscribed
           this.$store.dispatch("exitCampagna").then(() => {
-            this.$router.push({ path: `/campagne` }).catch(() => {});
+            this.$router.push({ path: `/courses` }).catch(() => {});
           });
         },
         (err) => {
@@ -708,7 +713,7 @@ export default {
     },
     indietro() {
       this.$store.dispatch("exitCampagna").then(() => {
-        this.$router.push("campagne").catch(() => {});
+        this.$router.push("courses").catch(() => {});
       });
     },
     leaveCampaign() {
