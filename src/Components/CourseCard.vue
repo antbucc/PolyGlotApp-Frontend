@@ -101,7 +101,7 @@
             "
             style="margin: auto"
           >
-            <join-icon class="pr-1" />Partecipa
+            <join-icon class="pr-1" />Join the Game
           </button>
         </template>
       </div>
@@ -191,26 +191,50 @@ export default {
         url: apiUrl,
         data: data,
       };
-      //var self = this;
-      axios(config)
-        .then(function (response) {
-          // here I need to add the course at the player courses
-          //self.$alert("Course added with success");
-          console.log("response status: " + response.status);
-          let course = {
-            id: courseId,
-            title: courseTitle,
-          };
+      //alert to the student to confirm the added course
+      // alert with the notification
 
-          var storedCoursesList =
-            JSON.parse(sessionStorage.getItem("courses")) || [];
+      this.$swal({
+        title: "Are you sure?",
+        text: "You can't revert your action",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes Add it!",
+        cancelButtonText: "Not Add it!",
+        showCloseButton: true,
+        showLoaderOnConfirm: true,
+      })
+        .then((result) => {
+          if (result.value) {
+            // call the gamification engine action to add the course
+            var self = this;
+            axios(config).then(function (response) {
+              // update session status with a new course
 
-          storedCoursesList.push(course);
-          sessionStorage.setItem("courses", JSON.stringify(storedCoursesList));
-          //if(self.$alert("Course " + course.title +" added with success. Good luck!")) self.$router.go(0);      
-            if(!alert("Course " + course.title +" added with success. Good luck!")){window.location.reload();}    //funziona ma è un alert del browser e non dell'app, con titolo "localhost dice" che non si può cambiare e va commentato self=this
-          //if(self.$alert("Course " + course.title +" added with success. Good luck!")){window.location.reload()}
-          
+              let course = {
+                id: courseId,
+                title: courseTitle,
+                registered: true,
+              };
+
+              var storedCoursesList =
+                JSON.parse(sessionStorage.getItem("courses")) || [];
+              // course added at the lit
+              console.log(
+                "course registered at the player status (customData): " +
+                  response
+              );
+              storedCoursesList.push(course);
+              sessionStorage.setItem(
+                "courses",
+                JSON.stringify(storedCoursesList)
+              );
+              //refresh page
+              self.$router.go(0);
+            });
+          } else {
+            this.$swal("Cancelled", "This course is still not added");
+          }
         })
         .catch(function (error) {
           console.log(error);

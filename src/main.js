@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueTailwind from 'vue-tailwind'
+import VueSweetalert2 from 'vue-sweetalert2';
 import App from './App.vue'
 
 import VueSimpleAlert from "vue-simple-alert";
@@ -38,6 +39,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
 Vue.use(Loading);
 Vue.use(VueSimpleAlert);
+Vue.use(VueSweetalert2);
 
 Vue.component('info-outline-icon', InformationOutlineIcon);
 Vue.component('pencil-outline-icon', PencilOutlineIcon);
