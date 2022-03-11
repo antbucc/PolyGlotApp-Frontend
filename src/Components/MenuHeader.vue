@@ -328,14 +328,10 @@
         z-10
       "
     >
-    <!--
-      //questi sono i route della barra superiore (alto a dx) che secondo me si può anche togliere in quanto è ripetizione di quella a sinistra molto più user friendly
+    
+      
       <div class="flex items-center">
-        <img
-          src="@/assets/images/logopolyglot.png"
-          alt="Logo"
-          class="h-auto w-12"
-        />
+        
       </div>
       <div
         class="flex items-center"
@@ -346,6 +342,7 @@
           ><b>{{ page.title }}</b></span
         >
       </div>
+      
       <div class="flex items-center">
         <div
           class="hidden md:block md:flex md:justify-between md:bg-transparent"
@@ -353,7 +350,6 @@
           
         </div>
       </div>
-      -->
 
       <!-- questi sono i router della barra a sinistra -->
       <aside

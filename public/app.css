@@ -4,6 +4,34 @@
     letter-spacing: 2px;
     box-sizing: border-box;
 }
+.box {
+    height: 35vw;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.box>* {
+    flex: 1 1 15vw;
+}
+.images {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: center;
+}
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.05); }
+
+.photo {
+    max-width: 31.333%;
+    padding: 0 10px;
+    height: 240px;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+}
 .container-app{
     display: flex;
     width: 100%;

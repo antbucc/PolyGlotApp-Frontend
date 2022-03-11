@@ -26,6 +26,8 @@
               mode == 'MY' ? 'border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('MY')"
+            
+            style="font-size:1.1vw"
           >
             My Courses:</button
           ><button
@@ -34,6 +36,7 @@
               mode == 'ALL' ? ' border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('ALL')"
+            style="font-size:1.1vw"
           >
             All Courses:
           </button>

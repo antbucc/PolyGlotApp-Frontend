@@ -12,7 +12,7 @@
       lg:mx-2
       xl:w-1/5
       justify-cente
-      shadow-xl
+      shadow-xl grow
     "
     style="height: 10em; width: 10em; word-wrap: break-word"
   >
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="flex flex-row lg:mt-auto align-middle pt-4 text-sm">
+      <div class="flex flex-row lg:mt-auto align-middle pt-4 text-sm" style="justify-content:center">
         <template v-if="dRegistered">
           <button
             type="button"
@@ -55,30 +55,10 @@
               py-1
               px-2
             "
-            style="margin: auto; width: 50%"
-            @click="performance"
+            style="margin: auto"
+            @click="$router.push('/stats')"
           >
-            <performance-icon class="pr-1" />Board
-          </button>
-          <button
-            type="button"
-            @click="dettaglio"
-            class="
-              p-0
-              text-primary
-              hover:bg-primary
-              my-1
-              inline-flex
-              items-center
-              bg-transparent
-              font-semibold
-              hover:text-white
-              py-1
-              px-2
-            "
-            style="margin: auto; width: 50%"
-          >
-            <info-outline-icon class="pr-1" />Info
+            <performance-icon class="pr-1" />Statistics
           </button>
         </template>
         <template v-else-if="!dRegistered">
