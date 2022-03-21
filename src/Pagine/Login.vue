@@ -118,6 +118,7 @@ export default {
               .dispatch("loginWithToken", { idToken: token })
               .then(() => {
                 this.retrieveCourses(token, this.user.username);
+                this.retrievePoints(this.user.username);
               });
           }
         });
@@ -125,13 +126,27 @@ export default {
         alert("A username and password must be present");
       }
     },
+    retrievePoints(playerName){
+      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS + "?playerId" + playerName;
+
+      var config = {
+        method :"get",
+        url: apiUrl,
+      };
+      axios(config)
+      .then(function (response){
+        sessionStorage.setItem("points", JSON.stringify(response.data.state.PointConcept));
+        console.log("here points are stored")
+      })
+    },
     retrieveCourses(token, playerName) {
       var apiUrl =
         process.env.VUE_APP_BASE_URL +
         process.env.VUE_APP_REGISTERED_COURSE +
         "?playerId=" +
         playerName;
-
+      
+      sessionStorage.setItem('player', playerName);
       var config = {
         method: "get",
         url: apiUrl,

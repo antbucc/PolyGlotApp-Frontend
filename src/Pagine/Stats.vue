@@ -186,7 +186,7 @@
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 //import CourseCard from "../Components/CourseCard.vue";
 export default {
   name: "Stats",
@@ -194,10 +194,8 @@ export default {
 
   data: function () {
     return {
-      fakeCampaigns: [],
-      myCampaigns: [],
-      allCampaigns: [],
-      courses: true,
+      retPoints: [],
+      points: true,
       mode: "I",
     };
   },
@@ -206,25 +204,44 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
+    retrievePoints(){
+      const player = sessionStorage.getItem('player');
+      var registeredPoints = JSON.parse(sessionStorage.points);
+
+      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      let url = apiUrl + "?playerId=" + player;
+      console.log(player);
+      axios.get(url).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during stats extraction");
+        } else {
+          let allPoints = response.data.state.PointConcept;     //here we store the pointconcept inside allpoints
+          console.log(response.data.state.PointConcept[0])
+          var obj = 0;
+          for (obj in allPoints){
+            var currentPoints = allPoints[obj];   //currentpoints are the points we have defined until now, that are inside the player status pointconcept
+            var obj1 = 0;
+            for(obj1 in registeredPoints){
+              var currentRegPoint = registeredPoints[obj1];
+              if(currentRegPoint.name == currentPoints.name){
+                this.retPoints.push(currentRegPoint);
+              }
+            }
+            
+          }
+          
+        }
+        console.log ("all points: " + this.retPoints)
+      });
+    },
+    
   },
   computed: {
-    campaignToShow: function () {
-      // let toRtn = this.myCampaigns;
-      let toRtn = [];
-      if (this.mode == "B") {
-        this.allCampaigns.forEach((campaign) => {
-          toRtn.push(campaign);
-        });
-      } else if (this.mode == "I") {
-        this.myCampaigns.forEach((campaign) => {
-          toRtn.push(campaign);
-        });
-      }
-      return toRtn;
-    },
+    
   },
   created() {
     this.$store.dispatch("storePage", { title: "", back: false });
+    this.retrievePoints();
   },
   mounted() {},
 };

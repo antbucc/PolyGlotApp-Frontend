@@ -82,7 +82,10 @@ export default new Vuex.Store({
     },
 
     storeUser({ commit }, user) {
-      commit('storeUser', user)
+      sessionStorage.setItem('player', user.user)
+      commit('storeUser', {
+        player : user.user
+      })
     },
 
     loginWithToken({ commit }, dataToken) {
