@@ -40,9 +40,6 @@
           v-show="mode == 'I'"
           class="justify-center text-center w-full text-xl"
         >
-          <h1 style="color: white; margin-top: 10px; font-size: 0.8vw">
-            Here are your statistics about this course.
-          </h1>
           <div class="box">
             <template>
               <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
@@ -60,12 +57,13 @@
                   p-12
                   grow  
                 "
-                style="width: 35vw; font-size: 1.3vw; "
+                style="width: 35vw; font-size: 1.3vw; margin-bottom:1vw"
               >
+              <div v-for="obj in this.retPoints" :key="obj.id">
                 <p>
-                  Score: <b>150pt</b><br />
-                  Level: <b>Level 1</b>
+                  {{obj.name}}: <b>{{obj.score}}</b><br />
                 </p>
+              </div>
               </div>
               <div
                 class="
@@ -81,7 +79,7 @@
                   p-12
                   grow
                 "
-                style="width: 35vw; font-size: 1.3vw"
+                style="width: 35vw; font-size: 1.3vw; margin-bottom:1vw"
               >
                 <p>
                   Your Position: <b>2°</b><br />
@@ -102,7 +100,7 @@
                   p-12
                   grow
                 "
-                style="width: 35vw; font-size: 1.3vw"
+                style="width: 35vw; font-size: 1.3vw; margin-bottom:1vw"
               >
                 <p>
                   Questions answered: <b>25</b> <br /><br />
@@ -210,28 +208,33 @@ export default {
 
       var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
       let url = apiUrl + "?playerId=" + player;
+      console.log("player: ")
       console.log(player);
       axios.get(url).then((response) => {
         if (response.data == "error") {
           console.log("Error during stats extraction");
         } else {
           let allPoints = response.data.state.PointConcept;     //here we store the pointconcept inside allpoints
+          
+              console.log("data.state.PointConcept[0] : ")
           console.log(response.data.state.PointConcept[0])
           var obj = 0;
           for (obj in allPoints){
+            this.points = true;
             var currentPoints = allPoints[obj];   //currentpoints are the points we have defined until now, that are inside the player status pointconcept
             var obj1 = 0;
+            
             for(obj1 in registeredPoints){
               var currentRegPoint = registeredPoints[obj1];
+              console.log("currentRegPoint: ")
+              console.log(currentRegPoint);
               if(currentRegPoint.name == currentPoints.name){
                 this.retPoints.push(currentRegPoint);
               }
             }
-            
+            }
           }
-          
-        }
-        console.log ("all points: " + this.retPoints)
+        console.log (this.retPoints)      // points saved in retPoints
       });
     },
     
@@ -241,7 +244,7 @@ export default {
   },
   created() {
     this.$store.dispatch("storePage", { title: "", back: false });
-    this.retrievePoints();
+    this.response = this.retrievePoints();
   },
   mounted() {},
 };

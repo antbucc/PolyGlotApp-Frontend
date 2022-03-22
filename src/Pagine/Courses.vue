@@ -210,7 +210,7 @@ export default {
       });
     },
   },
-  computed: {
+  computed: {/*
     campaignToShow: function () {
       // let toRtn = this.myCampaigns;
       let toRtn = [];
@@ -224,7 +224,7 @@ export default {
         });
       }
       return toRtn;
-    },
+    },*/
   },
   created() {
     this.response = this.retrieveCourses();
