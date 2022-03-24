@@ -4,27 +4,27 @@
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 25em; height: 40em; text-align:center; margin:auto"
+        style="width: 50em; height: 50em; text-align:center; margin:auto; overflow-y:scroll; scrollbar-width: none"
       >
         <div class="quiz-header">
           <!-- Header della card -->
-          <img src="../../public/logo.png" alt="PolyGlot" />
+          <img src="../../public/logo.png" alt="PolyGlot" style="width:10em; margin-bottom:20px " />
         </div>
 
         <div class="step-progress" :style="{ width: progress + '%' }"></div>
         <!-- Barra di progresso del quiz -->
 
-        <div class="quiz-main">
+        <div class="quiz-main" style="margin-top:10px">
           <!-- Parte principale del quiz, con domanda e risposte -->
           <div class="box-question">
             <!-- Box della domanda dentro la card -->
             <b><h1 style="
-          font-size: 1.2em; ">Here will be displayed a question</h1></b>
+          font-size: 1.3em; margin-left:auto; margin-right:auto " id="text"></h1></b>
             <!-- Pesca la domanda da quelle definite, poi le pescheremo da db -->
           </div>
           <div class="box-answers">
             <!-- Box delle risposte alla suddetta domanda -->
-            <ul style="width: 30em;font-size: 1em; ">
+            <ul style="width: 35em;font-size: 1.1em; margin-left:auto; margin-right:auto">
               <li></li>
               <!-- Uso li vuoto come linea di divisione tra domanda e risposte -->
               <li>
@@ -37,22 +37,20 @@
               <li>answer4</li>
               <li></li>
             </ul>
-          </div>
-        </div>
-        
-          <!-- Parte ai piedi della card, in cui avrò il bottone per procedere di domanda , da aggiungere poi  v-if="score_show == false" -->
-          <div class="btn-class"
-          style="height: 3em;
-              width: 10em; margin-left: auto; margin-right: auto; margin-top:auto; margin-bottom:auto; ">
             <!-- Ci sarà bottone solo se il quiz non sarà completo, da aggiungere poi v-if="progress < 100"-->
-            <button class="btn-class" style="
-          font-size: 1em; 
+            <button class="button-cl" style="
+          font-size: 1.1em; 
           width: 10em;
-          height: 2em;">
+          height: 2em; margin-left:auto; margin-right:auto; margin-bottom:30px" @click="$router.push('/quiz')">
               Avanti
             </button>
             <!-- da aggiungere poi @click="nextQuestion" -->
           </div>
+          
+        </div>
+        
+          <!-- Parte ai piedi della card, in cui avrò il bottone per procedere di domanda , da aggiungere poi  v-if="score_show == false" -->
+          
       </form>
     </div>
   </div>
@@ -62,6 +60,13 @@
 import axios from "axios";
 export default {
   name: "Quiz",
+  data: function(){
+    return{
+      currQuestion: [],
+      currAnswers: [],
+      questId: String,
+    }
+  },
   methods: {
     retrieveQuestion() {
       // here I retrieve the list of courses
@@ -71,30 +76,52 @@ export default {
 
       let url = apiUrl + "?token=" + token + "&courseid=" + "4";
 
-      var config = {
-        method: "get",
-        url: url,
-      };
-      //var self = this;
-      axios(config)/*
-        .then(function (response) {
-          // here I need to extract the content of a question retrieved with Title, description, etc..
-          self.$alert(
-            "Question Name: " +
-              response.data.questionname +
-              "<br>" +
-              " Question Text: " +
-              response.data.questiontext
-          );
-        })*/
-        .catch(function (error) {
-          console.log(error);
-        });
+      axios.get(url).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during question extraction");
+        } else {
+          let nxtQuestion = response.data;
+          console.log("question " + nxtQuestion.questiontext);
+          this.questId = nxtQuestion.questionid;
+          console.log(this.questId)
+          document.getElementById('text').innerHTML = nxtQuestion.questiontext;
+        }
+      });
     },
+    retrieveAnswers(){
+      const token = sessionStorage.getItem("token");
+      const qid = this.questId;
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTION_OPTION;
+
+      //let url = apiUrl + "?token=" + token + "&questionid=" + qid;
+
+      axios.get(apiUrl, {
+        body: {
+          token: token,
+          questionid: qid,
+        }
+      }).then((response) => {
+        console.log(response.data);
+        if (response.data == "error") {
+          console.log("Error during answer extraction");
+        } else {
+          let allAns = response.data;
+          var obj = 0;
+          for (obj in allAns) {
+            var currentAns = allAns[obj]; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
+            this.currAnswers.push(currentAns);
+
+          }
+          console.log("answers " + currentAns)  
+        }
+      });
+    }
   },
   created() {
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
+    this.response = this.retrieveAnswers();
   },
 };
 </script>

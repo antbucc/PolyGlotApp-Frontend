@@ -148,19 +148,8 @@
                 "
                 style="width: 80vw; overflow-y: scroll; scrollbar-width: none"
               >
-                <ol style="text-align: left">
-                  <li>1 Alessandro</li>
-                  <li>2 Danilo</li>
-                  <li>3 Niccolò</li>
-                  <li>4 Roberto</li>
-                  <li>5 Federico</li>
-                  <li>6 Andrea</li>
-                  <li>7 Matteo</li>
-                  <li>8 Robin</li>
-                  <li>9 Edin</li>
-                  <li>10 Arturo</li>
-                  <li>11 Alexis</li>
-                  <li>12 Marcelo</li>
+                <ol style="text-align: left" id="board" v-for="obj in this.retBoard" :key="obj.playerId">
+                  <li><pre>{{obj.state.PointConcept[0].score}}    {{obj.playerId}}</pre></li>
                 </ol>
               </div>
             </template>
@@ -191,6 +180,7 @@ export default {
   data: function () {
     return {
       retPoints: [],
+      retBoard: [],
       points: true,
       mode: "I",
     };
@@ -204,8 +194,7 @@ export default {
       const player = sessionStorage.getItem("player");
       var registeredPoints = JSON.parse(sessionStorage.points);
 
-      var apiUrl =
-        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
       let url = apiUrl + "?playerId=" + player;
       console.log("player: ");
       console.log(player);
@@ -236,11 +225,34 @@ export default {
         console.log(this.retPoints); // points saved in retPoints
       });
     },
+    retrieveBoard(){
+
+      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
+
+      axios.get(apiUrl).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during game extraction");
+        } else {
+          let allPlayer = response.data.content; //here we store the pointconcept inside allpoints
+
+          console.log( allPlayer);
+          
+          var obj = 0;
+          for (obj in allPlayer) {
+            var punteggi = allPlayer[obj]; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
+            this.retBoard.push(punteggi);
+              }
+            }
+          
+        }); // points saved in retPoints
+    }
+
   },
   computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "", back: false });
     this.response = this.retrievePoints();
+    this.response = this.retrieveBoard();
   },
   mounted() {},
 };

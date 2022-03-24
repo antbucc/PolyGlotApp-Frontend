@@ -55,7 +55,8 @@
               py-1
               px-2
             "
-            style="margin: auto"
+            style="margin: auto; 
+    border-radius: 15px;"
             @click="$router.push('/stats')"
           >
             <performance-icon class="pr-1" />Statistics
@@ -79,7 +80,8 @@
               py-1
               px-2
             "
-            style="margin: auto"
+            style="margin: auto; 
+    border-radius: 15px;"
           >
             <join-icon class="pr-1" />Join the Game
           </button>

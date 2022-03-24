@@ -182,7 +182,7 @@ export default {
           console.log("Error during courses extraction");
         } else {
           let allCourses = response.data;
-
+          console.log(allCourses + "    sos")
           // here I filter the courses where the player is registered and the courses where he/she is not registered
           var obj = 0;
 
