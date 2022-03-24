@@ -55,15 +55,16 @@
                   justify-center
                   shadow-xl
                   p-12
-                  grow  
+                  grow
                 "
-                style="width: 35vw; font-size: 1.3vw; margin-bottom:1vw"
+                style="width: 35vw; font-size: 1.3vw; margin-bottom: 1vw"
               >
-              <div v-for="obj in this.retPoints" :key="obj.id">
-                <p>
-                  {{obj.name}}: <b>{{obj.score}}</b><br />
-                </p>
-              </div>
+                <div v-for="obj in this.retPoints" :key="obj.id">
+                  <p>
+                    {{ obj.name }}: <b>{{ obj.score }}</b
+                    ><br />
+                  </p>
+                </div>
               </div>
               <div
                 class="
@@ -79,7 +80,7 @@
                   p-12
                   grow
                 "
-                style="width: 35vw; font-size: 1.3vw; margin-bottom:1vw"
+                style="width: 35vw; font-size: 1.3vw; margin-bottom: 1vw"
               >
                 <p>
                   Your Position: <b>2°</b><br />
@@ -100,14 +101,13 @@
                   p-12
                   grow
                 "
-                style="width: 35vw; font-size: 1.3vw; margin-bottom:1vw"
+                style="width: 35vw; font-size: 1.3vw; margin-bottom: 1vw"
               >
                 <p>
                   Questions answered: <b>25</b> <br /><br />
                   Correct answers: <b>23</b>
                 </p>
                 <div class="images">
-                  
                   <div class="photo">
                     <img src="../assets/images/1.png" alt="photo" />
                   </div>
@@ -121,8 +121,6 @@
                   </div>
                 </div>
                 <div>Your Badges:</div>
-                
-                
               </div>
             </template>
           </div>
@@ -202,46 +200,44 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
-    retrievePoints(){
-      const player = sessionStorage.getItem('player');
+    retrievePoints() {
+      const player = sessionStorage.getItem("player");
       var registeredPoints = JSON.parse(sessionStorage.points);
 
-      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
       let url = apiUrl + "?playerId=" + player;
-      console.log("player: ")
+      console.log("player: ");
       console.log(player);
       axios.get(url).then((response) => {
         if (response.data == "error") {
           console.log("Error during stats extraction");
         } else {
-          let allPoints = response.data.state.PointConcept;     //here we store the pointconcept inside allpoints
-          
-              console.log("data.state.PointConcept[0] : ")
-          console.log(response.data.state.PointConcept[0])
+          let allPoints = response.data.state.PointConcept; //here we store the pointconcept inside allpoints
+
+          console.log("data.state.PointConcept[0] : ");
+          console.log(response.data.state.PointConcept[0]);
           var obj = 0;
-          for (obj in allPoints){
+          for (obj in allPoints) {
             this.points = true;
-            var currentPoints = allPoints[obj];   //currentpoints are the points we have defined until now, that are inside the player status pointconcept
+            var currentPoints = allPoints[obj]; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
             var obj1 = 0;
-            
-            for(obj1 in registeredPoints){
+
+            for (obj1 in registeredPoints) {
               var currentRegPoint = registeredPoints[obj1];
-              console.log("currentRegPoint: ")
+              console.log("currentRegPoint: ");
               console.log(currentRegPoint);
-              if(currentRegPoint.name == currentPoints.name){
+              if (currentRegPoint.name == currentPoints.name) {
                 this.retPoints.push(currentRegPoint);
               }
             }
-            }
           }
-        console.log (this.retPoints)      // points saved in retPoints
+        }
+        console.log(this.retPoints); // points saved in retPoints
       });
     },
-    
   },
-  computed: {
-    
-  },
+  computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "", back: false });
     this.response = this.retrievePoints();
