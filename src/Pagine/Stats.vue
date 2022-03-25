@@ -148,8 +148,10 @@
                 "
                 style="width: 80vw; overflow-y: scroll; scrollbar-width: none"
               >
-                <ol style="text-align: left" id="board" v-for="obj in this.retBoard" :key="obj.playerId">
-                  <li><pre>{{obj.state.PointConcept[0].score}}    {{obj.playerId}}</pre></li>
+                <ol style="text-align: left" >
+                  <li v-for="obj in this.retBoard" :key="obj.playerId" class="board">
+                    <pre>   {{obj.state.PointConcept[0].score}}    {{obj.playerId}}</pre>
+                  </li>
                 </ol>
               </div>
             </template>

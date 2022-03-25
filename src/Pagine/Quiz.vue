@@ -45,11 +45,11 @@
                 font-size: 1.1em;
                 margin-left: auto;
                 margin-right: auto;
-              "
-              v-for="obj in this.currAnswers"
-              :key="obj.id"
+              " id="ans"
             >
-              <li>{{obj}}</li>
+              <!-- <li 
+              v-for="(obj, index) in this.currAnswers"
+              :key="index" v-bind="index">{{obj}}</li> -->
             </ul>
             <!-- Ci sarà bottone solo se il quiz non sarà completo, da aggiungere poi v-if="progress < 100"-->
             <button
@@ -83,15 +83,14 @@ export default {
   data: function () {
     return {
       currQuestion: [],
-      currAnswers: [],
       questId: [],
     };
   },
   methods: {
-    stringToHTML(str) {
-      var parser = new DOMParser();
-      var doc = parser.parseFromString(str, "text/html");
-      return doc.body;
+    parseHTML(html){
+      var t = document.createElement('template');
+      t.innerHTML = html;
+      return t.content;
     },
     retrieveQuestion() {
       // here I retrieve the list of courses
@@ -114,10 +113,7 @@ export default {
     },
     retrieveAnswers() {
       const token = sessionStorage.getItem("token");
-      console.log(this.questId);
       const qid = this.questId[0];
-      console.log("id:");
-      console.log(qid);
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTION_OPTION;
 
@@ -128,11 +124,13 @@ export default {
           console.log("Error during answer extraction");
         } else {
           let allAns = response.data.answers;
-          console.log(allAns);
           var obj = 0;
           for (obj in allAns) {
             var currentAns = allAns[obj].answer; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
-            this.currAnswers.push(currentAns);
+            var ans = document.createElement("li")
+            ans.className = "ans grow";
+            ans.innerHTML = currentAns;
+            document.getElementById("ans").appendChild(ans)
           }
         }
       });
