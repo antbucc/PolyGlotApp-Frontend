@@ -27,6 +27,7 @@
 
         <div class="quiz-main" style="margin-top: 10px">
           <!-- Parte principale del quiz, con domanda e risposte -->
+          <h1 style="text-decoration: underline"><b id="type"></b></h1>
           <div class="box-question">
             <!-- Box della domanda dentro la card -->
             <b
@@ -45,7 +46,8 @@
                 font-size: 1.1em;
                 margin-left: auto;
                 margin-right: auto;
-              " id="ans"
+              "
+              id="ans"
             >
               <!-- <li 
               v-for="(obj, index) in this.currAnswers"
@@ -81,14 +83,11 @@ import axios from "axios";
 export default {
   name: "Quiz",
   data: function () {
-    return {
-      currQuestion: [],
-      questId: [],
-    };
+    return {};
   },
   methods: {
-    parseHTML(html){
-      var t = document.createElement('template');
+    parseHTML(html) {
+      var t = document.createElement("template");
       t.innerHTML = html;
       return t.content;
     },
@@ -105,19 +104,24 @@ export default {
           console.log("Error during question extraction");
         } else {
           let nxtQuestion = response.data;
-          this.questId.push(nxtQuestion.questionid);
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
-          this.retrieveAnswers();
+          var type = nxtQuestion.questiontype;
+          console.log(type);
+          if (type == "multichoice") {
+            document.getElementById("type").innerHTML = "MULTICHOICE QUESTION";
+          } else if (type == "truefalse") {
+            document.getElementById("type").innerHTML = "TRUE/FALSE QUESTION";
+          }
+          this.retrieveAnswers(nxtQuestion.questionid);
         }
       });
     },
-    retrieveAnswers() {
+    retrieveAnswers(id) {
       const token = sessionStorage.getItem("token");
-      const qid = this.questId[0];
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTION_OPTION;
 
-      let url = apiUrl + "?token=" + token + "&questionid=" + qid;
+      let url = apiUrl + "?token=" + token + "&questionid=" + id;
 
       axios.get(url).then((response) => {
         if (response.data == "error") {
@@ -127,10 +131,10 @@ export default {
           var obj = 0;
           for (obj in allAns) {
             var currentAns = allAns[obj].answer; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
-            var ans = document.createElement("li")
+            var ans = document.createElement("li");
             ans.className = "ans grow";
             ans.innerHTML = currentAns;
-            document.getElementById("ans").appendChild(ans)
+            document.getElementById("ans").appendChild(ans);
           }
         }
       });
