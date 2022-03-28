@@ -47,7 +47,7 @@
                 margin-left: auto;
                 margin-right: auto;
               "
-              id="ans"
+              id="ansUl"
             >
               <!-- <li 
               v-for="(obj, index) in this.currAnswers"
@@ -64,6 +64,7 @@
                 margin-right: auto;
                 margin-bottom: 30px;
               "
+              id="next"
               @click="$router.push('/quiz')"
             >
               Avanti
@@ -83,14 +84,11 @@ import axios from "axios";
 export default {
   name: "Quiz",
   data: function () {
-    return {};
+    return {
+      correct: [],
+    };
   },
   methods: {
-    parseHTML(html) {
-      var t = document.createElement("template");
-      t.innerHTML = html;
-      return t.content;
-    },
     retrieveQuestion() {
       // here I retrieve the list of courses
       const token = sessionStorage.getItem("token");
@@ -113,6 +111,8 @@ export default {
             document.getElementById("type").innerHTML = "TRUE/FALSE QUESTION";
           }
           this.retrieveAnswers(nxtQuestion.questionid);
+          
+          document.getElementById("next").disabled = true;
         }
       });
     },
@@ -128,21 +128,60 @@ export default {
           console.log("Error during answer extraction");
         } else {
           let allAns = response.data.answers;
+          this.correct.push(response.data.correct[0]);
+          console.log("correct is: " + this.correct[0]);
           var obj = 0;
           for (obj in allAns) {
-            var currentAns = allAns[obj].answer; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
-            var ans = document.createElement("li");
-            ans.className = "ans grow";
-            ans.innerHTML = currentAns;
-            document.getElementById("ans").appendChild(ans);
-          }
+            //declare the li
+            var currentAns = allAns[obj].answer;
+            var answer = document.createElement("li");
+            answer.id = allAns[obj].id;
+            answer.className = "ans grow answers";
+            answer.innerHTML = currentAns;
+            //add event listener on click to every li generated
+            answer.addEventListener('click', () => {
+                this.check(answer.id, this.correct[0])
+            });
+          
+            //append every li to ul
+            document.getElementById("ansUl").appendChild(answer);
+            }
         }
       });
     },
+    assign(answers){
+        for(var i=0; i<answers.length; i++){
+            answers[i].addEventListener
+          }
+    },
+    check(id, correct){
+      console.log(id+ "  "+ correct)
+      if(id === correct){
+                    console.log("correct")
+                      this.$swal({
+                        title: "Your answer is correct!",
+                        text: "Your points will be now updated.",
+                        showCancelButton: false,
+                        confirmButtonText: "Close",
+                        showCloseButton: false,
+                        showLoaderOnConfirm: true,
+                      })
+                  }else{
+                    console.log("wrong")
+                    this.$swal({
+                        title: "Your answer is wrong...",
+                        text: "Your points will be now updated.",
+                        showCancelButton: false,
+                        showCloseButton: false,
+                        showLoaderOnConfirm: true,
+                      })
+                  }
+    }
   },
   created() {
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
+    
   },
 };
 </script>

@@ -139,7 +139,10 @@ li{
     border-radius: 15px;
     transition: 0.2s;
 }
-
+#next{
+    background-color:#918e89;
+    cursor: auto;
+}
 
 .class-li{
     display: flex;
