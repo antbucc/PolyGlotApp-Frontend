@@ -136,20 +136,17 @@
               <div
                 class="
                   m-auto
-                  justify-center
                   flex flex-col-reverse
                   bg-white
                   rounded-lg
                   my-4
-                  text-center
-                  justify-center
                   shadow-xl
                   p-12
                 "
-                style="width: 80vw; overflow-y: scroll; scrollbar-width: none"
+                style="width: 80vw; overflow-y: scroll; scrollbar-width: thin;"
               >
                 <ol style="text-align: left" >
-                  <li v-for="obj in this.retBoard" :key="obj.playerId" class="board">
+                  <li v-for="obj in this.retBoard" :key="obj.playerId" class="board" >
                     <pre>   {{obj.state.PointConcept[0].score}}    {{obj.playerId}}</pre>
                   </li>
                 </ol>

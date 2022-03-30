@@ -227,6 +227,7 @@ export default {
     },*/
   },
   created() {
+    this.$store.dispatch("storePage", { title: "Courses", back: false });
     this.response = this.retrieveCourses();
   },
   mounted() {},

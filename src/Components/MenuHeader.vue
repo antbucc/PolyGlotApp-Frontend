@@ -425,7 +425,7 @@
           <router-link to="/contatti">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
-              :class="{ active: page && page.title === 'Contatti' }"
+              :class="{ active: page && page.title === 'Contacts' }"
             >
               <span class="mr-2">
                 <pencil-outline-icon />

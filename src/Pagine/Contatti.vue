@@ -78,7 +78,7 @@
 export default {
   name: "Contatti",
   created() {
-        this.$store.dispatch("storePage", {title:"Contacts",back:false});
+        this.$store.dispatch("storePage", {title:"Contacts", back:false });
   },
 };
 </script>
