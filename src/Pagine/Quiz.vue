@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col lg:flex-row bg-primary contact">
-    <div class="lg:w-4/12 lg:my-2" style="margin: auto; font-size: 0.9em">
+    <div class="lg:w-4/12 lg:my-2" style=" font-size: 0.9em">
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 50em; height: 50em; text-align: center; margin: auto"
+        style="width: 50em; height: 50em; text-align: center; margin-left:25vw"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -18,7 +18,13 @@
         <div
           class="step-progress"
           :style="{ width: this.percentage + '%' }"
-        ></div>
+          style="text-align: center; justify-content: center"
+        >
+          
+        </div>
+        <h2 style="margin:auto; margin-bottom: 3px">
+            Time Left: {{ this.seconds }} s
+          </h2>
         <!-- Barra di progresso del quiz -->
         <pre><h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;"><b id="type"></b></h1><h2 style="display: inline; margin-left: auto; margin-right: auto"><b>TOPIC: THIS TOPIC  -  DIFFICULTY: EASY</b></h2></pre>
         <b
@@ -52,6 +58,7 @@
               <!-- <li 
               v-for="(obj, index) in this.currAnswers"
               :key="index" v-bind="index">{{obj}}</li> -->
+              
             </ul>
             <!-- Ci sarà bottone solo se il quiz non sarà completo, da aggiungere poi v-if="progress < 100"-->
 
@@ -68,11 +75,12 @@
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 20px;
+            position:relative;
           "
           id="next"
-          @click="$router.push('/quiz')"
+          @click="$router.push('/stats')"
         >
-          Avanti
+          Continue
         </button>
         <!-- Parte ai piedi della card, in cui avrò il bottone per procedere di domanda , da aggiungere poi  v-if="score_show == false" -->
       </form>
@@ -89,6 +97,7 @@ export default {
       correct: [],
       percentage: 100, //this will be the question time
       intval: 0,
+      seconds: 10,
     };
   },
   methods: {
@@ -156,7 +165,7 @@ export default {
                 id = parent.parentElement.id;
               }
 
-              this.check(id, this.correct[0]);
+              this.check(id, this.correct);
             });
             //append every li to ul
             document.getElementById("ansUl").appendChild(answer);
@@ -172,41 +181,54 @@ export default {
     doStuff() {
       alert(this.innerHTML);
     },
-    check(id, correct) {
+    check(pid, correct) {
       // later we will also manage the empty answer, using the time bar expire
-      if (id == correct && id != null) {
+      var id = parseInt(pid)
+      console.log(this.correct)
+      var resps = document.getElementsByTagName("li")
+      if (correct.includes(id) && id != null) {
         //case in which we click the right answer
-        this.$swal({
+        console.log("correct")
+        /*this.$swal({
           title: "Your answer is correct!",
           text: "Your points will be now updated.",
           showCancelButton: false,
           confirmButtonText: "Close",
           showCloseButton: false,
           showLoaderOnConfirm: true,
-        });
-        clearInterval(this.intval); //stop time bar
-      } else if (id !== correct && id != null) {
+        });*/
+      } else if (!correct.includes(id) && id != null) {
+        console.log("wrong")
         //case in which we click a wrong answer
-        this.$swal({
+        /*this.$swal({
           title: "Your answer is wrong...",
           text: "Your points will be now updated.",
           showCancelButton: false,
           showCloseButton: false,
           showLoaderOnConfirm: true,
-        });
-        clearInterval(this.intval); //stop time bar
+        });*/
       } else if (id == null) {
+        console.log("time expired")
+        
         //case in which we don't click any answer
-        this.$swal({
+        /*this.$swal({
           title: "You didn't answer in time...",
           text: "Your points will be now updated.",
           showCancelButton: false,
           showCloseButton: false,
           showLoaderOnConfirm: true,
-        });
-        clearInterval(this.intval);
-        this.$router.push("/courses");
+        });*/
       }
+      document.getElementById("next").disabled = false;
+      document.getElementById("next").setAttribute("style", "background-color: #ffa700; cursor:pointer ; font-size: 1.1em; width: 10em; height: 2em;  margin-top: 10px; margin-left: auto; margin-right: auto; margin-bottom: 20px; position:relative;")
+      clearInterval(this.intval);
+      for (var i = 0; i < resps.length; i++){
+            if(resps[i].id == correct){
+            resps[i].setAttribute("style", "background-color:#19b533  ; font-weight: bold; color:white")
+          }else{
+            resps[i].setAttribute("style", "background-color:#b52919; font-weight: bold; color:white")
+          }
+        }
     },
   },
   computed: {
@@ -219,7 +241,10 @@ export default {
     this.response = this.retrieveQuestion();
     var per = 100;
     this.intval = setInterval(() => {
-      if (this.percentage > 0) this.percentage -= per / 10;
+      if (this.percentage > 0) {
+        this.percentage -= per / 10;
+        this.seconds -= 1;
+      }
       //this is 100/maxquestiontime (in this case, max = 10s). for example, if we want to be maximum 20 seconds, we will write 5
       else if (this.percentage == 0) {
         clearInterval(this.intval); // here we will call the check to see if there is null answer
