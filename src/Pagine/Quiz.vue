@@ -15,7 +15,10 @@
           />
         </div>
 
-        <div class="step-progress" :style="{ width: this.percentage + '%' }"></div>
+        <div
+          class="step-progress"
+          :style="{ width: this.percentage + '%' }"
+        ></div>
         <!-- Barra di progresso del quiz -->
         <pre><h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;"><b id="type"></b></h1><h2 style="display: inline; margin-left: auto; margin-right: auto"><b>TOPIC: THIS TOPIC  -  DIFFICULTY: EASY</b></h2></pre>
         <b
@@ -129,20 +132,32 @@ export default {
         } else {
           let allAns = response.data.answers;
           this.correct.push(response.data.correct[0]);
-          console.log("correct is: " + this.correct[0]);
           var obj = 0;
           for (obj in allAns) {
             //declare the li
             var currentAns = allAns[obj].answer;
             var answer = document.createElement("li");
+
             answer.id = allAns[obj].id;
             answer.className = "ans grow answers";
             answer.innerHTML = currentAns;
-            //add event listener on click to every li generated
-            answer.addEventListener("click", () => {
-              this.check(answer.id, this.correct[0]);
-            });
 
+            //add event listener on click to every li generated
+            //append every li to ul
+
+            answer.addEventListener("click", (e) => {
+              var id = "";
+              var parent = e.target.parentElement;
+              if (e.target.nodeName == "LI") {
+                id = e.target.id;
+              } else if (parent.nodeName == "LI") {
+                id = parent.id;
+              } else if (parent.parentElement.nodeName == "LI") {
+                id = parent.parentElement.id;
+              }
+
+              this.check(id, this.correct[0]);
+            });
             //append every li to ul
             document.getElementById("ansUl").appendChild(answer);
           }
@@ -154,11 +169,13 @@ export default {
         answers[i].addEventListener;
       }
     },
+    doStuff() {
+      alert(this.innerHTML);
+    },
     check(id, correct) {
-      console.log(id + "  " + correct);
       // later we will also manage the empty answer, using the time bar expire
-      if (id === correct && id!=null) { //case in which we click the right answer
-        console.log("correct");
+      if (id == correct && id != null) {
+        //case in which we click the right answer
         this.$swal({
           title: "Your answer is correct!",
           text: "Your points will be now updated.",
@@ -167,9 +184,9 @@ export default {
           showCloseButton: false,
           showLoaderOnConfirm: true,
         });
-        clearInterval(this.intval);   //stop time bar
-      } else if(id !== correct && id!=null){ //case in which we click a wrong answer
-        console.log("wrong");
+        clearInterval(this.intval); //stop time bar
+      } else if (id !== correct && id != null) {
+        //case in which we click a wrong answer
         this.$swal({
           title: "Your answer is wrong...",
           text: "Your points will be now updated.",
@@ -178,8 +195,8 @@ export default {
           showLoaderOnConfirm: true,
         });
         clearInterval(this.intval); //stop time bar
-      }else if(id == null){ //case in which we don't click any answer
-        console.log("empty");
+      } else if (id == null) {
+        //case in which we don't click any answer
         this.$swal({
           title: "You didn't answer in time...",
           text: "Your points will be now updated.",
@@ -187,7 +204,7 @@ export default {
           showCloseButton: false,
           showLoaderOnConfirm: true,
         });
-        clearInterval(this.intval); 
+        clearInterval(this.intval);
         this.$router.push("/courses");
       }
     },
@@ -202,8 +219,9 @@ export default {
     this.response = this.retrieveQuestion();
     var per = 100;
     this.intval = setInterval(() => {
-      if (this.percentage > 0) this.percentage -= per/10      //this is 100/maxquestiontime (in this case, max = 10s). for example, if we want to be maximum 20 seconds, we will write 5 
-      else if (this.percentage == 0){
+      if (this.percentage > 0) this.percentage -= per / 10;
+      //this is 100/maxquestiontime (in this case, max = 10s). for example, if we want to be maximum 20 seconds, we will write 5
+      else if (this.percentage == 0) {
         clearInterval(this.intval); // here we will call the check to see if there is null answer
         this.check();
       }
