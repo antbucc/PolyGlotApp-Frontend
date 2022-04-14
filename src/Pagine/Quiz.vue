@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col lg:flex-row bg-primary contact">
-    <div class="lg:w-4/12 lg:my-2" style=" font-size: 0.9em">
+    <div class="lg:w-4/12 lg:my-2" style="font-size: 0.9em">
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 50em; height: 50em; text-align: center; margin-left:25vw"
+        style="width: 50em; height: 50em; text-align: center; margin-left: 25vw"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -19,12 +19,10 @@
           class="step-progress"
           :style="{ width: this.percentage + '%' }"
           style="text-align: center; justify-content: center"
-        >
-          
-        </div>
-        <h2 style="margin:auto; margin-bottom: 3px">
-            Time Left: {{ this.seconds }} s
-          </h2>
+        ></div>
+        <h2 style="margin: auto; margin-bottom: 3px">
+          Time Left: {{ this.seconds }} s
+        </h2>
         <!-- Barra di progresso del quiz -->
         <pre><h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;"><b id="type"></b></h1><h2 style="display: inline; margin-left: auto; margin-right: auto"><b>TOPIC: THIS TOPIC  -  DIFFICULTY: EASY</b></h2></pre>
         <b
@@ -58,7 +56,6 @@
               <!-- <li 
               v-for="(obj, index) in this.currAnswers"
               :key="index" v-bind="index">{{obj}}</li> -->
-              
             </ul>
             <!-- Ci sarà bottone solo se il quiz non sarà completo, da aggiungere poi v-if="progress < 100"-->
 
@@ -75,7 +72,7 @@
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 20px;
-            position:relative;
+            position: relative;
           "
           id="next"
           @click="$router.push('/stats')"
@@ -98,6 +95,9 @@ export default {
       percentage: 100, //this will be the question time
       intval: 0,
       seconds: 10,
+      ansTime: 0,
+      retPoints: [],
+      points: true,
     };
   },
   methods: {
@@ -116,7 +116,6 @@ export default {
           let nxtQuestion = response.data;
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
-          console.log(type);
           if (type == "multichoice") {
             document.getElementById("type").innerHTML = "MULTICHOICE QUESTION";
           } else if (type == "truefalse") {
@@ -165,7 +164,7 @@ export default {
                 id = parent.parentElement.id;
               }
 
-              this.check(id, this.correct);
+              this.check(id);
             });
             //append every li to ul
             document.getElementById("ansUl").appendChild(answer);
@@ -181,24 +180,21 @@ export default {
     doStuff() {
       alert(this.innerHTML);
     },
-    check(pid, correct) {
+    check(pid) {
       // later we will also manage the empty answer, using the time bar expire
-      var id = parseInt(pid)
-      console.log(this.correct)
-      var resps = document.getElementsByTagName("li")
+      var id = parseInt(pid);
+      var correct = this.correct;
+
+      var resps = document.getElementsByTagName("li");
       if (correct.includes(id) && id != null) {
         //case in which we click the right answer
-        console.log("correct")
-        /*this.$swal({
-          title: "Your answer is correct!",
-          text: "Your points will be now updated.",
-          showCancelButton: false,
-          confirmButtonText: "Close",
-          showCloseButton: false,
-          showLoaderOnConfirm: true,
-        });*/
+        console.log("correct");
+        //call correctquestion api
+        this.correctQuestion();
+        //show alert with updated score
+        
       } else if (!correct.includes(id) && id != null) {
-        console.log("wrong")
+        console.log("wrong");
         //case in which we click a wrong answer
         /*this.$swal({
           title: "Your answer is wrong...",
@@ -207,9 +203,9 @@ export default {
           showCloseButton: false,
           showLoaderOnConfirm: true,
         });*/
-      } else if (id == null) {
-        console.log("time expired")
-        
+      } else {
+        console.log("time expired");
+
         //case in which we don't click any answer
         /*this.$swal({
           title: "You didn't answer in time...",
@@ -219,17 +215,78 @@ export default {
           showLoaderOnConfirm: true,
         });*/
       }
+      // does it in every case
       document.getElementById("next").disabled = false;
-      document.getElementById("next").setAttribute("style", "background-color: #ffa700; cursor:pointer ; font-size: 1.1em; width: 10em; height: 2em;  margin-top: 10px; margin-left: auto; margin-right: auto; margin-bottom: 20px; position:relative;")
+      document
+        .getElementById("next")
+        .setAttribute(
+          "style",
+          "background-color: #ffa700; cursor:pointer ; font-size: 1.1em; width: 10em; height: 2em;  margin-top: 10px; margin-left: auto; margin-right: auto; margin-bottom: 20px; position:relative;"
+        );
       clearInterval(this.intval);
-      for (var i = 0; i < resps.length; i++){
-            if(resps[i].id == correct){
-            resps[i].setAttribute("style", "background-color:#19b533  ; font-weight: bold; color:white")
-          }else{
-            resps[i].setAttribute("style", "background-color:#b52919; font-weight: bold; color:white")
+      for (var i = 0; i < resps.length; i++) {
+        if (resps[i].id == correct) {
+          resps[i].setAttribute(
+            "style",
+            "background-color:#19b533  ; font-weight: bold; color:white"
+          );
+        } else {
+          resps[i].setAttribute(
+            "style",
+            "background-color:#b52919; font-weight: bold; color:white"
+          );
+        }
+      }
+    },
+    correctQuestion() {
+    //const token = sessionStorage.getItem("token");
+    var url = process.env.VUE_APP_BASE_URL + "correctAnswer";
+    var player = sessionStorage.getItem("player");
+    //update the points by making a post request with playerid and time passed for answer
+    axios.post(url, {
+      playerId: player,
+      quiz: {
+      difficulty: 1,
+      time: this.ansTime,
+      
+      }
+    });
+    
+    this.retrievePoints();
+    
+    var score = this.retPoints[0].score;
+    this.$swal({
+          title: "Point Score",
+          text: "Your XP is now " + score,
+          showCancelButton: false,
+          showCloseButton: false,
+          showLoaderOnConfirm: true,
+        });
+
+
+  },
+  retrievePoints() {
+      const player = sessionStorage.getItem("player");
+
+      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      let url = apiUrl + "?playerId=" + player;
+      axios.get(url).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during stats extraction");
+        } else {
+          let allPoints = response.data.state.PointConcept; 
+          var obj = 0;
+          for (obj in allPoints) {
+            this.points = true;
+            var currentPoints = allPoints[obj]; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
+            this.retPoints.push(currentPoints);
           }
         }
-    },
+        //console.log(this.retPoints[0].score); // points saved in retPoints
+      });
+      
+
+    }
   },
   computed: {
     percent() {
@@ -237,10 +294,13 @@ export default {
     },
   },
   async created() {
+    
+    this.retrievePoints();
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
     var per = 100;
     this.intval = setInterval(() => {
+      this.ansTime++;
       if (this.percentage > 0) {
         this.percentage -= per / 10;
         this.seconds -= 1;

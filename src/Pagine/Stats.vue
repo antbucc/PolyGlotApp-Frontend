@@ -195,16 +195,11 @@ export default {
 
       var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
       let url = apiUrl + "?playerId=" + player;
-      console.log("player: ");
-      console.log(player);
       axios.get(url).then((response) => {
         if (response.data == "error") {
           console.log("Error during stats extraction");
         } else {
           let allPoints = response.data.state.PointConcept; //here we store the pointconcept inside allpoints
-
-          console.log("data.state.PointConcept[0] : ");
-          console.log(response.data.state.PointConcept[0]);
           var obj = 0;
           for (obj in allPoints) {
             this.points = true;
@@ -213,8 +208,6 @@ export default {
 
             for (obj1 in registeredPoints) {
               var currentRegPoint = registeredPoints[obj1];
-              console.log("currentRegPoint: ");
-              console.log(currentRegPoint);
               if (currentRegPoint.name == currentPoints.name) {
                 this.retPoints.push(currentRegPoint);
               }
@@ -233,9 +226,6 @@ export default {
           console.log("Error during game extraction");
         } else {
           let allPlayer = response.data.content; //here we store the pointconcept inside allpoints
-
-          console.log( allPlayer);
-          
           var obj = 0;
           for (obj in allPlayer) {
             var punteggi = allPlayer[obj]; //currentpoints are the points we have defined until now, that are inside the player status pointconcept
