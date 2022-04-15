@@ -16,6 +16,8 @@ import MyPerformance from "./Pagine/Campagna/MyPerformance.vue";
 import Quiz from "./Pagine/Quiz.vue";
 import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
 import store from './store/store'
+import AllAnalytics from "./Pagine/AllAnalytics.vue";
+import Analytic from "./Pagine/Analytic.vue";
 
 const routes = [
   {
@@ -64,6 +66,24 @@ const routes = [
     path: '/stats',
     name: 'stats',
     component: Stats
+  },
+  {
+    path: '/analytics',
+    name: 'analytics',
+    component: AllAnalytics,
+    /*beforeEnter(to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
+    }*/
+  },
+  {
+    path: '/analytic',
+    name: 'analytic',
+    component: Analytic,
+    props: true
   },
   {
     path: '/callback',

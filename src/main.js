@@ -33,6 +33,7 @@ import SendRequest from "vue-material-design-icons/EmailSendOutline";
 import Privacy from "vue-material-design-icons/FileDocumentEditOutline";
 import Back from "vue-material-design-icons/ArrowLeft";
 import Credits from "vue-material-design-icons/Creation";
+import AnalyticsIcon from "vue-material-design-icons/GoogleAnalytics.vue";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 //import toast from './Components/toast'
@@ -58,6 +59,7 @@ Vue.component('privacy-icon', Privacy);
 Vue.component('back-icon', Back);
 Vue.component('credits-icon', Credits);
 Vue.component('question-icon', QuestionIcon);
+Vue.component('analytics-icon', AnalyticsIcon);
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 const router = new Router({ routes: routes, mode: 'history' })

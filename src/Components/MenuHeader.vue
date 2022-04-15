@@ -168,6 +168,17 @@
               <span>Quiz</span></span
             >
           </router-link>
+          <router-link to="/analytics" v-if="auth">
+            <span
+              @click="isOpen = false"
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Analytics' }"
+              ><span class="mr-2">
+                <analytics-icon />
+              </span>
+              <span>Analytics</span></span
+            >
+          </router-link>
           <router-link to="/info">
             <span
               @click="isOpen = false"
@@ -347,7 +358,7 @@
         <div
           class="hidden md:block md:flex md:justify-between md:bg-transparent"
         >
-          
+          <!-- router link barra in alto a destra -->
         </div>
       </div>
 
@@ -408,6 +419,17 @@
                 <question-icon />
               </span>
               <span>Quiz</span></span
+            >
+          </router-link>
+
+          <router-link to="/analytics" v-if="auth">
+            <span
+              class="flex items-center p-4 hover:bg-white hover:text-primary"
+              :class="{ active: page && page.title === 'Analytics' }"
+              ><span class="mr-2">
+                <analytics-icon />
+              </span>
+              <span>Analytics</span></span
             >
           </router-link>
 
