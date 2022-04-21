@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'analytic', params: { id: aId, title: aTitle }}">
+  <router-link :to="{name: 'analytic', params: { id: aId, title: aTitle, courseId: courseId }}">
     <div
       class="
         m-auto
@@ -37,6 +37,7 @@ export default {
   props: {
     id: String,
     title: String,
+    courseId: String
   },
   data: function () {
     return {

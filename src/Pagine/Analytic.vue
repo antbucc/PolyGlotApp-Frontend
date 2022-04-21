@@ -35,20 +35,6 @@
           </button>
         </nav>
       </div>
-      <div class="
-        flex
-        w-full
-        items-center
-        px-6
-        h-16
-        bg-primary
-        text-white text-gray-700
-        z-10"
-      >
-        <div class="flex items-center">
-          <span class="text-xl">{{ aTitle }}</span>
-        </div>
-      </div>
       <div class="bg-opacity-0 py-2">
         <div
           v-show="mode == 'TAB'"
@@ -56,7 +42,7 @@
         >
           <div
             class="
-              flex flex-col
+              flex flex-row
               sm:flex-row sm:flex-wrap sm:justify-center
               md:px-12
             "
@@ -81,9 +67,31 @@
               </div>
             </template>
             <template v-else>
-              <div>
+              <div class="lg: w-3/5">
+                <div class="
+                  flex
+                  px-6
+                  h-16
+                  bg-primary
+                  text-white
+                  text-gray-700
+                  z-10"
+                >
+                  <div class="flex items-center">
+                    <span class="text-xl">{{ aTitle }}</span>
+                  </div>
+                </div>
+                <!--tabella-->
                 <table
-                  class="table-fixed justify-center text-center w-full text-xl bg-white rounded-lg"
+                  class="
+                    table-fixed
+                    justify-center
+                    text-center
+                    w-full
+                    text-xl
+                    bg-white
+                    rounded-lg
+                  "
                 >
                   <thead>
                     <tr v-show="table.head.length">
@@ -104,8 +112,11 @@
                   </tbody>
                 </table>
               </div>
-              <div>
+              <div class="lg: w-2/5 lg: pl-5">
                 <!--filtro-->
+                <template>
+                  <analytic-filter :filters="filter.filters" @update="updateTable" />
+                </template>
               </div>
             </template>
           </div>
@@ -142,11 +153,40 @@
               </div>
             </template>
             <template v-else>
-              <div>
-                <!--grafico-->
+              <div class="
+                m-auto
+                flex
+                flex-col
+                lg: w-3/5
+              "
+              >
+                <div class="
+                  flex
+                  px-6
+                  h-16
+                  bg-primary
+                  text-white
+                  text-gray-700
+                  z-10"
+                >
+                  <div class="flex items-center">
+                    <span class="text-xl">{{ aTitle }}</span>
+                  </div>
+                </div>
+                <div class="
+                  bg-white
+                  rounded-lg
+                  shadow-xl
+                ">
+                  <!--grafico-->
+                  <apexchart :type="graph.type" :options="graph.options" :series="graph.series" />
+                </div>
               </div>
-              <div>
+              <div class="lg:w-2/5 lg: pl-5">
                 <!--filtro-->
+                <template>
+                  <analytic-filter :filters="filter.filters" @update="updateChart" />
+                </template>
               </div>
             </template>
           </div>
@@ -157,12 +197,15 @@
 </template>
 
 <script>
+import AnalyticFilter from "../Components/AnalyticFilter.vue";
 export default {
   name: "Analytic",
   props: {
     id: String,
-    title: String
+    title: String,
+    courseId: String
   },
+  components: { AnalyticFilter },
   data: function () {
     return {
         aId: this.id,
@@ -170,20 +213,17 @@ export default {
         mode: "TAB",
         table: {
           head: [],
-          data: [
-            ["Risposte corrette",80],
-            ["Risposte sbagliate",20],
-            ["Senza risposta",15],
-            ["Senza partecipazione",5]],
+          data: [],
           firstHead: true
         },
         graph: {
-          type: "pie",
+          type: "",
           series: [],
-          options: {}
+          options: {
+          }
         },
         filter: {
-          
+          filters: []
         }
     };
   },
@@ -191,7 +231,126 @@ export default {
     changeMode(mode) {
       if (this.mode == mode) return;
       this.mode = mode;
+    },
+    updateTable(filter) {
+      console.log(filter)
+    },
+    updateChart(filter) {
+      console.log(filter)
     }
+  },
+  created() {
+    /*this.table = {
+      head: [],
+      data: [
+        ["Risposte corrette",80],
+        ["Risposte sbagliate",20],
+        ["Senza risposta",15],
+        ["Senza partecipazione",5]
+      ],
+      firstHead: true
+    }
+    this.graph = {
+      type: "pie",
+      series: [80,20,15,5],
+      options: {
+        labels: [
+          "Risposte corrette",
+          "Risposte sbagliate",
+          "Senza risposta",
+          "Senza partecipazione"
+        ]
+      }
+    }
+    this.filter.filters = [
+      {
+        title: "Quiz",
+        ref: "quiz",
+        dataType: "id",
+        selected: { name: '3', view_name: 'Last: BPMN' }, //L'ultimo quiz è "Last: " + titolo
+        options: [
+          { name: '3', view_name: 'Last: BPMN', default: true },
+          { name: '2', view_name: 'Requisiti non funzionali', default: false },
+          { name: '1', view_name: 'Requisiti funzionali', default: false },
+        ]
+      }
+    ]
+    */
+    this.table = {
+      head: [
+        "",
+        "Risposte corrette",
+        "Risposte sbagliate",
+        "Senza risposta"
+      ],
+      data: [
+        ["BPMN",80,20,15],
+        ["Requisiti non funzionali",60,30,10],
+        ["Requisiti funzionali",90,15,10]
+      ],
+      firstHead: true
+    }
+    this.graph = {
+      type: "bar",
+      series: [
+        {
+          name: "Risposte corrette",
+          data: [80,60,90]
+        }, {
+          name: "Risposte sbagliate",
+          data: [20,30,15]
+        }, {
+          name: "Senza risposta",
+          data: [15,10,10]
+        }
+      ],
+      options: {
+        chart: {
+          type: 'bar',
+          stacked: true,
+          toolbar: {
+            show: false
+          }
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            borderRadius: 10
+          },
+        },
+        xaxis: {
+          type: 'category',
+          categories: [
+            "BPMN","Requisiti non funzionali","Requisiti funzionali"
+          ],
+        },
+        yaxis: {
+          max: 120 //numero di studenti partecipanti al corso
+        }
+      }
+    }
+    this.filter.filters = [
+      {
+        title: "Topic",
+        ref: "topic",
+        dataType: "id",
+        selected: { name: '3', view_name: 'Last: BPMN' }, //L'ultimo quiz è "Last: " + titolo
+        options: [
+          { name: '3', view_name: 'Last: BPMN', default: true },
+          { name: '2', view_name: 'Requisiti non funzionali', default: false },
+          { name: '1', view_name: 'Requisiti funzionali', default: false },
+        ]
+      },
+      {
+        title: "Data range",
+        ref: "dataRange",
+        dataType: "dataRange",
+        selected: { name: '13-09-2021_22-04-2022', view_name: 'This course year' }, //name di "This course year": data inizio corso-data di oggi
+        options: [
+          { name: '13-09-2021_22-04-2022', view_name: 'This course year', default: true },
+        ]
+      }
+    ]
   },
 };
 </script>

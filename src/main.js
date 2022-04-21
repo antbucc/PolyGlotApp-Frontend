@@ -14,7 +14,7 @@ import "./assets/styles/index.css";
 import settings from './myTheme.js'
 import store from './store/store'
 import axios from 'axios'
-
+import VueApexCharts from 'vue-apexcharts'
 
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue';
 import PencilOutlineIcon from 'vue-material-design-icons/PencilOutline.vue';
@@ -41,6 +41,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 Vue.use(Loading);
 Vue.use(VueSimpleAlert);
 Vue.use(VueSweetalert2);
+Vue.use(VueApexCharts)
 
 Vue.component('info-outline-icon', InformationOutlineIcon);
 Vue.component('pencil-outline-icon', PencilOutlineIcon);
@@ -60,6 +61,7 @@ Vue.component('back-icon', Back);
 Vue.component('credits-icon', Credits);
 Vue.component('question-icon', QuestionIcon);
 Vue.component('analytics-icon', AnalyticsIcon);
+Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 const router = new Router({ routes: routes, mode: 'history' })

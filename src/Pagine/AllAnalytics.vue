@@ -84,7 +84,8 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
-                />
+                  :courseId="courseId"
+                /> <!--Mettere id corso-->
               </template>
             </template>
           </div>
@@ -127,6 +128,7 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
+                  :courseId="courseId"
                 />
               </template
             ></template>
@@ -170,22 +172,13 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
+                  :courseId="courseId"
                 />
               </template
             ></template>
           </div>
         </div>
       </div>
-      <!-- <context-menu
-        ref="menu"
-        class="mx-auto -mb-8"
-        @click.native="sortCampaign()"
-        v-bind:_options="[
-          { name: 'my', view_name: 'Le mie Campagne', default: true },
-          { name: 'active', view_name: 'Campagne Attive', default: false },
-          { name: 'finished', view_name: 'Campagne Concluse', default: false },
-        ]"
-      /> -->
     </div>
   </div>
 </template>
@@ -196,22 +189,25 @@
   export default {
     name: 'AllAnalytics',
     components: { AnalyticCard },
+    props: {
+      courseId: String
+    },
     data: function () {
       return {
         analytics: [
           [
             {
-              id: 1,
+              id: "1",
               title: "Riassunto quiz"
             },
             {
-              id: 2,
+              id: "2",
               title: "Confronto quiz argomento"
             }
           ],
           [
             {
-              id: 3,
+              id: "3",
               title: "Temp example"
             }
           ],
