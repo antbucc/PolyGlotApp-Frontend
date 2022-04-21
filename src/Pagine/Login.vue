@@ -175,7 +175,9 @@ export default {
     },
   },
 
-  created() {},
+  created() {
+    this.$store.dispatch("storePage", { title: "Login", back: false });
+  },
 };
 </script>
 

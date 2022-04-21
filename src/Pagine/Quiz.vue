@@ -246,14 +246,14 @@ export default {
       axios.post(url, {
         playerId: player,
         quiz: {
-          difficulty: 1, //this will be a string
+          difficulty: "3", //this will be a string
           time: this.ansTime, //this will be a double
         },
       });
 
       this.retrievePoints();
 
-      var score = this.retPoints[0].score;
+      var score = this.retPoints[1].score;
       this.$swal({
         title: "Point Score",
         text: "Correct! Your XP is now " + score,
@@ -273,7 +273,7 @@ export default {
 
       this.retrievePoints();
 
-      var score = this.retPoints[0].score;
+      var score = this.retPoints[1].score;
       this.$swal({
         title: "Point Score",
         text: "You have not answered. Your XP is now " + score,
@@ -290,13 +290,14 @@ export default {
       axios.post(url, {
         playerId: player,
         quiz: {
-          difficulty: 1, //this will be a string
+          difficulty: "1", //this will be a string
         },
       });
 
       this.retrievePoints();
 
-      var score = this.retPoints[0].score;
+      var score = this.retPoints[1].name;
+      console.log(score)
       this.$swal({
         title: "Point Score",
         text: "Wrong! Your XP is now " + score,
