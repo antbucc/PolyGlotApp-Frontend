@@ -184,18 +184,19 @@ export default {
       // later we will also manage the empty answer, using the time bar expire
       var id = parseInt(pid);
       var correct = this.correct;
-
+      console.log(id);
       var resps = document.getElementsByTagName("li");
-      if (correct.includes(id) && id != null) {
+      if (correct.includes(id) && !isNaN(id)) {
         //case in which we click the right answer
         console.log("correct");
         //call correctquestion api
-        this.correctQuestion();
+        this.correctAns();
         //show alert with updated score
         
-      } else if (!correct.includes(id) && id != null) {
+      } else if (!correct.includes(id) && !isNaN(id)) {
         console.log("wrong");
         //case in which we click a wrong answer
+        this.wrongAns();
         /*this.$swal({
           title: "Your answer is wrong...",
           text: "Your points will be now updated.",
@@ -203,10 +204,11 @@ export default {
           showCloseButton: false,
           showLoaderOnConfirm: true,
         });*/
-      } else {
+      } else if (this.seconds == 0 && isNaN(id)) {
         console.log("time expired");
 
         //case in which we don't click any answer
+        this.noAns();
         /*this.$swal({
           title: "You didn't answer in time...",
           text: "Your points will be now updated.",
@@ -238,7 +240,7 @@ export default {
         }
       }
     },
-    correctQuestion() {
+    correctAns() {
     //const token = sessionStorage.getItem("token");
     var url = process.env.VUE_APP_BASE_URL + "correctAnswer";
     var player = sessionStorage.getItem("player");
@@ -257,11 +259,55 @@ export default {
     var score = this.retPoints[0].score;
     this.$swal({
           title: "Point Score",
-          text: "Your XP is now " + score,
+          text: "Correct! Your XP is now " + score,
           showCancelButton: false,
           showCloseButton: false,
           showLoaderOnConfirm: true,
-        });
+        }); //ok button goes to statistics
+
+
+  },
+  noAns() {
+    //const token = sessionStorage.getItem("token");
+    var url = process.env.VUE_APP_BASE_URL + "noAnswer";
+    var player = sessionStorage.getItem("player");
+    //update the points by making a post request with playerid and time passed for answer
+    axios.post(url, {
+      playerId: player
+    });
+    
+    this.retrievePoints();
+    
+    var score = this.retPoints[0].score;
+    this.$swal({
+          title: "Point Score",
+          text: "You have not answered. Your XP is now " + score,
+          showCancelButton: false,
+          showCloseButton: false,
+          showLoaderOnConfirm: true,
+        }); //ok button goes to statistics
+
+
+  },
+  wrongAns() {
+    //const token = sessionStorage.getItem("token");
+    var url = process.env.VUE_APP_BASE_URL + "wrongAnswer";
+    var player = sessionStorage.getItem("player");
+    //update the points by making a post request with playerid and time passed for answer
+    axios.post(url, {
+      playerId: player
+    });
+    
+    this.retrievePoints();
+    
+    var score = this.retPoints[0].score;
+    this.$swal({
+          title: "Point Score",
+          text: "Wrong! Your XP is now " + score,
+          showCancelButton: false,
+          showCloseButton: false,
+          showLoaderOnConfirm: true,
+        }); //ok button goes to statistics
 
 
   },
