@@ -296,7 +296,7 @@ export default {
 
       this.retrievePoints();
 
-      var score = this.retPoints[1].name;
+      var score = this.retPoints[1].score;
       console.log(score)
       this.$swal({
         title: "Point Score",

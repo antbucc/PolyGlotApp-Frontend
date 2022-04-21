@@ -147,7 +147,7 @@
                 style="width: 80vw; overflow-y: scroll; scrollbar-width: thin;"
               >
                 <ol style="text-align: left" >
-                  <li v-for="obj in even(this.retBoard)" :key="obj.playerId" class="board" >
+                  <li v-for="obj in sort(this.retBoard)" :key="obj.playerId" class="board" >
                     <pre>   {{obj.state.PointConcept[1].score}}    {{obj.playerId}}</pre>
                   </li>
                 </ol>
@@ -187,8 +187,8 @@ export default {
     };
   },
   methods: {
-    even: function(arr) {
-      // Set slice() to avoid to generate an infinite loop!
+    sort: function(arr) {
+      // sort players by xp
       return arr.slice().sort(function(a, b) {
         return  b.state.PointConcept[1].score - a.state.PointConcept[1].score ;
       });
