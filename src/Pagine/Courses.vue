@@ -73,13 +73,14 @@
                 There are no courses.
               </div>
             </template>
-            <template v-else v-for="campaign in this.myCampaigns">
+            <template v-else v-for="(campaign,index) in this.myCampaigns">
               <!-- gestire no courses se mycampaign è vuoto -->
               <template style="overflow: hidden"
                 ><course-card
                   class=""
                   :key="campaign.id"
                   :id="campaign.id"
+                  :coursePosition="index"
                   :title="campaign.title"
                   :registered="campaign.registered"
                 /> </template

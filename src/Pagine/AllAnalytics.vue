@@ -46,6 +46,19 @@
         </nav>
       </div>
       <div class="bg-opacity-0 py-2">
+        <div class="
+          flex
+          px-6
+          bg-primary
+          text-white
+          text-gray-700
+          z-10
+          justify-center"
+        >
+          <div class="flex">
+            <span class="text-2xl font-semibold">{{ selectedCourse.title }}</span>
+          </div>
+        </div>
         <div
           v-show="mode == 'EDU'"
           class="justify-center text-center w-full text-xl"
@@ -84,7 +97,6 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
-                  :courseId="courseId"
                 /> <!--Mettere id corso-->
               </template>
             </template>
@@ -128,7 +140,6 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
-                  :courseId="courseId"
                 />
               </template
             ></template>
@@ -172,7 +183,6 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
-                  :courseId="courseId"
                 />
               </template
             ></template>
@@ -189,11 +199,9 @@
   export default {
     name: 'AllAnalytics',
     components: { AnalyticCard },
-    props: {
-      courseId: String
-    },
     data: function () {
       return {
+        selectedCourse: {},
         analytics: [
           [
             {
@@ -224,7 +232,7 @@
     },
     created() {
       this.$store.dispatch("storePage", { title: "Analytics", back: false });
-      //this.response = this.retrieveCourses();
+      this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[sessionStorage.getItem("selectedCourse")];
     }
   }
 </script>

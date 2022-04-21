@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="flex flex-row lg:mt-auto align-middle pt-4 text-sm" style="justify-content:center">
+      <div class="flex flex-col lg:mt-auto align-middle pt-4 text-sm" style="justify-content:center">
         <template v-if="dRegistered">
           <button
             type="button"
@@ -60,6 +60,27 @@
             @click="$router.push('/stats')"
           >
             <performance-icon class="pr-1" />Statistics
+          </button>
+          <button
+            type="button"
+            class="
+              p-0
+              text-primary
+              hover:bg-primary
+              my-1
+              inline-flex
+              items-center
+              bg-transparent
+              font-semibold
+              hover:text-white
+              py-1
+              px-2
+            "
+            style="margin: auto; 
+    border-radius: 15px;"
+            @click="toCourseAnalytics()"
+          >
+            <analytics-icon class="pr-1" />Analytics
           </button>
         </template>
         <template v-else-if="!dRegistered">
@@ -98,7 +119,12 @@ export default {
   props: {
     id: String,
     title: String,
+    coursePosition: Number,
     registered: Boolean,
+    fromAnalytics: {
+      type: Boolean,
+      default: false
+    }
     // logo: String,
     // description: String,
     // active: Boolean,
@@ -115,6 +141,7 @@ export default {
     return {
       dTitolo: this.title,
       dId: this.id,
+      dPosition: this.coursePosition,
       dRegistered: this.registered,
       //dLogo: this.logo,
       //   dDescription: this.description,
@@ -269,6 +296,10 @@ export default {
         });
        */
     },
+    toCourseAnalytics() {
+      sessionStorage.setItem('selectedCourse',this.dPosition);
+      this.$router.push('/analytics');
+    }
   },
   mounted: function () {
     /*

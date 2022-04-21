@@ -69,15 +69,17 @@
             <template v-else>
               <div class="lg: w-3/5">
                 <div class="
-                  flex
-                  px-6
-                  h-16
+                  flex-col
+                  p-2
                   bg-primary
                   text-white
                   text-gray-700
                   z-10"
                 >
-                  <div class="flex items-center">
+                  <div class="flex">
+                    <span class="text-2xl font-semibold">{{ selectedCourse.title }}</span>
+                  </div>
+                  <div class="flex">
                     <span class="text-xl">{{ aTitle }}</span>
                   </div>
                 </div>
@@ -161,15 +163,17 @@
               "
               >
                 <div class="
-                  flex
-                  px-6
-                  h-16
+                  flex-col
+                  p-2
                   bg-primary
                   text-white
                   text-gray-700
                   z-10"
                 >
-                  <div class="flex items-center">
+                  <div class="flex">
+                    <span class="text-2xl font-semibold">{{ selectedCourse.title }}</span>
+                  </div>
+                  <div class="flex">
                     <span class="text-xl">{{ aTitle }}</span>
                   </div>
                 </div>
@@ -177,9 +181,11 @@
                   bg-white
                   rounded-lg
                   shadow-xl
+                  lg: min-h-full
+                  justify-center
                 ">
                   <!--grafico-->
-                  <apexchart :type="graph.type" :options="graph.options" :series="graph.series" />
+                  <apexchart height="430" :type="graph.type" :options="graph.options" :series="graph.series" />
                 </div>
               </div>
               <div class="lg:w-2/5 lg: pl-5">
@@ -202,8 +208,7 @@ export default {
   name: "Analytic",
   props: {
     id: String,
-    title: String,
-    courseId: String
+    title: String
   },
   components: { AnalyticFilter },
   data: function () {
@@ -211,6 +216,7 @@ export default {
         aId: this.id,
         aTitle: this.title,
         mode: "TAB",
+        selectedCourse: {},
         table: {
           head: [],
           data: [],
@@ -233,14 +239,18 @@ export default {
       this.mode = mode;
     },
     updateTable(filter) {
+      //const player = sessionStorage.getItem("player");
       console.log(filter)
     },
     updateChart(filter) {
+      //const player = sessionStorage.getItem("");
       console.log(filter)
     }
   },
   created() {
-    /*this.table = {
+    this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[sessionStorage.getItem("selectedCourse")];
+    /*
+    this.table = {
       head: [],
       data: [
         ["Risposte corrette",80],
@@ -276,6 +286,7 @@ export default {
       }
     ]
     */
+    ///*
     this.table = {
       head: [
         "",
@@ -350,7 +361,7 @@ export default {
           { name: '13-09-2021_22-04-2022', view_name: 'This course year', default: true },
         ]
       }
-    ]
+    ]//*/
   },
 };
 </script>
