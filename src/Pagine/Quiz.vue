@@ -184,7 +184,6 @@ export default {
       // later we will also manage the empty answer, using the time bar expire
       var id = parseInt(pid);
       var correct = this.correct;
-      console.log(id);
       var resps = document.getElementsByTagName("li");
       if (correct.includes(id) && !isNaN(id)) {
         //case in which we click the right answer
@@ -192,7 +191,6 @@ export default {
         //call correctquestion api
         this.correctAns();
         //show alert with updated score
-        
       } else if (!correct.includes(id) && !isNaN(id)) {
         console.log("wrong");
         //case in which we click a wrong answer
@@ -241,86 +239,83 @@ export default {
       }
     },
     correctAns() {
-    //const token = sessionStorage.getItem("token");
-    var url = process.env.VUE_APP_BASE_URL + "correctAnswer";
-    var player = sessionStorage.getItem("player");
-    //update the points by making a post request with playerid and time passed for answer
-    axios.post(url, {
-      playerId: player,
-      quiz: {
-      difficulty: 1,
-      time: this.ansTime,
-      
-      }
-    });
-    
-    this.retrievePoints();
-    
-    var score = this.retPoints[0].score;
-    this.$swal({
-          title: "Point Score",
-          text: "Correct! Your XP is now " + score,
-          showCancelButton: false,
-          showCloseButton: false,
-          showLoaderOnConfirm: true,
-        }); //ok button goes to statistics
+      //const token = sessionStorage.getItem("token");
+      var url = process.env.VUE_APP_BASE_URL + "correctAnswer";
+      var player = sessionStorage.getItem("player");
+      //update the points by making a post request with playerid and time passed for answer
+      axios.post(url, {
+        playerId: player,
+        quiz: {
+          difficulty: 1, //this will be a string
+          time: this.ansTime, //this will be a double
+        },
+      });
 
+      this.retrievePoints();
 
-  },
-  noAns() {
-    //const token = sessionStorage.getItem("token");
-    var url = process.env.VUE_APP_BASE_URL + "noAnswer";
-    var player = sessionStorage.getItem("player");
-    //update the points by making a post request with playerid and time passed for answer
-    axios.post(url, {
-      playerId: player
-    });
-    
-    this.retrievePoints();
-    
-    var score = this.retPoints[0].score;
-    this.$swal({
-          title: "Point Score",
-          text: "You have not answered. Your XP is now " + score,
-          showCancelButton: false,
-          showCloseButton: false,
-          showLoaderOnConfirm: true,
-        }); //ok button goes to statistics
+      var score = this.retPoints[0].score;
+      this.$swal({
+        title: "Point Score",
+        text: "Correct! Your XP is now " + score,
+        showCancelButton: false,
+        showCloseButton: false,
+        showLoaderOnConfirm: true,
+      }); //ok button goes to statistics
+    },
+    noAns() {
+      //const token = sessionStorage.getItem("token");
+      var url = process.env.VUE_APP_BASE_URL + "noAnswer";
+      var player = sessionStorage.getItem("player");
+      //update the points by making a post request with playerid and time passed for answer
+      axios.post(url, {
+        playerId: player,
+      });
 
+      this.retrievePoints();
 
-  },
-  wrongAns() {
-    //const token = sessionStorage.getItem("token");
-    var url = process.env.VUE_APP_BASE_URL + "wrongAnswer";
-    var player = sessionStorage.getItem("player");
-    //update the points by making a post request with playerid and time passed for answer
-    axios.post(url, {
-      playerId: player
-    });
-    
-    this.retrievePoints();
-    
-    var score = this.retPoints[0].score;
-    this.$swal({
-          title: "Point Score",
-          text: "Wrong! Your XP is now " + score,
-          showCancelButton: false,
-          showCloseButton: false,
-          showLoaderOnConfirm: true,
-        }); //ok button goes to statistics
+      var score = this.retPoints[0].score;
+      this.$swal({
+        title: "Point Score",
+        text: "You have not answered. Your XP is now " + score,
+        showCancelButton: false,
+        showCloseButton: false,
+        showLoaderOnConfirm: true,
+      }); //ok button goes to statistics
+    },
+    wrongAns() {
+      //const token = sessionStorage.getItem("token");
+      var url = process.env.VUE_APP_BASE_URL + "wrongAnswer";
+      var player = sessionStorage.getItem("player");
+      //update the points by making a post request with playerid and time passed for answer
+      axios.post(url, {
+        playerId: player,
+        quiz: {
+          difficulty: 1, //this will be a string
+        },
+      });
 
+      this.retrievePoints();
 
-  },
-  retrievePoints() {
+      var score = this.retPoints[0].score;
+      this.$swal({
+        title: "Point Score",
+        text: "Wrong! Your XP is now " + score,
+        showCancelButton: false,
+        showCloseButton: false,
+        showLoaderOnConfirm: true,
+      }); //ok button goes to statistics
+    },
+    retrievePoints() {
       const player = sessionStorage.getItem("player");
 
-      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
       let url = apiUrl + "?playerId=" + player;
       axios.get(url).then((response) => {
         if (response.data == "error") {
           console.log("Error during stats extraction");
         } else {
-          let allPoints = response.data.state.PointConcept; 
+          let allPoints = response.data.state.PointConcept;
           var obj = 0;
           for (obj in allPoints) {
             this.points = true;
@@ -330,9 +325,7 @@ export default {
         }
         //console.log(this.retPoints[0].score); // points saved in retPoints
       });
-      
-
-    }
+    },
   },
   computed: {
     percent() {
@@ -340,7 +333,6 @@ export default {
     },
   },
   async created() {
-    
     this.retrievePoints();
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();

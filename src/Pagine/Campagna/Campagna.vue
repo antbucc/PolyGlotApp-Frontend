@@ -86,9 +86,9 @@
       <h2 class="text-2xl pb-2 text-center md:text-3xl md:pt-5">
         Riguardo {{ campagna.title }}
       </h2>
-      <p class="pr-2 break-words md:text-lg md:px-16 lg:px-48 text-center">
+      <!-- <p class="pr-2 break-words md:text-lg md:px-16 lg:px-48 text-center">
         {{ campagna.description }}
-      </p>
+      </p> -->
       <router-link
         :to="{ name: 'rules', params: { id: campagna.id } }"
         tag="button"

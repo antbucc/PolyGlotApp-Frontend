@@ -17,11 +17,11 @@
     style="height: 10em; width: 10em; word-wrap: break-word"
   >
     <div class="flex flex-col align-middle p-2 pt-0 h-40">
-      <img
+      <!-- <img
         class="mt-auto object-scale-down sm:px-8 py-2 lg:px-0 h-48"
         v-if="dLogo"
         :src="dLogo"
-      />
+      /> -->
     </div>
 
     <div class="flex flex-col py-6 lg:mx-2 justify-center">
@@ -31,10 +31,10 @@
         </h2>
 
         <div class="flex flex-row justify-self-center text-sm">
-          <span class="font-light">{{ printDate }} </span>
+          <!-- <span class="font-light">{{ printDate }} </span> -->
         </div>
         <div class="pt-4 break-words text-sm">
-          <p class="card-description">{{ description }}</p>
+          <!-- <p class="card-description">{{ description }}</p> -->
         </div>
       </div>
 
