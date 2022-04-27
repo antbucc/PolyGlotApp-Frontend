@@ -119,6 +119,7 @@ export default {
               .then(() => {
                 this.retrieveCourses(token, this.user.username);
                 this.retrievePoints(this.user.username);
+                this.getRole();
               });
           }
         });
@@ -126,18 +127,24 @@ export default {
         alert("A username and password must be present");
       }
     },
-    retrievePoints(playerName){
-      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS + "?playerId" + playerName;
+    retrievePoints(playerName) {
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL +
+        process.env.VUE_APP_PLAYER_STATUS +
+        "?playerId" +
+        playerName;
 
       var config = {
-        method :"get",
+        method: "get",
         url: apiUrl,
       };
-      axios(config)
-      .then(function (response){
-        sessionStorage.setItem("points", JSON.stringify(response.data.state.PointConcept));
-        console.log("here points are stored")
-      })
+      axios(config).then(function (response) {
+        sessionStorage.setItem(
+          "points",
+          JSON.stringify(response.data.state.PointConcept)
+        );
+        console.log("here points are stored");
+      });
     },
     retrieveCourses(token, playerName) {
       var apiUrl =
@@ -145,8 +152,8 @@ export default {
         process.env.VUE_APP_REGISTERED_COURSE +
         "?playerId=" +
         playerName;
-      
-      sessionStorage.setItem('player', playerName);
+
+      sessionStorage.setItem("player", playerName);
       var config = {
         method: "get",
         url: apiUrl,
@@ -171,6 +178,21 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+        });
+    },
+    getRole() {
+      var nToken = sessionStorage.getItem("token");
+      console.log("token: ");
+      console.log(nToken);
+      var apiUrl = process.env.VUE_APP_BASE_URL + "role?token=" + nToken + "&courseid=3";
+
+      axios.get(apiUrl).then((response) => {
+          if (response.data == "error") {
+            console.log("Error during role extraction");
+          } else {
+            sessionStorage.setItem("role", response.data[0].shortname);
+            
+          }
         });
     },
   },
