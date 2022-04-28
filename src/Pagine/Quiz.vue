@@ -62,23 +62,57 @@
             <!-- da aggiungere poi @click="nextQuestion" -->
           </div>
         </div>
-        <button
-          class="button-cl"
+        <div
           style="
-            font-size: 1.1em;
-            width: 10em;
-            height: 2em;
-            margin-top: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 20px;
-            position: relative;
+            justify-content: space-between;
+            width: 80%;
+            display: flex;
+            margin: auto;
+            margin-top: 20px;
           "
-          id="next"
-          @click="$router.push('/stats')"
         >
-          Continue
-        </button>
+          <button
+            class="button-cl"
+            id="delete"
+            style="font-size: 1.1em; width: 10em; height: 2em"
+          >
+            Delete an answer
+          </button>
+          <button
+            class="button-cl"
+            id="change"
+            style="font-size: 1.1em; width: 10em; height: 2em"
+          >
+            Change question
+          </button>
+          <button
+            class="button-cl"
+            id="add"
+            style="font-size: 1.1em; width: 10em; height: 2em"
+          >
+            Add time
+          </button>
+        </div>
+        <div>
+          <button
+            class="button-cl"
+            style="
+              font-size: 1.1em;
+              width: 10em;
+              height: 2em;
+              margin-top: 20px;
+              margin-left: auto;
+              margin-right: auto;
+              margin-bottom: 20px;
+              position: relative;
+            "
+            id="next"
+            @click="$router.push('/stats')"
+          >
+            Continue
+          </button>
+        </div>
+
         <!-- Parte ai piedi della card, in cui avrò il bottone per procedere di domanda , da aggiungere poi  v-if="score_show == false" -->
       </form>
     </div>
@@ -221,9 +255,10 @@ export default {
         .getElementById("next")
         .setAttribute(
           "style",
-          "background-color: #ffa700; cursor:pointer ; font-size: 1.1em; width: 10em; height: 2em;  margin-top: 10px; margin-left: auto; margin-right: auto; margin-bottom: 20px; position:relative;"
+          "background-color: #ffa700; cursor:pointer ; font-size: 1.1em; width: 10em; height: 2em;  margin-top: 20px; margin-left: auto; margin-right: auto; margin-bottom: 20px; position:relative;"
         );
       clearInterval(this.intval);
+      //control all answers and color the right ones of green and the wrong ones of red
       for (var i = 0; i < resps.length; i++) {
         if (resps[i].id == correct) {
           resps[i].setAttribute(
@@ -237,6 +272,28 @@ export default {
           );
         }
       }
+
+      document
+        .getElementById("add")
+        .setAttribute(
+          "style",
+          "background-color: #e7eae0; font-size: 1.1em; width: 10em; height: 2em; position:relative;"
+        );
+      document.getElementById("add").disabled = true;
+      document
+        .getElementById("change")
+        .setAttribute(
+          "style",
+          "background-color: #e7eae0; font-size: 1.1em; width: 10em; height: 2em; position:relative;"
+        );
+      document.getElementById("change").disabled = true;
+      document
+        .getElementById("delete")
+        .setAttribute(
+          "style",
+          "background-color: #e7eae0; font-size: 1.1em; width: 10em; height: 2em; position:relative;"
+        );
+      document.getElementById("delete").disabled = true;
     },
     correctAns() {
       //const token = sessionStorage.getItem("token");
@@ -246,21 +303,21 @@ export default {
       axios.post(url, {
         playerId: player,
         quiz: {
-          difficulty: "3", //this will be a string
-          time: this.ansTime, //this will be a double
+          difficulty: "3", //this will be a string, retrieved inside the tag field in the question
+          time: this.ansTime, //this will be a double, counted from the question start to when we answer
         },
       });
 
       this.retrievePoints();
 
-      var score = this.retPoints[1].score;
+      //var score = this.retPoints[1].score;  we will use this to tell how much the xp has increased
       this.$swal({
         title: "Point Score",
-        text: "Correct! Your XP is now " + score,
+        text: "Correct! Your XP increased!",
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
-      }); //ok button goes to statistics
+      }); //disable every answerclick
     },
     noAns() {
       //const token = sessionStorage.getItem("token");
@@ -273,14 +330,14 @@ export default {
 
       this.retrievePoints();
 
-      var score = this.retPoints[1].score;
+      //var score = this.retPoints[1].score; we will use this to tell how much the xp has increased
       this.$swal({
         title: "Point Score",
-        text: "You have not answered. Your XP is now " + score,
+        text: "You have not answered. Your XP will not increase nor decrease",
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
-      }); //ok button goes to statistics
+      }); //disable every answerclick
     },
     wrongAns() {
       //const token = sessionStorage.getItem("token");
@@ -290,21 +347,21 @@ export default {
       axios.post(url, {
         playerId: player,
         quiz: {
-          difficulty: "1", //this will be a string
+          difficulty: "1", //this will be a string, retrieved inside the tag field in the question
         },
       });
 
       this.retrievePoints();
 
-      var score = this.retPoints[1].score;
-      console.log(score)
+      //var score = this.retPoints[1].score; we will use this to tell how much the xp has decreased
       this.$swal({
         title: "Point Score",
-        text: "Wrong! Your XP is now " + score,
+        text: "Wrong! Your XP decreased...",
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
-      }); //ok button goes to statistics
+      }); //disable every answerclick
+      //document.getElementsByTagName("li").removeEventListener("click", this.check())
     },
     retrievePoints() {
       const player = sessionStorage.getItem("player");

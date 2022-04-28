@@ -35,6 +35,7 @@ import Back from "vue-material-design-icons/ArrowLeft";
 import Credits from "vue-material-design-icons/Creation";
 import AnalyticsIcon from "vue-material-design-icons/GoogleAnalytics.vue";
 import Loading from 'vue-loading-overlay';
+import Delete from 'vue-material-design-icons/DeleteOutline.vue'; 
 import 'vue-loading-overlay/dist/vue-loading.css';
 //import toast from './Components/toast'
 
@@ -45,6 +46,7 @@ Vue.use(VueApexCharts)
 
 Vue.component('info-outline-icon', InformationOutlineIcon);
 Vue.component('pencil-outline-icon', PencilOutlineIcon);
+Vue.component('delete-icon', Delete);
 Vue.component('login-icon', LoginIcon);
 Vue.component('logout-icon', LogoutIcon);
 Vue.component('arrow-left-icon', ArrowLeftIcon);

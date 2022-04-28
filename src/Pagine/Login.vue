@@ -118,7 +118,8 @@ export default {
               .dispatch("loginWithToken", { idToken: token })
               .then(() => {
                 this.retrieveCourses(token, this.user.username);
-                this.retrievePoints(this.user.username);
+                //this.retrievePoints(this.user.username);
+                this.retrieveLevel();
                 this.getRole();
               });
           }
@@ -127,25 +128,25 @@ export default {
         alert("A username and password must be present");
       }
     },
-    retrievePoints(playerName) {
-      var apiUrl =
-        process.env.VUE_APP_BASE_URL +
-        process.env.VUE_APP_PLAYER_STATUS +
-        "?playerId" +
-        playerName;
+    // retrievePoints(playerName) {
+    //   var apiUrl =
+    //     process.env.VUE_APP_BASE_URL +
+    //     process.env.VUE_APP_PLAYER_STATUS +
+    //     "?playerId" +
+    //     playerName;
 
-      var config = {
-        method: "get",
-        url: apiUrl,
-      };
-      axios(config).then(function (response) {
-        sessionStorage.setItem(
-          "points",
-          JSON.stringify(response.data.state.PointConcept)
-        );
-        console.log("here points are stored");
-      });
-    },
+    //   var config = {
+    //     method: "get",
+    //     url: apiUrl,
+    //   };
+    //   axios(config).then(function (response) {
+    //     sessionStorage.setItem(
+    //       "points",
+    //       JSON.stringify(response.data.state.PointConcept)
+    //     );
+    //     console.log("here points are stored");
+    //   });
+    // },
     retrieveCourses(token, playerName) {
       var apiUrl =
         process.env.VUE_APP_BASE_URL +
@@ -180,20 +181,40 @@ export default {
           console.log(error);
         });
     },
+    retrieveLevel() {
+      const player = sessionStorage.getItem("player");
+      //var registeredPoints = JSON.parse(sessionStorage.points);
+
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      let url = apiUrl + "?playerId=" + player;
+      axios.get(url).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during stats extraction");
+        } else {
+          let level = response.data.customData.level; //here we store the pointconcept inside allpoints
+          sessionStorage.setItem("level", level);
+        }
+      });
+    },
     getRole() {
       var nToken = sessionStorage.getItem("token");
       console.log("token: ");
       console.log(nToken);
-      var apiUrl = process.env.VUE_APP_BASE_URL + "role?token=" + nToken + "&courseid=3";
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + "role?token=" + nToken + "&courseid=3";
 
       axios.get(apiUrl).then((response) => {
-          if (response.data == "error") {
-            console.log("Error during role extraction");
+        if (response.data == "error") {
+          console.log("Error during role extraction");
+        } else {
+          if (response.data == "no-role") {
+            sessionStorage.setItem("role", response.data);
           } else {
             sessionStorage.setItem("role", response.data[0].shortname);
-            
           }
-        });
+        }
+      });
     },
   },
 
