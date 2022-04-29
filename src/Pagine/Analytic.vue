@@ -63,7 +63,7 @@
                   p-12
                 "
               >
-                There are no analytics.
+                There are no data.
               </div>
             </template>
             <template v-else>
@@ -151,7 +151,7 @@
                   p-12
                 "
               >
-                There are no analytics.
+                There are no data.
               </div>
             </template>
             <template v-else>

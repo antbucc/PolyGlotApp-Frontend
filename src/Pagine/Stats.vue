@@ -168,40 +168,127 @@
       /> -->
     </div>
     <div v-else class="flex flex-col bg-primary"> <!--Trasformare in v-else-if in caso di ruoli nuovi-->
-      <div class="bg-opacity-0 flex">
-        <div class="lg: w-3/5">
-          <div class="
-            bg-white
-            rounded-lg
-            shadow-xl
-            lg: min-h-full
-            justify-center
-          ">
-            <!--grafico-->
-            <apexchart :type="chart.type" :options="chart.options" :series="chart.series" /> <!--Da sistemare pallino tagliato sulla destra-->
+      <div class="text-md w-full">
+        <nav class="flex flex-row text-white bg-primary">
+          <button
+            class="
+              flex-1
+              py-2
+              px-6
+              block
+              focus:outline-none
+              font-medium
+              sm:bg-green-400
+              hover:bg-blue-700
+              w-full
+            "
+            :class="
+              mode == 'SUM' ? 'border-blue-300 border-b-4 text-blue-300' : ''
+            "
+            @click="changeMode('SUM')"
+            style="font-size: 1.1vw"
+          >
+            Summary</button
+          ><button
+            class="flex-1 py-2 px-6 block focus:outline-none hover:bg-blue-700"
+            :class="
+              mode == 'LAST' ? ' border-blue-300 border-b-4 text-blue-300' : ''
+            "
+            @click="changeMode('LAST')"
+            style="font-size: 1.1vw"
+          >
+            Last quiz
+          </button>
+        </nav>
+      </div>
+      <div
+        v-show="mode == 'SUM'"
+        class="justify-center text-center w-full text-xl"
+      >
+        <div class="bg-opacity-0 flex pt-6">
+          <div class="lg: w-3/5">
+            <div class="
+              bg-white
+              rounded-lg
+              shadow-xl
+              lg: min-h-full
+              justify-center
+              pr-6
+            ">
+              <!--grafico-->
+              <apexchart :type="sumChart.type" :options="sumChart.options" :series="sumChart.series" /> <!--Da sistemare pallino tagliato sulla destra-->
+            </div>
+          </div>
+          <div class="lg: w-2/5 lg: pl-5">
+            <div class="
+              flex-col
+              p-2
+              text-white
+              text-gray-700
+              z-10"
+            >
+              <div class="flex-col">
+                <div>
+                  <span class="text-2xl font-semibold">Course<!-- {{ selectedCourse.title }} --></span>
+                </div>
+                <div class="flex">
+                  <span class="pr-1">Learning level:</span>
+                  <span :class="learningColor">{{ summary.learning.value }} - {{ levels[summary.learning.value] }}</span> <!--:class="levelColor(summary.learning.tresholds)"-->
+                </div>
+                <div class="flex">
+                  <span class="pr-1">Partecipation level:</span>
+                  <span :class="partecipationColor">{{ summary.partecipation.value }} - {{ levels[summary.partecipation.value] }}</span> <!--:class="levelColor(summary.partecipation.tresholds)"-->
+                </div>
+                <div class="flex">
+                  <span class="text-xl font-semibold pr-1">Situation: </span>
+                  <span class="text-xl font-semibold" :class="textColors.summaryColor">{{ situations[sPos] }}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="lg: w-2/5 lg: pl-5">
-          <div class="
-            flex-col
-            p-2
-            text-white
-            text-gray-700
-            z-10"
-          >
-            <div class="flex-col">
-              <span class="text-2xl font-semibold">Temp<!-- {{ selectedCourse.title }} --></span>
-              <div class="justify-items-center flex">
-                <span class="pr-1">Learning level:</span>
-                <span :class="learningColor">{{ summary.learning.value }} - {{ levels[summary.learning.value] }}</span> <!--:class="levelColor(summary.learning.tresholds)"-->
-              </div>
-              <div class="justify-items-center flex">
-                <span class="pr-1">Partecipation level:</span>
-                <span :class="partecipationColor">{{ summary.partecipation.value }} - {{ levels[summary.partecipation.value] }}</span> <!--:class="levelColor(summary.partecipation.tresholds)"-->
-              </div>
-              <div class="justify-items-center flex">
-                <span class="text-xl font-semibold pr-1">Situation: </span>
-                <span class="text-xl font-semibold" :class="situationColor">{{ situations[sPos] }}</span>
+      </div>
+      <div
+        v-show="mode == 'LAST'"
+        class="justify-center text-center w-full text-xl"
+      >
+        <div class="bg-opacity-0 flex pt-6">
+          <div class="lg: w-3/5">
+            <div class="
+              bg-white
+              rounded-lg
+              shadow-xl
+              lg: min-h-full
+              justify-center
+              pr-6
+            ">
+              <!--grafico-->
+              <apexchart :type="quizChart.type" :options="quizChart.options" :series="quizChart.series" /> <!--Da sistemare pallino tagliato sulla destra-->
+            </div>
+          </div>
+          <div class="lg: w-2/5 lg: pl-5">
+            <div class="
+              flex-col
+              p-2
+              text-white
+              text-gray-700
+              z-10"
+            >
+              <div class="flex-col ">
+                <div>
+                  <span class="text-2xl font-semibold">Course<!-- {{ selectedCourse.title }} --></span>
+                </div>
+                <div>
+                  <span class="text-2xl font-semibold">{{ lastQuiz.title }}</span>
+                </div>
+                <div class="flex">
+                  <span class="pr-1">Quiz understanding:</span>
+                  <span :class="textColors.quizColor">{{ levels[qPos] }}</span> <!--:class="levelColor(summary.learning.tresholds)"-->
+                </div> <!--x:3=66,7:100-->
+                <div class="flex">
+                  <span class="text-xl font-semibold pr-1">Situation: </span>
+                  <span class="text-xl font-semibold" :class="textColors.quizColor">{{ situations[qPos] }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -225,7 +312,7 @@ export default {
       points: true,
       mode: "I",
       level: [],
-      chart: {
+      sumChart: {
         type: "",
         series: [],
         options: {
@@ -243,6 +330,23 @@ export default {
           value: 0,
           tresholds: []
         }
+      },
+      quizChart: {
+        type: "pie",
+        series: [],
+        options: {
+          labels: []
+        }
+      },
+      qPos: 0,
+      lastQuiz: {
+        title: "",
+        values: [], //TypeOfValue: persone
+        tresholds: [] //TypeOfValue: percentuale
+      },
+      textColors: {
+        summaryColor: "",
+        quizColor: ""
       }
     };
   },
@@ -318,18 +422,23 @@ export default {
     isStudent() {
       return sessionStorage.getItem("role") == "student" //Da vedere i nomi dei ruoli
     },
-    retrieveChart() {
+    retrieveCharts() {
       this.summary = {
         learning: {
-          value: 5,
-          tresholds: [1,3]
+          value: 3,
+          tresholds: [1,2]
         },
         partecipation: {
-          value: 4,
-          tresholds: [1,3]
+          value: 2,
+          tresholds: [1,2]
         }
       }
-      this.chart = {
+      this.lastQuiz = {
+        title: "BPMN",
+        values: [80,20,15,5],
+        tresholds: [50,70]
+      }
+      this.sumChart = {
         type: "scatter",
         series: [
           {
@@ -384,53 +493,84 @@ export default {
             enabled: false
           },
           yaxis: {
+            labels: {
+              formatter: function(val) {
+                return val.toFixed(0);
+              }
+            },
             min: 0,
-            max: 5,
-            tickAmount: 5
+            max: 3,
+            tickAmount: 3
           },
           xaxis: {
             min: 0,
-            max: 5,
-            tickAmount: 5
+            max: 3,
+            tickAmount: 3
           }
         }
       }
+      this.quizChart = {
+        type: "pie",
+        series: this.lastQuiz.values,
+        options: {
+          labels: [
+            "Risposte corrette",
+            "Risposte sbagliate",
+            "Senza risposta",
+            "Senza partecipazione"
+          ]
+        }
+      }
     },
-    retrieveEvaluation() {
-      this.levels = ["No data","Terrible","Poor","Decent","Good","Excellent"]
+    retrieveEvaluations() {
+
+      this.levels = ["No data","Poor","Decent","Good"] //,"Terrible","Excellent"
       this.situations = ["No data","Action needed","Recommended interventions","Ideal"]
+      
       if (this.summary.learning.value == 0 || this.summary.partecipation.value == 0) {
         this.sPos = 0
       } else if (this.summary.learning.value <= this.summary.learning.tresholds[0]
           || this.summary.partecipation.value <= this.summary.partecipation.tresholds[0]) {
         this.sPos = 1
-        this.chart.options.markers.colors = "#dc3545" //Fare qualcosa di più dinamico con i colori
+        this.textColors.summaryColor = "text-danger"
+        this.sumChart.options.markers.colors = "#dc3545" //Fare qualcosa di più dinamico con i colori
       } else if (this.summary.learning.value <= this.summary.learning.tresholds[1]
           || this.summary.partecipation.value <= this.summary.partecipation.tresholds[1]) {
         this.sPos = 2
-        this.chart.options.markers.colors = "#ffc107"
+        this.textColors.summaryColor = "text-warning"
+        this.sumChart.options.markers.colors = "#ffc107"
       } else {
         this.sPos = 3
-        this.chart.options.markers.colors = "#5ab45f"
+        this.textColors.summaryColor = "text-secondary_light"
+        this.sumChart.options.markers.colors = "#5ab45f"
+      }
+
+      //cor:tot=x:100
+      let percentage = this.lastQuiz.values[0] * 100 / this.lastQuiz.values.reduce((partialSum, a) => partialSum + a, 0)
+      if (this.lastQuiz.values.length == 0) {
+        this.qPos = 0
+        this.textColors.quizColor = ""
+      } else if (percentage <= this.lastQuiz.tresholds[0]) {
+        this.qPos = 1
+        this.textColors.quizColor = "text-danger"
+      } else if (percentage <= this.lastQuiz.tresholds[1]) {
+        this.qPos = 2
+        this.textColors.quizColor = "text-warning"
+      } else {
+        this.qPos = 3
+        this.textColors.quizColor = "text-secondary_light"
       }
     }
   },
   computed: {
-    situationColor: function () {
-      return {
-        'text-danger': this.sPos == 1,
-        'text-warning': this.sPos == 2,
-        'text-secondary_light': this.sPos == 3
-      }
-    },
-    learningColor: function () { //Da unire a situationColor => textcolor(ref)
+    learningColor: function () { //Da unire in textcolor(ref) o in textColors
       return {
         'text-danger': this.summary.learning.value > 0 && this.summary.learning.value <= this.summary.learning.tresholds[0],
         'text-warning': this.summary.learning.value > this.summary.learning.tresholds[0] && this.summary.learning.value <= this.summary.learning.tresholds[1],
         'text-secondary_light': this.summary.learning.value > this.summary.learning.tresholds[1]
       }
     },
-    partecipationColor: function () { //Da unire a situationColor => textcolor(ref)
+    partecipationColor: function () { //Da unire in textcolor(ref) o in textColors
       return {
         'text-danger': this.summary.partecipation.value > 0 && this.summary.partecipation.value <= this.summary.partecipation.tresholds[0],
         'text-warning': this.summary.partecipation.value > this.summary.partecipation.tresholds[0] && this.summary.partecipation.value <= this.summary.partecipation.tresholds[1],
@@ -444,9 +584,11 @@ export default {
       this.response = this.retrieveLevel();
       this.response = this.retrievePoints();
       this.response = this.retrieveBoard();
+      this.mode = "I"
     } else {
-      this.retrieveChart();
-      this.retrieveEvaluation();
+      this.retrieveCharts();
+      this.retrieveEvaluations();
+      this.mode = "SUM"
     }
   },
   mounted() {},
