@@ -146,7 +146,7 @@
                 "
                 style="width: 80vw; overflow-y: scroll; scrollbar-width: thin;"
               >
-                <ol style="text-align: left; flex-direction: column-reverse;" >
+                <ol style="text-align: left; " >
                   <li v-for="obj in sort(this.retBoard)" :key="obj.playerId" class="board" >
                     <pre>   {{obj.state.PointConcept[1].score}}    {{obj.playerId}}</pre>
                   </li>

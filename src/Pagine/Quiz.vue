@@ -132,6 +132,8 @@ export default {
       ansTime: 0,
       retPoints: [],
       points: true,
+      difficulty: 0,
+      tags:[],
     };
   },
   methods: {
@@ -141,13 +143,20 @@ export default {
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_NEXT_QUESTION;
 
-      let url = apiUrl + "?token=" + token + "&courseid=" + "4";
+      let url = apiUrl + "?token=" + token + "&courseid=" + "5";
 
       axios.get(url).then((response) => {
         if (response.data == "error") {
           console.log("Error during question extraction");
         } else {
           let nxtQuestion = response.data;
+          //here i define the difficulty of the question using the tag
+          // console.log("rawname:")
+          // var tag = 0;
+          // for(tag.id in response.data.tags){
+          //       this.tags.push(tag);
+          // }
+          // console.log(this.tags[0])
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
           if (type == "multichoice") {
@@ -412,3 +421,4 @@ export default {
 </script>
 
 <style></style>
+cd

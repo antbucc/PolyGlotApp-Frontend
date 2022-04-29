@@ -103,6 +103,9 @@ form{
 .box-question p{
     margin-top: 20px;
 }
+.answers{
+    text-align: center;
+}
 .box-answers{
     display: col;
     width: 100%;

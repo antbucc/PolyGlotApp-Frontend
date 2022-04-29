@@ -91,6 +91,7 @@ export default {
       user: {
         username: "",
         password: "",
+        roles: [],
       },
     };
   },
@@ -198,11 +199,12 @@ export default {
       });
     },
     getRole() {
+      var roles =[];
       var nToken = sessionStorage.getItem("token");
       console.log("token: ");
       console.log(nToken);
       var apiUrl =
-        process.env.VUE_APP_BASE_URL + "role?token=" + nToken + "&courseid=3";
+        process.env.VUE_APP_BASE_URL + "role?token=" + nToken + "&courseid=5";
 
       axios.get(apiUrl).then((response) => {
         if (response.data == "error") {
@@ -211,7 +213,11 @@ export default {
           if (response.data == "no-role") {
             sessionStorage.setItem("role", response.data);
           } else {
-            sessionStorage.setItem("role", response.data[0].shortname);
+            var obj = 0;
+            for (obj in response.data) {
+              roles.push(response.data[obj].shortname)
+            }
+            sessionStorage.setItem("roles", roles);
           }
         }
       });
