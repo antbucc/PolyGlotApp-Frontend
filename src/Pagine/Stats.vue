@@ -1,7 +1,7 @@
 
 <template>
   <div class="bg-primary">
-    <div class="flex flex-col bg-primary">
+    <div v-if="isStudent()" class="flex flex-col bg-primary">
       <div class="text-md w-full">
         <nav class="flex flex-row text-white bg-primary">
           <button
@@ -167,6 +167,47 @@
         ]"
       /> -->
     </div>
+    <div v-else class="flex flex-col bg-primary"> <!--Trasformare in v-else-if in caso di ruoli nuovi-->
+      <div class="bg-opacity-0 flex">
+        <div class="lg: w-3/5">
+          <div class="
+            bg-white
+            rounded-lg
+            shadow-xl
+            lg: min-h-full
+            justify-center
+          ">
+            <!--grafico-->
+            <apexchart :type="chart.type" :options="chart.options" :series="chart.series" /> <!--Da sistemare pallino tagliato sulla destra-->
+          </div>
+        </div>
+        <div class="lg: w-2/5 lg: pl-5">
+          <div class="
+            flex-col
+            p-2
+            text-white
+            text-gray-700
+            z-10"
+          >
+            <div class="flex-col">
+              <span class="text-2xl font-semibold">Temp<!-- {{ selectedCourse.title }} --></span>
+              <div class="justify-items-center flex">
+                <span class="pr-1">Learning level:</span>
+                <span :class="learningColor">{{ summary.learning.value }} - {{ levels[summary.learning.value] }}</span> <!--:class="levelColor(summary.learning.tresholds)"-->
+              </div>
+              <div class="justify-items-center flex">
+                <span class="pr-1">Partecipation level:</span>
+                <span :class="partecipationColor">{{ summary.partecipation.value }} - {{ levels[summary.partecipation.value] }}</span> <!--:class="levelColor(summary.partecipation.tresholds)"-->
+              </div>
+              <div class="justify-items-center flex">
+                <span class="text-xl font-semibold pr-1">Situation: </span>
+                <span class="text-xl font-semibold" :class="situationColor">{{ situations[sPos] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -184,6 +225,25 @@ export default {
       points: true,
       mode: "I",
       level: [],
+      chart: {
+        type: "",
+        series: [],
+        options: {
+        }
+      },
+      levels: [],
+      situations: [],
+      sPos: 0,
+      summary: {
+        learning: {
+          value: 0,
+          tresholds: []
+        },
+        partecipation: {
+          value: 0,
+          tresholds: []
+        }
+      }
     };
   },
   methods: {
@@ -254,15 +314,140 @@ export default {
           
         }); // points saved in retPoints
         
+    },
+    isStudent() {
+      return sessionStorage.getItem("role") == "student" //Da vedere i nomi dei ruoli
+    },
+    retrieveChart() {
+      this.summary = {
+        learning: {
+          value: 5,
+          tresholds: [1,3]
+        },
+        partecipation: {
+          value: 4,
+          tresholds: [1,3]
+        }
+      }
+      this.chart = {
+        type: "scatter",
+        series: [
+          {
+            name: "",
+            data: [[this.summary.partecipation.value,this.summary.learning.value]]
+          }
+        ],
+        options: {
+          chart: {
+            toolbar: {
+              show: false
+            },
+            zoom: {
+              enabled: false
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          grid: {
+            xaxis: {
+              lines: {
+                show: true,
+              }
+            },
+            yaxis: {
+              lines: {
+                show: true,
+              }
+            }
+          },
+          legend: {
+            show: false
+          },
+          markers: {
+            size: 20,
+            colors: "#747474" //text-danger: #dc3545, text-warning: #ffc107, text-secondary: #5ab45f
+          },
+          states: {
+            active: {
+              filter: {
+                type: 'none'
+              }
+            },
+            hover: {
+              filter: {
+                type: 'none'
+              }
+            }
+          },
+          tooltip: {
+            enabled: false
+          },
+          yaxis: {
+            min: 0,
+            max: 5,
+            tickAmount: 5
+          },
+          xaxis: {
+            min: 0,
+            max: 5,
+            tickAmount: 5
+          }
+        }
+      }
+    },
+    retrieveEvaluation() {
+      this.levels = ["No data","Terrible","Poor","Decent","Good","Excellent"]
+      this.situations = ["No data","Action needed","Recommended interventions","Ideal"]
+      if (this.summary.learning.value == 0 || this.summary.partecipation.value == 0) {
+        this.sPos = 0
+      } else if (this.summary.learning.value <= this.summary.learning.tresholds[0]
+          || this.summary.partecipation.value <= this.summary.partecipation.tresholds[0]) {
+        this.sPos = 1
+        this.chart.options.markers.colors = "#dc3545" //Fare qualcosa di più dinamico con i colori
+      } else if (this.summary.learning.value <= this.summary.learning.tresholds[1]
+          || this.summary.partecipation.value <= this.summary.partecipation.tresholds[1]) {
+        this.sPos = 2
+        this.chart.options.markers.colors = "#ffc107"
+      } else {
+        this.sPos = 3
+        this.chart.options.markers.colors = "#5ab45f"
+      }
     }
-
   },
-  computed: {},
+  computed: {
+    situationColor: function () {
+      return {
+        'text-danger': this.sPos == 1,
+        'text-warning': this.sPos == 2,
+        'text-secondary_light': this.sPos == 3
+      }
+    },
+    learningColor: function () { //Da unire a situationColor => textcolor(ref)
+      return {
+        'text-danger': this.summary.learning.value > 0 && this.summary.learning.value <= this.summary.learning.tresholds[0],
+        'text-warning': this.summary.learning.value > this.summary.learning.tresholds[0] && this.summary.learning.value <= this.summary.learning.tresholds[1],
+        'text-secondary_light': this.summary.learning.value > this.summary.learning.tresholds[1]
+      }
+    },
+    partecipationColor: function () { //Da unire a situationColor => textcolor(ref)
+      return {
+        'text-danger': this.summary.partecipation.value > 0 && this.summary.partecipation.value <= this.summary.partecipation.tresholds[0],
+        'text-warning': this.summary.partecipation.value > this.summary.partecipation.tresholds[0] && this.summary.partecipation.value <= this.summary.partecipation.tresholds[1],
+        'text-secondary_light': this.summary.partecipation.value > this.summary.partecipation.tresholds[1]
+      }
+    }
+  },
   created() {
-    this.$store.dispatch("storePage", { title: "", back: false });
-    this.response = this.retrieveLevel();
-    this.response = this.retrievePoints();
-    this.response = this.retrieveBoard();
+    this.$store.dispatch("storePage", { title: "Stats", back: false }); //Titolo messo per collegamento ad Analytics
+    if (this.isStudent()) {
+      this.response = this.retrieveLevel();
+      this.response = this.retrievePoints();
+      this.response = this.retrieveBoard();
+    } else {
+      this.retrieveChart();
+      this.retrieveEvaluation();
+    }
   },
   mounted() {},
 };

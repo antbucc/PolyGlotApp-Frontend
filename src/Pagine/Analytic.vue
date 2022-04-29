@@ -26,12 +26,12 @@
           <button
             class="flex-1 py-2 px-6 block focus:outline-none hover:bg-blue-700"
             :class="
-              mode == 'GRAPH' ? ' border-blue-300 border-b-4 text-blue-300' : ''
+              mode == 'CHART' ? ' border-blue-300 border-b-4 text-blue-300' : ''
             "
-            @click="changeMode('GRAPH')"
+            @click="changeMode('CHART')"
             style="font-size:1.1vw"
           >
-            Graph
+            Chart
           </button>
         </nav>
       </div>
@@ -125,7 +125,7 @@
         </div>
         <div
           id="chart_container"
-          v-show="mode == 'GRAPH'"
+          v-show="mode == 'CHART'"
           class="justify-center text-center w-full text-xl"
         >
           <div
@@ -185,7 +185,7 @@
                   justify-center
                 ">
                   <!--grafico-->
-                  <apexchart height="430" :type="graph.type" :options="graph.options" :series="graph.series" />
+                  <apexchart height="430" :type="chart.type" :options="chart.options" :series="chart.series" />
                 </div>
               </div>
               <div class="lg:w-2/5 lg: pl-5">
@@ -222,7 +222,7 @@ export default {
           data: [],
           firstHead: true
         },
-        graph: {
+        chart: {
           type: "",
           series: [],
           options: {
@@ -260,7 +260,7 @@ export default {
       ],
       firstHead: true
     }
-    this.graph = {
+    this.chart = {
       type: "pie",
       series: [80,20,15,5],
       options: {
@@ -301,7 +301,7 @@ export default {
       ],
       firstHead: true
     }
-    this.graph = {
+    this.chart = {
       type: "bar",
       series: [
         {
