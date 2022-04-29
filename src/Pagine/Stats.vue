@@ -316,7 +316,7 @@ export default {
         
     },
     isStudent() {
-      return sessionStorage.getItem("role") == "student" //Da vedere i nomi dei ruoli
+      return sessionStorage.getItem("roles").includes("student") //Da vedere i nomi dei ruoli
     },
     retrieveChart() {
       this.summary = {
