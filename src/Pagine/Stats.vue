@@ -228,20 +228,39 @@
               z-10"
             >
               <div class="flex-col">
-                <div>
-                  <span class="text-2xl font-semibold">Course<!-- {{ selectedCourse.title }} --></span>
+                <div class="flex-col">
+                  <div>
+                    <span class="text-2xl font-semibold">Course<!-- {{ selectedCourse.title }} --></span>
+                  </div>
+                  <div class="flex">
+                    <span class="pr-1">Learning level:</span>
+                    <span :class="evaluations.learning[evalPos.learning].class">{{ evaluations.learning[evalPos.learning].title }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="pr-1">Partecipation level:</span>
+                    <span :class="evaluations.partecipation[evalPos.partecipation].class">{{ evaluations.partecipation[evalPos.partecipation].title }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-xl font-semibold pr-1">Situation: </span>
+                    <span class="text-xl font-semibold" :class="evaluations.summary[evalPos.summary].class">{{ evaluations.summary[evalPos.summary].title }}</span>
+                  </div>
                 </div>
-                <div class="flex">
-                  <span class="pr-1">Learning level:</span>
-                  <span :class="learningColor">{{ summary.learning.value }} - {{ levels[summary.learning.value] }}</span> <!--:class="levelColor(summary.learning.tresholds)"-->
-                </div>
-                <div class="flex">
-                  <span class="pr-1">Partecipation level:</span>
-                  <span :class="partecipationColor">{{ summary.partecipation.value }} - {{ levels[summary.partecipation.value] }}</span> <!--:class="levelColor(summary.partecipation.tresholds)"-->
-                </div>
-                <div class="flex">
-                  <span class="text-xl font-semibold pr-1">Situation: </span>
-                  <span class="text-xl font-semibold" :class="textColors.summaryColor">{{ situations[sPos] }}</span>
+                <div class="flex-col">
+                  <div>
+                    <span class="text-2xl font-semibold">Last quiz: {{ lastQuiz.title }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="pr-1">Learning level:</span>
+                    <span :class="evaluations.learning[evalPos.lQLearning].class">{{ evaluations.learning[evalPos.lQLearning].title }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="pr-1">Partecipation level:</span>
+                    <span :class="evaluations.partecipation[evalPos.lQPartecipation].class">{{ evaluations.partecipation[evalPos.lQPartecipation].title }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-xl font-semibold pr-1">Performances: </span>
+                    <span class="text-xl font-semibold" :class="evaluations.performance[evalPos.lQSummary].class">{{ evaluations.performance[evalPos.lQSummary].title }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -283,11 +302,11 @@
                 </div>
                 <div class="flex">
                   <span class="pr-1">Quiz understanding:</span>
-                  <span :class="textColors.quizColor">{{ levels[qPos] }}</span> <!--:class="levelColor(summary.learning.tresholds)"-->
+                  <span :class="evaluations.understanding[evalPos.lastQuiz].class">{{ evaluations.understanding[evalPos.lastQuiz].title }}</span>
                 </div> <!--x:3=66,7:100-->
                 <div class="flex">
                   <span class="text-xl font-semibold pr-1">Situation: </span>
-                  <span class="text-xl font-semibold" :class="textColors.quizColor">{{ situations[qPos] }}</span>
+                  <span class="text-xl font-semibold" :class="evaluations.lastQuiz[evalPos.lastQuiz].class">{{ evaluations.lastQuiz[evalPos.lastQuiz].title }}</span>
                 </div>
               </div>
             </div>
@@ -312,25 +331,36 @@ export default {
       points: true,
       mode: "I",
       level: [],
+      
       sumChart: {
         type: "",
         series: [],
         options: {
         }
       },
-      levels: [],
-      situations: [],
-      sPos: 0,
       summary: {
-        learning: {
-          value: 0,
-          tresholds: []
+        course: {
+          learning: {
+            value: 0, //TypeOfValue: percentuale
+            tresholds: [] //TypeOfValue: percentuale
+          },
+          partecipation: {
+            value: 0, //TypeOfValue: percentuale
+            tresholds: [] //TypeOfValue: percentuale
+          }
         },
-        partecipation: {
-          value: 0,
-          tresholds: []
+        lQ: { //Last quiz
+          learning: {
+            value: 0, //TypeOfValue: percentuale
+            tresholds: [] //TypeOfValue: percentuale
+          },
+          partecipation: {
+            value: 0, //TypeOfValue: percentuale
+            tresholds: [] //TypeOfValue: percentuale
+          }
         }
       },
+
       quizChart: {
         type: "pie",
         series: [],
@@ -338,16 +368,30 @@ export default {
           labels: []
         }
       },
-      qPos: 0,
       lastQuiz: {
         title: "",
         values: [], //TypeOfValue: persone
         tresholds: [] //TypeOfValue: percentuale
       },
-      textColors: {
-        summaryColor: "",
-        quizColor: ""
-      }
+
+      evalPos: {
+        learning: 0,
+        partecipation: 0,
+        summary: 0,
+        lQLearning: 0,
+        lQPartecipation: 0,
+        lQSummary: 0,
+        lastQuiz: 0
+      },
+      
+      evaluations: {
+        learning: [],
+        partecipation: [],
+        understanding: [],
+        summary: [],
+        performance: [],
+        quiiz: []
+      }, /*{tile: "", class: ""}*/
     };
   },
   methods: {
@@ -422,15 +466,46 @@ export default {
     isStudent() {
       return sessionStorage.getItem("roles").includes("student") //Da vedere i nomi dei ruoli
     },
+    getEvaluation(value,tresholds) {
+      
+      let again = true
+      let i = 0
+      let result = 0
+      
+      if (value > tresholds[tresholds.length-1]) {
+        result = tresholds.length
+      } else {
+        while (again && i < tresholds.length-1) {
+          if (value > tresholds[i] && value <= tresholds[i+1]) {
+            result = i+1
+            again = false
+          }
+          i++
+        }
+      }
+      return result
+    },
     retrieveCharts() {
       this.summary = {
-        learning: {
-          value: 3,
-          tresholds: [1,2]
+        course: {
+          learning: {
+            value: 85,
+            tresholds: [33,67]
+          },
+          partecipation: {
+            value: 75,
+            tresholds: [33,67]
+          }
         },
-        partecipation: {
-          value: 2,
-          tresholds: [1,2]
+        lQ: {
+          learning: {
+            value: 65,
+            tresholds: [33,67]
+          },
+          partecipation: {
+            value: 95,
+            tresholds: [33,67]
+          }
         }
       }
       this.lastQuiz = {
@@ -442,8 +517,12 @@ export default {
         type: "scatter",
         series: [
           {
-            name: "",
-            data: [[this.summary.partecipation.value,this.summary.learning.value]]
+            name: "Course summary",
+            data: [[this.summary.course.partecipation.value,this.summary.course.learning.value]]
+          },
+          {
+            name: "Last quiz",
+            data: [[this.summary.lQ.partecipation.value,this.summary.lQ.learning.value]]
           }
         ],
         options: {
@@ -458,7 +537,7 @@ export default {
           dataLabels: {
             enabled: false
           },
-          grid: {
+          grid: { //Da sistemare griglia fissa
             xaxis: {
               lines: {
                 show: true,
@@ -468,14 +547,18 @@ export default {
               lines: {
                 show: true,
               }
-            }
-          },
-          legend: {
-            show: false
+            },
+            row: {
+              colors: ["#5ab45f","#ffc107","#dc3545"],
+              opacity: 0.2
+            },  
+            column: {
+              colors: ["#dc3545","#ffc107","#5ab45f"],
+              opacity: 0.2
+            }, 
           },
           markers: {
-            size: 20,
-            colors: "#747474" //text-danger: #dc3545, text-warning: #ffc107, text-secondary: #5ab45f
+            size: 20
           },
           states: {
             active: {
@@ -494,17 +577,18 @@ export default {
           },
           yaxis: {
             labels: {
-              formatter: function(val) {
-                return val.toFixed(0);
-              }
+              show: false
             },
             min: 0,
-            max: 3,
+            max: 100,
             tickAmount: 3
           },
           xaxis: {
+            labels: {
+              show: false
+            },
             min: 0,
-            max: 3,
+            max: 100,
             tickAmount: 3
           }
         }
@@ -524,60 +608,66 @@ export default {
     },
     retrieveEvaluations() {
 
-      this.levels = ["No data","Poor","Decent","Good"] //,"Terrible","Excellent"
-      this.situations = ["No data","Action needed","Recommended interventions","Ideal"]
-      
-      if (this.summary.learning.value == 0 || this.summary.partecipation.value == 0) {
-        this.sPos = 0
-      } else if (this.summary.learning.value <= this.summary.learning.tresholds[0]
-          || this.summary.partecipation.value <= this.summary.partecipation.tresholds[0]) {
-        this.sPos = 1
-        this.textColors.summaryColor = "text-danger"
-        this.sumChart.options.markers.colors = "#dc3545" //Fare qualcosa di più dinamico con i colori
-      } else if (this.summary.learning.value <= this.summary.learning.tresholds[1]
-          || this.summary.partecipation.value <= this.summary.partecipation.tresholds[1]) {
-        this.sPos = 2
-        this.textColors.summaryColor = "text-warning"
-        this.sumChart.options.markers.colors = "#ffc107"
-      } else {
-        this.sPos = 3
-        this.textColors.summaryColor = "text-secondary_light"
-        this.sumChart.options.markers.colors = "#5ab45f"
-      }
+      let temp = [
+        {
+          title: "Poor",
+          class: "text-danger"
+        }, {
+          title: "Decent",
+          class: "text-warning"
+        }, {
+          title: "Good",
+          class: "text-secondary_light"
+        }
+      ] //,"Terrible","Excellent"
+      this.evaluations.learning = temp
+      this.evaluations.partecipation = temp
+      this.evaluations.understanding = temp
+      this.evaluations.performance = temp
+      temp = [
+        {
+          title: "Action needed",
+          class: "text-danger"
+        }, {
+          title: "Recommended interventions",
+          class: "text-warning"
+        }, {
+          title: "Ideal",
+          class: "text-secondary_light"
+        }
+      ] //Usato per summary e quiz
+      this.evaluations.summary = temp
+      this.evaluations.lastQuiz = temp
 
-      //cor:tot=x:100
-      let percentage = this.lastQuiz.values[0] * 100 / this.lastQuiz.values.reduce((partialSum, a) => partialSum + a, 0)
-      if (this.lastQuiz.values.length == 0) {
-        this.qPos = 0
-        this.textColors.quizColor = ""
+      this.evalPos.learning = this.getEvaluation(this.summary.course.learning.value,this.summary.course.learning.tresholds)
+      this.evalPos.partecipation = this.getEvaluation(this.summary.course.partecipation.value,this.summary.course.partecipation.tresholds)
+      this.evalPos.lQLearning = this.getEvaluation(this.summary.lQ.learning.value,this.summary.lQ.learning.tresholds)
+      this.evalPos.lQPartecipation = this.getEvaluation(this.summary.lQ.partecipation.value,this.summary.lQ.partecipation.tresholds)
+      
+      this.evalPos.summary = Math.min(this.evalPos.learning,this.evalPos.partecipation) //Pensare ad una conversione più generica
+      this.evalPos.lQSummary = Math.min(this.evalPos.lQLearning,this.evalPos.lQPartecipation) //Pensare ad una conversione più generica
+
+      let percentage = 0
+      if (this.lastQuiz.values.length != 0) {
+        percentage = this.lastQuiz.values[0] * 100 / this.lastQuiz.values.reduce((partialSum, a) => partialSum + a, 0)
+      }
+      this.evalPos.lastQuiz = this.getEvaluation(percentage,this.lastQuiz.tresholds)
+      /*if (this.lastQuiz.values.length == 0) {
+        this.evalPos.quiz = 0
+        this.textColors.quiz = ""
       } else if (percentage <= this.lastQuiz.tresholds[0]) {
-        this.qPos = 1
-        this.textColors.quizColor = "text-danger"
+        this.evalPos.quiz = 1
+        this.textColors.quiz = "text-danger"
       } else if (percentage <= this.lastQuiz.tresholds[1]) {
-        this.qPos = 2
-        this.textColors.quizColor = "text-warning"
+        this.evalPos.quiz = 2
+        this.textColors.quiz = "text-warning"
       } else {
-        this.qPos = 3
-        this.textColors.quizColor = "text-secondary_light"
-      }
+        this.evalPos.quiz = 3
+        this.textColors.quiz = "text-secondary_light"
+      }*/
     }
   },
-  computed: {
-    learningColor: function () { //Da unire in textcolor(ref) o in textColors
-      return {
-        'text-danger': this.summary.learning.value > 0 && this.summary.learning.value <= this.summary.learning.tresholds[0],
-        'text-warning': this.summary.learning.value > this.summary.learning.tresholds[0] && this.summary.learning.value <= this.summary.learning.tresholds[1],
-        'text-secondary_light': this.summary.learning.value > this.summary.learning.tresholds[1]
-      }
-    },
-    partecipationColor: function () { //Da unire in textcolor(ref) o in textColors
-      return {
-        'text-danger': this.summary.partecipation.value > 0 && this.summary.partecipation.value <= this.summary.partecipation.tresholds[0],
-        'text-warning': this.summary.partecipation.value > this.summary.partecipation.tresholds[0] && this.summary.partecipation.value <= this.summary.partecipation.tresholds[1],
-        'text-secondary_light': this.summary.partecipation.value > this.summary.partecipation.tresholds[1]
-      }
-    }
-  },
+  computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "Stats", back: false }); //Titolo messo per collegamento ad Analytics
     if (this.isStudent()) {
