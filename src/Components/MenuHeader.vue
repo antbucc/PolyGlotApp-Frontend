@@ -421,14 +421,14 @@
             >
           </router-link>
 
-          <router-link to="/quiz" v-if="auth">
+          <router-link to="/quizzes" v-if="auth">
             <span
               class="flex items-center p-4 hover:bg-white hover:text-primary"
-              :class="{ active: page && page.title === 'Quiz' }"
+              :class="{ active: page && page.title === 'Quizzes' }"
               ><span class="mr-2">
                 <question-icon />
               </span>
-              <span>Quiz</span></span
+              <span>My Quizzes</span></span
             >
           </router-link>
 

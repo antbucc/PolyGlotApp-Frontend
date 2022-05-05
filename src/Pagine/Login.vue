@@ -199,7 +199,7 @@ export default {
       });
     },
     getRole() {
-      var roles =[];
+      var roles = [];
       var nToken = sessionStorage.getItem("token");
       console.log("token: ");
       console.log(nToken);
@@ -215,7 +215,7 @@ export default {
           } else {
             var obj = 0;
             for (obj in response.data) {
-              roles.push(response.data[obj].shortname)
+              roles.push(response.data[obj].shortname);
             }
             sessionStorage.setItem("roles", roles);
           }

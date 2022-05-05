@@ -133,7 +133,7 @@ export default {
       retPoints: [],
       points: true,
       difficulty: 0,
-      tags:[],
+      tags: [],
     };
   },
   methods: {
@@ -142,8 +142,10 @@ export default {
       const token = sessionStorage.getItem("token");
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_NEXT_QUESTION;
-
-      let url = apiUrl + "?token=" + token + "&courseid=" + "5";
+      //here i store the courseId clicked on quizzes to know from which course choose the questions
+      var id = this.$route.params.courseId;
+      let url = apiUrl + "?token=" + token + "&courseid=" + id;
+      console.log(id);
 
       axios.get(url).then((response) => {
         if (response.data == "error") {
@@ -157,6 +159,12 @@ export default {
           //       this.tags.push(tag);
           // }
           // console.log(this.tags[0])
+          let obj = 0;
+          for (obj in nxtQuestion.tags){
+            this.tags.push(nxtQuestion.tags[obj])
+          }
+          this.difficulty = this.tags[0].name.charAt(this.tags[0].name.length - 1)
+          console.log(this.difficulty)
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
           if (type == "multichoice") {
@@ -281,6 +289,13 @@ export default {
           );
         }
       }
+      //set unclickable after check/time passed
+      document
+        .getElementById("ansUl")
+        .setAttribute(
+          "style",
+          "width: 35em;font-size: 1.1em;margin-left: auto;margin-right: auto;pointer-events: none;"
+        );
 
       document
         .getElementById("add")
@@ -312,7 +327,7 @@ export default {
       axios.post(url, {
         playerId: player,
         quiz: {
-          difficulty: "3", //this will be a string, retrieved inside the tag field in the question
+          difficulty: this.difficulty, //this will be a string, retrieved inside the tag field in the question
           time: this.ansTime, //this will be a double, counted from the question start to when we answer
         },
       });
@@ -356,7 +371,7 @@ export default {
       axios.post(url, {
         playerId: player,
         quiz: {
-          difficulty: "1", //this will be a string, retrieved inside the tag field in the question
+          difficulty: this.difficulty, //this will be a string, retrieved inside the tag field in the question
         },
       });
 
@@ -421,4 +436,3 @@ export default {
 </script>
 
 <style></style>
-cd

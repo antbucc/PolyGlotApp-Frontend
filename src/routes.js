@@ -9,6 +9,7 @@ import Privacy from "./Pagine/Campagna/Privacy.vue";
 import Credits from "./Pagine/Credits.vue";
 import Login from "./Pagine/Login.vue";
 import Stats from "./Pagine/Stats.vue";
+import MyQuizzes from "./Pagine/MyQuizzes.vue"
 import Rules from "./Pagine/Campagna/Rules.vue";
 import Callback from "./Pagine/Callback.vue";
 import Logout from "./Pagine/Logout.vue";
@@ -89,6 +90,11 @@ const routes = [
     path: '/callback',
     name: 'callback',
     component: Callback
+  },
+  {
+    path: '/quizzes',
+    name: 'quizzes',
+    component: MyQuizzes
   },
   {
     path: '/logout',
