@@ -128,7 +128,7 @@ export default {
       correct: [],
       percentage: 100, //this will be the question time
       intval: 0,
-      seconds: 10,
+      seconds: 50,
       ansTime: 0,
       retPoints: [],
       points: true,
@@ -422,7 +422,7 @@ export default {
     this.intval = setInterval(() => {
       this.ansTime++;
       if (this.percentage > 0) {
-        this.percentage -= per / 10;
+        this.percentage -= per / 50;
         this.seconds -= 1;
       }
       //this is 100/maxquestiontime (in this case, max = 10s). for example, if we want to be maximum 20 seconds, we will write 5

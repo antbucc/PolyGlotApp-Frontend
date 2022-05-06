@@ -79,7 +79,7 @@
                     v-for="obj in this.myCourses"
                     :key="obj.id"
                     :id="obj.id"
-                    class="board"
+                    class="board grow"
                     style="cursor: pointer"
                     @click="doQuiz(obj.id)"
                   >
@@ -124,11 +124,11 @@
                     <br />
                   </p>
                   <ol style="font-size: 1vw">
-                    <li class="board">TEAM F</li>
-                    <li class="board">TEAM ARC</li>
-                    <li class="board">TEAM JJ</li>
-                    <li class="board">TEAM POLY</li>
-                    <li class="board">TEAM GLOT</li>
+                    <li class="board grow">TEAM F</li>
+                    <li class="board grow">TEAM ARC</li>
+                    <li class="board grow">TEAM JJ</li>
+                    <li class="board grow">TEAM POLY</li>
+                    <li class="board grow">TEAM GLOT</li>
                   </ol>
                 </div>
               </div>
@@ -159,7 +159,7 @@
                 </p>
                 <p style="font-size: 1.2vw">Opponents:</p>
                 <select
-                  name="opponents"
+                  name="opponents" 
                   style="margin-top: 1vw; margin-bottom: 1vw; font-size: 1vw"
                 >
                   <option value="TEAM POLY" selected="selected">
@@ -191,7 +191,7 @@
                   style="margin-bottom: 1vw; margin-top: 1vw; font-size: 1vw"
                 />
                 <button
-                  class="button-cl"
+                  class="button-cl grow" 
                   style="
                     font-size: 1.1em;
                     width: 10em;
