@@ -237,7 +237,7 @@
           <div class="lg: w-2/5 lg: pl-5">
             <div class="flex-col p-2 text-white text-gray-700 z-10">
               <div class="flex-col">
-                <div class="flex-col">
+                <div class="flex-col pb-4">
                   <div>
                     <span class="text-2xl font-semibold"
                       >Course<!-- {{ selectedCourse.title }} --></span
@@ -270,7 +270,7 @@
                     >
                   </div>
                 </div>
-                <div class="flex-col">
+                <div class="flex-col py-4">
                   <div>
                     <span class="text-2xl font-semibold"
                       >Last quiz: {{ lastQuiz.title }}</span
@@ -309,6 +309,27 @@
                     >
                   </div>
                 </div>
+                <div class="flex pt-4">
+                  <router-link :to="{ name: 'analytic' }" tag="button">
+                    <!--Sistemare i props per portare a statistica "summary history"-->
+                    <span
+                      class="
+                        flex
+                        items-center
+                        p-2
+                        rounded-full
+                        bg-white
+                        text-primary
+                        border-black
+                      "
+                      ><span class="mr-2">
+                        <performance-icon />
+                      </span>
+                      <span>History</span></span
+                    >
+                    <!--border-white non funziona-->
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -342,7 +363,7 @@
           </div>
           <div class="lg: w-2/5 lg: pl-5">
             <div class="flex-col p-2 text-white text-gray-700 z-10">
-              <div class="flex-col">
+              <div class="flex-col pb-4">
                 <div>
                   <span class="text-2xl font-semibold"
                     >Course<!-- {{ selectedCourse.title }} --></span
@@ -371,6 +392,27 @@
                     >{{ evaluations.lastQuiz[evalPos.lastQuiz].title }}</span
                   >
                 </div>
+              </div>
+              <div class="flex pt-4">
+                <router-link :to="{ name: 'analytic' }" tag="button">
+                  <!--Sistemare i props per portare a statistica "summary history"-->
+                  <span
+                    class="
+                      flex
+                      items-center
+                      p-2
+                      rounded-full
+                      bg-white
+                      text-primary
+                      border-black
+                    "
+                    ><span class="mr-2">
+                      <column-chart-icon />
+                    </span>
+                    <span>Compare with other quizzes</span></span
+                  >
+                  <!--border-white non funziona-->
+                </router-link>
               </div>
             </div>
           </div>
@@ -401,26 +443,20 @@ export default {
         options: {},
       },
       summary: {
-        course: {
-          learning: {
-            value: 0, //TypeOfValue: percentuale
-            tresholds: [], //TypeOfValue: percentuale
+        values: {
+          course: {
+            learning: 0, //TypeOfValue: percentuale
+            partecipation: 0, //TypeOfValue: percentuale
           },
-          partecipation: {
-            value: 0, //TypeOfValue: percentuale
-            tresholds: [], //TypeOfValue: percentuale
+          lQ: {
+            //Last quiz
+            learning: 0, //TypeOfValue: percentuale
+            partecipation: 0, //TypeOfValue: percentuale
           },
         },
-        lQ: {
-          //Last quiz
-          learning: {
-            value: 0, //TypeOfValue: percentuale
-            tresholds: [], //TypeOfValue: percentuale
-          },
-          partecipation: {
-            value: 0, //TypeOfValue: percentuale
-            tresholds: [], //TypeOfValue: percentuale
-          },
+        tresholds: {
+          learning: [], //TypeOfValue: percentuale
+          partecipation: [], //TypeOfValue: percentuale
         },
       },
 
@@ -547,25 +583,20 @@ export default {
     },
     retrieveCharts() {
       this.summary = {
-        course: {
-          learning: {
-            value: 85,
-            tresholds: [33, 67],
+        values: {
+          course: {
+            learning: 85, //TypeOfValue: percentuale
+            partecipation: 75, //TypeOfValue: percentuale
           },
-          partecipation: {
-            value: 75,
-            tresholds: [33, 67],
+          lQ: {
+            //Last quiz
+            learning: 65, //TypeOfValue: percentuale
+            partecipation: 95, //TypeOfValue: percentuale
           },
         },
-        lQ: {
-          learning: {
-            value: 65,
-            tresholds: [33, 67],
-          },
-          partecipation: {
-            value: 95,
-            tresholds: [33, 67],
-          },
+        tresholds: {
+          learning: [50, 70], //TypeOfValue: percentuale
+          partecipation: [50, 70], //TypeOfValue: percentuale
         },
       };
       this.lastQuiz = {
@@ -580,8 +611,8 @@ export default {
             name: "Course summary",
             data: [
               [
-                this.summary.course.partecipation.value,
-                this.summary.course.learning.value,
+                this.summary.values.course.partecipation,
+                this.summary.values.course.learning,
               ],
             ],
           },
@@ -589,14 +620,20 @@ export default {
             name: "Last quiz",
             data: [
               [
-                this.summary.lQ.partecipation.value,
-                this.summary.lQ.learning.value,
+                this.summary.values.lQ.partecipation,
+                this.summary.values.lQ.learning,
               ],
             ],
           },
         ],
         options: {
+          annotations: {
+            position: "back",
+            xaxis: [],
+            yaxis: [],
+          },
           chart: {
+            offsetX: 10,
             toolbar: {
               show: false,
             },
@@ -604,28 +641,20 @@ export default {
               enabled: false,
             },
           },
+          colors: ["#a4ab27", "#d17e26"],
           dataLabels: {
             enabled: false,
           },
           grid: {
-            //Da sistemare griglia fissa
             xaxis: {
               lines: {
-                show: true,
+                show: false,
               },
             },
             yaxis: {
               lines: {
-                show: true,
+                show: false,
               },
-            },
-            row: {
-              colors: ["#5ab45f", "#ffc107", "#dc3545"],
-              opacity: 0.2,
-            },
-            column: {
-              colors: ["#dc3545", "#ffc107", "#5ab45f"],
-              opacity: 0.2,
             },
           },
           markers: {
@@ -652,7 +681,9 @@ export default {
             },
             min: 0,
             max: 100,
-            tickAmount: 3,
+            title: {
+              text: "Learning",
+            },
           },
           xaxis: {
             labels: {
@@ -660,20 +691,34 @@ export default {
             },
             min: 0,
             max: 100,
-            tickAmount: 3,
+            title: {
+              text: "Partecipation",
+            },
           },
         },
       };
+
       this.quizChart = {
         type: "pie",
         series: this.lastQuiz.values,
         options: {
+          colors: ["#00d88f", "#ff6279", "#ffbf42", "#b5b5b5"],
+          dataLabels: {
+            style: {
+              fontSize: "18px",
+            },
+          },
           labels: [
             "Risposte corrette",
             "Risposte sbagliate",
             "Senza risposta",
             "Senza partecipazione",
           ],
+          tooltip: {
+            style: {
+              fontSize: "18px",
+            },
+          },
         },
       };
     },
@@ -682,14 +727,17 @@ export default {
         {
           title: "Poor",
           class: "text-danger",
+          areaColor: "#dc3545",
         },
         {
           title: "Decent",
           class: "text-warning",
+          areaColor: "#ffc107",
         },
         {
           title: "Good",
           class: "text-secondary_light",
+          areaColor: "#5ab45f",
         },
       ]; //,"Terrible","Excellent"
       this.evaluations.learning = temp;
@@ -700,35 +748,47 @@ export default {
         {
           title: "Action needed",
           class: "text-danger",
+          areaColor: "#dc3545",
         },
         {
           title: "Recommended interventions",
           class: "text-warning",
+          areaColor: "#ffc107",
         },
         {
           title: "Ideal",
           class: "text-secondary_light",
+          areaColor: "#5ab45f",
         },
       ]; //Usato per summary e quiz
       this.evaluations.summary = temp;
       this.evaluations.lastQuiz = temp;
 
       this.evalPos.learning = this.getEvaluation(
-        this.summary.course.learning.value,
-        this.summary.course.learning.tresholds
+        this.summary.values.course.learning,
+        this.summary.tresholds.learning
       );
       this.evalPos.partecipation = this.getEvaluation(
-        this.summary.course.partecipation.value,
-        this.summary.course.partecipation.tresholds
+        this.summary.values.course.partecipation,
+        this.summary.tresholds.partecipation
       );
       this.evalPos.lQLearning = this.getEvaluation(
-        this.summary.lQ.learning.value,
-        this.summary.lQ.learning.tresholds
+        this.summary.values.lQ.learning,
+        this.summary.tresholds.learning
       );
       this.evalPos.lQPartecipation = this.getEvaluation(
-        this.summary.lQ.partecipation.value,
-        this.summary.lQ.partecipation.tresholds
+        this.summary.values.lQ.partecipation,
+        this.summary.tresholds.partecipation
       );
+
+      this.evalPos.summary = Math.min(
+        this.evalPos.learning,
+        this.evalPos.partecipation
+      ); //Pensare ad una conversione più generica
+      this.evalPos.lQSummary = Math.min(
+        this.evalPos.lQLearning,
+        this.evalPos.lQPartecipation
+      ); //Pensare ad una conversione più generica
 
       this.evalPos.summary = Math.min(
         this.evalPos.learning,
@@ -763,6 +823,61 @@ export default {
         this.textColors.quiz = "text-secondary_light"
       }*/
     },
+    addSummaryAreas() {
+      let tTemp = this.summary.tresholds.learning;
+      let eTemp = this.evaluations.learning;
+
+      if (tTemp.length > 0) {
+        this.sumChart.options.annotations.yaxis.push({
+          y2: tTemp[0],
+          borderColor: eTemp[0].areaColor,
+          fillColor: eTemp[0].areaColor,
+        });
+      }
+      for (let i = 0; i < tTemp.length - 1; i++) {
+        this.sumChart.options.annotations.yaxis.push({
+          y: tTemp[i],
+          y2: tTemp[i + 1],
+          borderColor: eTemp[i + 1].areaColor,
+          fillColor: eTemp[i + 1].areaColor,
+        });
+      }
+      if (tTemp.length > 1) {
+        this.sumChart.options.annotations.yaxis.push({
+          y: tTemp[tTemp.length - 1],
+          y2: 100,
+          borderColor: eTemp[eTemp.length - 1].areaColor,
+          fillColor: eTemp[eTemp.length - 1].areaColor,
+        });
+      }
+
+      tTemp = this.summary.tresholds.partecipation;
+      eTemp = this.evaluations.partecipation;
+
+      if (tTemp.length > 0) {
+        this.sumChart.options.annotations.xaxis.push({
+          x2: tTemp[0],
+          borderColor: eTemp[0].areaColor,
+          fillColor: eTemp[0].areaColor,
+        });
+      }
+      for (let i = 0; i < tTemp.length - 1; i++) {
+        this.sumChart.options.annotations.xaxis.push({
+          x: tTemp[i],
+          x2: tTemp[i + 1],
+          borderColor: eTemp[i + 1].areaColor,
+          fillColor: eTemp[i + 1].areaColor,
+        });
+      }
+      if (tTemp.length > 1) {
+        this.sumChart.options.annotations.xaxis.push({
+          x: tTemp[tTemp.length - 1],
+          x2: 100,
+          borderColor: eTemp[eTemp.length - 1].areaColor,
+          fillColor: eTemp[eTemp.length - 1].areaColor,
+        });
+      }
+    },
   },
   computed: {},
   created() {
@@ -775,6 +890,7 @@ export default {
     } else {
       this.retrieveCharts();
       this.retrieveEvaluations();
+      this.addSummaryAreas();
       this.mode = "SUM";
     }
   },

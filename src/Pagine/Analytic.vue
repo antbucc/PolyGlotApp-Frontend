@@ -248,6 +248,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch("storePage", {title:"Analytic", back:false });
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[sessionStorage.getItem("selectedCourse")];
     /*
     this.table = {

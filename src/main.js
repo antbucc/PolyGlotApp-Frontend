@@ -34,6 +34,7 @@ import Privacy from "vue-material-design-icons/FileDocumentEditOutline";
 import Back from "vue-material-design-icons/ArrowLeft";
 import Credits from "vue-material-design-icons/Creation";
 import AnalyticsIcon from "vue-material-design-icons/GoogleAnalytics.vue";
+import columnChartIcon from "vue-material-design-icons/Poll.vue"
 import Loading from 'vue-loading-overlay';
 import Delete from 'vue-material-design-icons/DeleteOutline.vue'; 
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -63,6 +64,7 @@ Vue.component('back-icon', Back);
 Vue.component('credits-icon', Credits);
 Vue.component('question-icon', QuestionIcon);
 Vue.component('analytics-icon', AnalyticsIcon);
+Vue.component('column-chart-icon', columnChartIcon);
 Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;

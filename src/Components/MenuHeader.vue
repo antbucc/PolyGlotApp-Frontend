@@ -359,14 +359,22 @@
           class="hidden md:block md:flex md:justify-between md:bg-transparent"
         >
           <!-- router link barra in alto a destra -->
-          <router-link :to="{name: 'analytic'/*, params: { id: aId, title: aTitle, courseId: courseId }*/}" v-if="auth && page.title == 'Stats'/* &&, forse, Studente*/"> <!--Sistemare i props-->
+          <router-link :to="{name: 'analytic'/*, params: { id: aId, title: aTitle, courseId: courseId }*/}" v-if="auth && page != null && page.title == 'Stats'/* &&, forse, Studente*/"> <!--Sistemare i props-->
             <span
               class="flex items-center p-4"
-              :class="{ active: page && page.title === '' }"
               ><span class="mr-2">
                 <analytics-icon />
               </span>
               <span>Analytics</span></span
+            >
+          </router-link>
+          <router-link :to="{name: 'stats'}" v-if="auth && page != null && page.title == 'Analytic'/* &&, forse, Studente*/"> <!--Sistemare i props-->
+            <span
+              class="flex items-center p-4"
+              ><span class="mr-2">
+                <performance-icon />
+              </span>
+              <span>Statistics</span></span
             >
           </router-link>
         </div>
