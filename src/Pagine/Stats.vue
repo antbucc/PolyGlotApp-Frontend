@@ -148,12 +148,12 @@
               >
                 <ol style="text-align: left">
                   <li
-                    v-for="obj in sort(this.retBoard)"
+                    v-for="(obj,index) in sort(this.retBoard)"
                     :key="obj.playerId"
+                    :class="{ 'first': index === 0 , 'second': index === 1, 'third': index === 2}"
                     class="board"
                   >
-                    <pre>
-   {{ obj.state.PointConcept[1].score }}    {{ obj.playerId }}</pre
+                    <pre> {{index+1}}    {{ obj.state.PointConcept[1].score }}       {{ obj.playerId }}</pre
                     >
                   </li>
                 </ol>

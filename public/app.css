@@ -284,8 +284,8 @@ select:focus {
 }
 
 li.incorrect {
-    border: 1px solid rgb(240, 117, 100);
-    background-color: rgb(240, 117, 100);
+    border: 1px solid #f07564;
+    background-color: #f07564;
     color: white;
 }
 
@@ -408,6 +408,34 @@ section div {
 section {
     margin: -1%;
     padding: 20px;
+}
+.quizzes .badge {
+    padding: 5.5px 10px;
+    border-radius: 100%;
+    background-color: #ffa700;
+    color: white;
+}
+.first{
+    background-color: #ffd077;
+    border-color: #ffd587;
+}
+.first:hover {
+    background-color: #ddb467;
+}
+
+.second{
+    background-color: #afafaf;
+    border-color: #d1d1d1;
+}
+.second:hover {
+    background-color: #747474;
+}
+.third{
+    background-color: #d17d44;
+    border-color: #ff954e;
+}
+.third:hover {
+    background-color: #834e2b;
 }
 
 @media screen and (max-width:900px) {

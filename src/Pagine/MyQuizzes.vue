@@ -79,11 +79,12 @@
                     v-for="obj in this.myCourses"
                     :key="obj.id"
                     :id="obj.id"
-                    class="board grow"
+                    class="board grow quizzes"
                     style="cursor: pointer"
                     @click="doQuiz(obj.id)"
                   >
-                    {{ obj.title }}
+                    {{obj.title}}
+                    <span class="badge" >3</span>
                   </li>
                 </ol>
               </div>
@@ -226,6 +227,7 @@ export default {
     return {
       mode: "I",
       myCourses: JSON.parse(sessionStorage.courses),
+      quizLeft: "2",
     };
   },
   methods: {
