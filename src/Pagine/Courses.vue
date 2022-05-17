@@ -168,6 +168,11 @@ export default {
     
     retrieveCourses() {
       const token = sessionStorage.getItem("token");
+      if ((sessionStorage.courses) == undefined || (sessionStorage.courses) == ""){        
+          console.log("There are no courses available.");
+      }else{
+
+      
       var registeredCourses = JSON.parse(sessionStorage.courses);
 
       /* let loader = this.$loading.show({
@@ -209,7 +214,7 @@ export default {
           console.log("registered courses: " + this.myCampaigns.length);
         }
       });
-    },
+    }},
   },
   computed: {/*
     campaignToShow: function () {

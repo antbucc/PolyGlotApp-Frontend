@@ -74,7 +74,7 @@
                   Here are displayed the courses you are registered for which a
                   new quiz is available. <b>Enjoy!</b>
                 </h1>
-                <ol style="text-align: center">
+                <ol style="text-align: center" v-if="this.myCourses != ''">
                   <li
                     v-for="obj in this.myCourses"
                     :key="obj.id"
@@ -87,6 +87,7 @@
                     <span class="badge" >3</span>
                   </li>
                 </ol>
+                <ol v-else>There are no courses here.</ol>
               </div>
             </template>
           </div>
@@ -226,7 +227,7 @@ export default {
   data: function () {
     return {
       mode: "I",
-      myCourses: JSON.parse(sessionStorage.courses),
+      myCourses: [],
       quizLeft: "2",
     };
   },
@@ -243,6 +244,10 @@ export default {
   computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "Quizzes", back: false });
+    var courses = sessionStorage.courses
+    if (courses != undefined || courses != "" || courses!=null){
+        this.myCourses = (courses);
+    }
   },
   mounted() {},
 };

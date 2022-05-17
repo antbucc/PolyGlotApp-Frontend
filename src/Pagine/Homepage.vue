@@ -43,9 +43,10 @@
           border-radius: 15px;
           background-color: #ffa700;
         "
+         @click="$router.push('/login')"
         v-if="!auth"
         ><login-icon />
-        <p class="text-center w-full" @click="$router.push('/login')">
+        <p class="text-center w-full">
           Login
         </p></t-button
       >

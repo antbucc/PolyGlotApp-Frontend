@@ -156,17 +156,22 @@ export default {
         playerName;
 
       sessionStorage.setItem("player", playerName);
-      var config = {
-        method: "get",
-        url: apiUrl,
-      };
+      
       let self = this;
-      axios(config)
-        .then(function (response) {
+      axios.get(apiUrl).then(
+        function (response) {
+          if(response.data == null || response.data == undefined || response.data == ""){
+            console.log("asd")
+          }else{
           // here I receive the courses at which the player is registered
           sessionStorage.setItem("courses", JSON.stringify(response.data));
 
-          self.$router
+          
+        }})
+        .catch(function (error) {
+          console.log(error);
+        });
+        self.$router
             .push({
               name: "courses",
               params: {
@@ -177,10 +182,6 @@ export default {
             .catch(function (error) {
               console.log("Login Page: " + error);
             });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
     },
     retrieveLevel() {
       const player = sessionStorage.getItem("player");
