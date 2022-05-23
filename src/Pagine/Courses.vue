@@ -26,8 +26,7 @@
               mode == 'MY' ? 'border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('MY')"
-            
-            style="font-size:1.1vw"
+            style="font-size: 1.1vw"
           >
             My Courses:</button
           ><button
@@ -36,7 +35,7 @@
               mode == 'ALL' ? ' border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('ALL')"
-            style="font-size:1.1vw"
+            style="font-size: 1.1vw"
           >
             All Courses:
           </button>
@@ -73,7 +72,7 @@
                 There are no courses.
               </div>
             </template>
-            <template v-else v-for="(campaign,index) in this.myCampaigns">
+            <template v-else v-for="(campaign, index) in this.myCampaigns">
               <!-- gestire no courses se mycampaign è vuoto -->
               <template style="overflow: hidden"
                 ><course-card
@@ -165,15 +164,15 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
-    
+
     retrieveCourses() {
       const token = sessionStorage.getItem("token");
-      if ((sessionStorage.courses) == undefined || (sessionStorage.courses) == ""){        
-          console.log("There are no courses available.");
-      }else{
+      var registeredCourses = [];
+      if (sessionStorage.courses != undefined) {
+        registeredCourses = JSON.parse(sessionStorage.courses);
+      }
 
-      
-      var registeredCourses = JSON.parse(sessionStorage.courses);
+      // var registeredCourses = JSON.parse(sessionStorage.courses);
 
       /* let loader = this.$loading.show({
         canCancel: true,
@@ -189,6 +188,7 @@ export default {
           console.log("Error during courses extraction");
         } else {
           let allCourses = response.data;
+
           // here I filter the courses where the player is registered and the courses where he/she is not registered
           var obj = 0;
 
@@ -210,13 +210,16 @@ export default {
               this.allCampaigns.push(currentAll);
             }
           }
-          console.log("all courses: " + this.allCampaigns.length);
-          console.log("registered courses: " + this.myCampaigns.length);
+          console.log("all courses COURSES page: " + this.allCampaigns.length);
+          console.log(
+            "registered courses  COURSES page: " + this.myCampaigns.length
+          );
         }
       });
-    }},
+    },
   },
-  computed: {/*
+  computed: {
+    /*
     campaignToShow: function () {
       // let toRtn = this.myCampaigns;
       let toRtn = [];

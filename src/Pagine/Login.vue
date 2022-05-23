@@ -88,6 +88,8 @@ export default {
   data() {
     return {
       loginResult: [],
+      myCampaigns: [],
+      allCampaigns: [],
       user: {
         username: "",
         password: "",
@@ -118,10 +120,9 @@ export default {
             this.$store
               .dispatch("loginWithToken", { idToken: token })
               .then(() => {
-                this.retrieveCourses(token, this.user.username);
+                // this.retrieveCourses(token, this.user.username);
                 //this.retrievePoints(this.user.username);
-                this.retrieveLevel();
-                this.getRole();
+                this.retrieveRegisteredCourses(token, this.user.username);
               });
           }
         });
@@ -148,42 +149,93 @@ export default {
     //     console.log("here points are stored");
     //   });
     // },
-    retrieveCourses(token, playerName) {
+
+    retrieveRegisteredCourses(token, playerName) {
       var apiUrl =
         process.env.VUE_APP_BASE_URL +
         process.env.VUE_APP_REGISTERED_COURSE +
         "?playerId=" +
         playerName;
-
       sessionStorage.setItem("player", playerName);
-      
-      let self = this;
-      axios.get(apiUrl).then(
-        function (response) {
-          if(response.data == null || response.data == undefined || response.data == ""){
-            console.log("asd")
-          }else{
-          // here I receive the courses at which the player is registered
-          sessionStorage.setItem("courses", JSON.stringify(response.data));
 
-          
-        }})
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          if (response.data == "error") {
+            console.log("Error during courses extraction");
+          } else {
+            if (
+              response.data == null ||
+              response.data == undefined ||
+              response.data == ""
+            ) {
+              console.log("asd");
+            } else {
+              // here I receive the courses at which the player is registered
+              sessionStorage.setItem("courses", JSON.stringify(response.data));
+              this.retrieveLevel();
+              this.getRole();
+              this.$router
+                .push({
+                  name: "courses",
+                  params: {
+                    finalToken: token,
+                    playerName: this.user.username,
+                  },
+                })
+                .catch(function (error) {
+                  console.log("Login Page: " + error);
+                });
+            }
+          }
+        })
         .catch(function (error) {
           console.log(error);
         });
-        self.$router
-            .push({
-              name: "courses",
-              params: {
-                finalToken: token,
-                playerName: self.user.username,
-              },
-            })
-            .catch(function (error) {
-              console.log("Login Page: " + error);
-            });
     },
+
+    /*  retrieveRegisteredCourses(token, playerName) {
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL +
+        process.env.VUE_APP_REGISTERED_COURSE +
+        "?playerId=" +
+        playerName;
+      sessionStorage.setItem("player", playerName);
+      alert("arrivo qui");
+      // let self = this;
+      axios
+        .get(apiUrl)
+        .then(function (response) {
+          alert("response: " + response);
+          if (
+            response.data == null ||
+            response.data == undefined ||
+            response.data == ""
+          ) {
+            console.log("asd");
+          } else {
+            // here I receive the courses at which the player is registered
+            console.log("quanti sono: " + JSON.stringify(response.data));
+            sessionStorage.setItem("courses", JSON.stringify(response.data));
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+       self.$router
+        .push({
+          name: "courses",
+          params: {
+            finalToken: token,
+            playerName: self.user.username,
+          },
+        })
+        .catch(function (error) {
+          console.log("Login Page: " + error);
+        });
+    },*/
     retrieveLevel() {
+      console.log("here we retrieve the player level");
       const player = sessionStorage.getItem("player");
       //var registeredPoints = JSON.parse(sessionStorage.points);
 

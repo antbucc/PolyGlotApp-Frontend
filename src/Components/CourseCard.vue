@@ -12,7 +12,8 @@
       lg:mx-2
       xl:w-1/5
       justify-cente
-      shadow-xl grow
+      shadow-xl
+      grow
     "
     style="height: 10em; width: 10em; word-wrap: break-word"
   >
@@ -38,7 +39,10 @@
         </div>
       </div>
 
-      <div class="flex flex-col lg:mt-auto align-middle pt-4 text-sm" style="justify-content:center">
+      <div
+        class="flex flex-col lg:mt-auto align-middle pt-4 text-sm"
+        style="justify-content: center"
+      >
         <template v-if="dRegistered">
           <button
             type="button"
@@ -55,8 +59,7 @@
               py-1
               px-2
             "
-            style="margin: auto; 
-    border-radius: 15px;"
+            style="margin: auto; border-radius: 15px"
             @click="$router.push('/stats')"
           >
             <performance-icon class="pr-1" />Statistics
@@ -76,8 +79,7 @@
               py-1
               px-2
             "
-            style="margin: auto; 
-    border-radius: 15px;"
+            style="margin: auto; border-radius: 15px"
             @click="toCourseAnalytics()"
           >
             <analytics-icon class="pr-1" />Analytics
@@ -101,8 +103,7 @@
               py-1
               px-2
             "
-            style="margin: auto; 
-    border-radius: 15px;"
+            style="margin: auto; border-radius: 15px"
           >
             <join-icon class="pr-1" />Join the Game
           </button>
@@ -123,8 +124,8 @@ export default {
     registered: Boolean,
     fromAnalytics: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
     // logo: String,
     // description: String,
     // active: Boolean,
@@ -180,12 +181,14 @@ export default {
 
   methods: {
     addCourse() {
+      console.log("arrivo qui");
       let playerId = this.$route.params.playerName;
 
       let courseId = this.dId;
       let courseTitle = this.dTitolo;
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_REGISTER_COURSE;
+      console.log("url registrazione corse: " + apiUrl);
 
       var data = {
         playerId: playerId,
@@ -297,9 +300,9 @@ export default {
        */
     },
     toCourseAnalytics() {
-      sessionStorage.setItem('selectedCourse',this.dPosition);
-      this.$router.push('/analytics');
-    }
+      sessionStorage.setItem("selectedCourse", this.dPosition);
+      this.$router.push("/analytics");
+    },
   },
   mounted: function () {
     /*
