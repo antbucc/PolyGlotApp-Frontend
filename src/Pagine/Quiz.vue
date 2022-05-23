@@ -4,7 +4,7 @@
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 50em; height: 50em; text-align: center; margin-left: 25vw"
+        style="width: 50em; height: 50em; text-align: center"
       >
         <div class="quiz-header">
           <!-- Header della card -->
