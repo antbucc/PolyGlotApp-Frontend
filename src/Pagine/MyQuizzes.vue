@@ -61,7 +61,7 @@
                 <img
                   style="
                     margin-top: 1vw;
-                    margin-bottom:1.5vw;
+                    margin-bottom: 1.5vw;
                     margin-left: auto;
                     margin-right: auto;
                     max-height: 100px;
@@ -83,11 +83,13 @@
                     style="cursor: pointer"
                     @click="doQuiz(obj.id)"
                   >
-                    {{obj.title}}
-                    <span class="badge" >3</span>
+                    {{ obj.title }}
+                    <span class="badge">3</span>
                   </li>
                 </ol>
-                <ol v-else>There are no courses here.</ol>
+                <ol v-else>
+                  There are no courses here.
+                </ol>
               </div>
             </template>
           </div>
@@ -161,7 +163,7 @@
                 </p>
                 <p style="font-size: 1.2vw">Opponents:</p>
                 <select
-                  name="opponents" 
+                  name="opponents"
                   style="margin-top: 1vw; margin-bottom: 1vw; font-size: 1vw"
                 >
                   <option value="TEAM POLY" selected="selected">
@@ -193,7 +195,7 @@
                   style="margin-bottom: 1vw; margin-top: 1vw; font-size: 1vw"
                 />
                 <button
-                  class="button-cl grow" 
+                  class="button-cl grow"
                   style="
                     font-size: 1.1em;
                     width: 10em;
@@ -244,9 +246,10 @@ export default {
   computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "Quizzes", back: false });
-    var courses = sessionStorage.courses
-    if (courses != undefined || courses != "" || courses!=null){
-        this.myCourses = (courses);
+
+    var courses = sessionStorage.courses;
+    if (courses != undefined || courses != "" || courses != null) {
+      this.myCourses = JSON.parse(courses);
     }
   },
   mounted() {},

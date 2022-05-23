@@ -145,7 +145,7 @@ export default {
       //here i store the courseId clicked on quizzes to know from which course choose the questions
       var id = this.$route.params.courseId;
       let url = apiUrl + "?token=" + token + "&courseid=" + id;
-      console.log(id);
+      console.log("qui:" + id);
 
       axios.get(url).then((response) => {
         if (response.data == "error") {
@@ -160,11 +160,13 @@ export default {
           // }
           // console.log(this.tags[0])
           let obj = 0;
-          for (obj in nxtQuestion.tags){
-            this.tags.push(nxtQuestion.tags[obj])
+          for (obj in nxtQuestion.tags) {
+            this.tags.push(nxtQuestion.tags[obj]);
           }
-          this.difficulty = this.tags[0].name.charAt(this.tags[0].name.length - 1)
-          console.log(this.difficulty)
+          this.difficulty = this.tags[0].name.charAt(
+            this.tags[0].name.length - 1
+          );
+          console.log(this.difficulty);
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
           if (type == "multichoice") {
