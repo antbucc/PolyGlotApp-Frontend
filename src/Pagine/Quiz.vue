@@ -145,20 +145,12 @@ export default {
       //here i store the courseId clicked on quizzes to know from which course choose the questions
       var id = this.$route.params.courseId;
       let url = apiUrl + "?token=" + token + "&courseid=" + id;
-      console.log("qui:" + id);
 
       axios.get(url).then((response) => {
         if (response.data == "error") {
-          console.log("Error during question extraction");
+          console.log("User not enrolled in course.");
         } else {
           let nxtQuestion = response.data;
-          //here i define the difficulty of the question using the tag
-          // console.log("rawname:")
-          // var tag = 0;
-          // for(tag.id in response.data.tags){
-          //       this.tags.push(tag);
-          // }
-          // console.log(this.tags[0])
           let obj = 0;
           for (obj in nxtQuestion.tags) {
             this.tags.push(nxtQuestion.tags[obj]);
@@ -166,7 +158,7 @@ export default {
           this.difficulty = this.tags[0].name.charAt(
             this.tags[0].name.length - 1
           );
-          console.log(this.difficulty);
+          console.log("difficulty:" + this.difficulty);
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
           if (type == "multichoice") {
@@ -416,11 +408,13 @@ export default {
       return this.percentage.toFixed();
     },
   },
-  async created() {
-    this.retrievePoints();
+  created() {
+    console.log("arrivo qui - creazione pagina Quiz.vue");
+    //this.retrievePoints();
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
-    var per = 100;
+
+    /* var per = 100;
     this.intval = setInterval(() => {
       this.ansTime++;
       if (this.percentage > 0) {
@@ -433,6 +427,7 @@ export default {
         this.check();
       }
     }, 1000);
+    */
   },
 };
 </script>

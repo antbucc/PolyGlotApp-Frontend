@@ -5,20 +5,20 @@
       class="pt-16 lg:pt-16 lg:pl-64 min-h-screen padding-bottom"
     ></router-view>
     <snack-bar />
-    <app-footer />
+    <!-- <app-footer />-->
   </div>
 </template>
 
 <script>
 import MenuHeader from "./Components/MenuHeader.vue";
 import SnackBar from "./Components/SnackBar.vue";
-import Footer from "./Components/Footer.vue";
+//import Footer from "./Components/Footer.vue";
 export default {
   name: "App",
   components: {
     menuHeader: MenuHeader,
     "snack-bar": SnackBar,
-    "app-footer": Footer,
+    //  "app-footer": Footer,
   },
 
   created() {

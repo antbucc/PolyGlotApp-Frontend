@@ -246,7 +246,6 @@ export default {
   computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "Quizzes", back: false });
-
     var courses = sessionStorage.courses;
     if (courses != undefined || courses != "" || courses != null) {
       this.myCourses = JSON.parse(courses);
