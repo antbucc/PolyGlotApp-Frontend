@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col lg:flex-row bg-primary contact">
-    <div class="lg:w-4/12 lg:my-2" style="font-size: 0.9em">
+    <div class="lg:w-4/12 lg:my-2" style="font-size: 0.9em; margin: auto;">
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="width: 50em; height: 50em; text-align: center"
+        style=" text-align:center;  width:25em; height:40em; margin:auto"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -24,10 +24,10 @@
           Time Left: {{ this.seconds }} s
         </h2>
         <!-- Barra di progresso del quiz -->
-        <pre><h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;"><b id="type"></b></h1><h2 style="display: inline; margin-left: auto; margin-right: auto"><b>TOPIC: THIS TOPIC  -  DIFFICULTY: EASY</b></h2></pre>
+        <pre><h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;"><b id="type"></b></h1><h2 style="display: inline; margin-left: auto; margin-right: auto; font-size:0.7em"><b>TOPIC: THIS TOPIC  -  DIFFICULTY: {{this.difficulty}}</b></h2></pre>
         <b
           ><h1
-            style="font-size: 1.3em; margin-left: auto; margin-right: auto"
+            style="font-size: 1em; margin-left: auto; margin-right: auto"
             id="text"
           ></h1
         ></b>
@@ -46,7 +46,7 @@
             <!-- Box delle risposte alla suddetta domanda -->
             <ul
               style="
-                width: 35em;
+                width: 15em;
                 font-size: 1.1em;
                 margin-left: auto;
                 margin-right: auto;
@@ -76,14 +76,14 @@
             id="delete"
             style="font-size: 1.1em; width: 10em; height: 2em"
           >
-            Delete an answer
+            Delete
           </button>
           <button
             class="button-cl"
             id="change"
             style="font-size: 1.1em; width: 10em; height: 2em"
           >
-            Change question
+            Change
           </button>
           <button
             class="button-cl"
@@ -274,12 +274,12 @@ export default {
         if (resps[i].id == correct) {
           resps[i].setAttribute(
             "style",
-            "background-color:#19b533  ; font-weight: bold; color:white"
+            "background-color:#19b533  ; text-align: center; color:white; width: 15em; font-size: 1.1em;  "
           );
         } else {
           resps[i].setAttribute(
             "style",
-            "background-color:#b52919; font-weight: bold; color:white"
+            "background-color:#b52919;  text-align: center; color:white; width: 15em;font-size: 1.1em; "
           );
         }
       }
@@ -288,7 +288,7 @@ export default {
         .getElementById("ansUl")
         .setAttribute(
           "style",
-          "width: 35em;font-size: 1.1em;margin-left: auto;margin-right: auto;pointer-events: none;"
+          "width: 15em;font-size: 1.1em;margin-left: auto;margin-right: auto;pointer-events: none;"
         );
 
       document
@@ -414,7 +414,7 @@ export default {
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
 
-    /* var per = 100;
+     var per = 100;
     this.intval = setInterval(() => {
       this.ansTime++;
       if (this.percentage > 0) {
@@ -427,7 +427,7 @@ export default {
         this.check();
       }
     }, 1000);
-    */
+    
   },
 };
 </script>

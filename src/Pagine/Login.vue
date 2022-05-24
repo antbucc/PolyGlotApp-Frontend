@@ -93,7 +93,6 @@ export default {
       user: {
         username: "",
         password: "",
-        roles: [],
       },
     };
   },
@@ -258,9 +257,8 @@ export default {
       console.log(nToken);
       var apiUrl =
         process.env.VUE_APP_BASE_URL + "role?token=" + nToken + "&courseid=5";
-
       axios.get(apiUrl).then((response) => {
-        if (response.data == "error") {
+        if (response.data == "error" || response.data == null || response.data == "") {
           console.log("Error during role extraction");
         } else {
           if (response.data == "no-role") {
@@ -268,7 +266,8 @@ export default {
           } else {
             var obj = 0;
             for (obj in response.data) {
-              roles.push(response.data[obj].shortname);
+              roles.push(JSON.stringify(response.data[obj].shortname));
+              console.log(obj)
             }
             sessionStorage.setItem("roles", roles);
           }

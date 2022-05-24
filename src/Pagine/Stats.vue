@@ -20,7 +20,7 @@
               mode == 'I' ? 'border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('I')"
-            style="font-size: 1.1vw"
+            style="font-size: 1.1em"
           >
             Statistics</button
           ><button
@@ -29,7 +29,7 @@
               mode == 'B' ? ' border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('B')"
-            style="font-size: 1.1vw"
+            style="font-size: 1.1em"
           >
             Leaderboard
           </button>

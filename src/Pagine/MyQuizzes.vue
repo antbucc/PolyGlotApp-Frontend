@@ -20,16 +20,16 @@
               mode == 'I' ? 'border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('I')"
-            style="font-size: 1.1vw"
+            style="font-size: 1.1em"
           >
-            Available Quiz</button
+            Quiz</button
           ><button
             class="flex-1 py-2 px-6 block focus:outline-none hover:bg-blue-700"
             :class="
               mode == 'B' ? ' border-blue-300 border-b-4 text-blue-300' : ''
             "
             @click="changeMode('B')"
-            style="font-size: 1.1vw"
+            style="font-size: 1.1em"
           >
             Challenges
           </button>
@@ -40,37 +40,20 @@
           v-show="mode == 'I'"
           class="justify-center text-center w-full text-xl"
         >
-          <div class="box">
             <template>
               <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
-              <div
-                class="
-                  m-auto
-                  justify-center
-                  flex flex-col
-                  bg-white
-                  rounded-lg
-                  my-4
-                  text-center
-                  justify-center
-                  shadow-xl
-                  p-12
-                "
-                style="width: 35vw; font-size: 1.2vw; margin-bottom: 1vw"
-              >
+              <form
+        action=""
+        class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
+        style=" text-align:center;  width:18em; height:30em; margin:auto"
+      >
                 <img
-                  style="
-                    margin-top: 1vw;
-                    margin-bottom: 1.5vw;
-                    margin-left: auto;
-                    margin-right: auto;
-                    max-height: 100px;
-                    width: 6vw;
-                  "
+                  
+            style="width: 5em; margin-bottom: 20px"
                   src="../../public/logo.png"
                   alt="PolyGlot"
                 />
-                <h1 style="font-size: 1.2vw; margin-bottom: 5vw">
+                <h1 style="font-size: 1.2em; margin-bottom: 5vw">
                   Here are displayed the courses you are registered for which a
                   new quiz is available. <b>Enjoy!</b>
                 </h1>
@@ -90,16 +73,15 @@
                 <ol v-else>
                   There are no courses here.
                 </ol>
-              </div>
+              </form>
             </template>
-          </div>
+            
         </div>
         <div
           id="chart_container"
           v-show="mode == 'B'"
           class="justify-center text-center w-full text-xl"
         >
-          <div style="display: flex">
             <template>
               <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
               <div
@@ -116,18 +98,17 @@
                   p-12
                 "
                 style="
-                  width: 35vw;
-                  height: 33vw;
-                  font-size: 1.3vw;
-                  margin-bottom: 1vw;
+                  width: 14em;
+                  height: 20em;
+                  font-size: 1.3em; 
                 "
               >
                 <div>
-                  <p style="margin-bottom: 2vw; font-size: 1.5vw">
+                  <p style="margin-bottom: 2em; font-size: 0.7em">
                     Challenges received:
                     <br />
                   </p>
-                  <ol style="font-size: 1vw">
+                  <ol style="font-size: 0.7em">
                     <li class="board grow">TEAM F</li>
                     <li class="board grow">TEAM ARC</li>
                     <li class="board grow">TEAM JJ</li>
@@ -151,20 +132,20 @@
                   p-12
                 "
                 style="
-                  width: 35vw;
-                  height: 33vw;
-                  font-size: 1.3vw;
-                  margin-bottom: 1vw;
+                  width: 14em;
+                  height: 20em;
+                  font-size: 1.3em;
+                  margin-bottom: 1em;
                 "
               >
-                <p style="margin-bottom: 2vw; font-size: 1.5vw">
+                <p style="margin-bottom: 2em; font-size: 0.7em">
                   Create new challenge:
                   <br />
                 </p>
-                <p style="font-size: 1.2vw">Opponents:</p>
+                <p style="font-size: 0.7em">Opponents:</p>
                 <select
                   name="opponents"
-                  style="margin-top: 1vw; margin-bottom: 1vw; font-size: 1vw"
+                  style="margin-top: 1em; margin-bottom: 1em; font-size: 0.7em"
                 >
                   <option value="TEAM POLY" selected="selected">
                     TEAM POLY
@@ -174,10 +155,10 @@
                   <option value="TEAM JJ">TEAM JJ</option>
                   <option value="TEAM GLOT">TEAM GLOT</option>
                 </select>
-                <p style="font-size: 1.2vw">Subject:</p>
+                <p style="font-size: 0.7em">Subject:</p>
                 <select
                   name="subject"
-                  style="margin-top: 1vw; margin-bottom: 1vw; font-size: 1vw"
+                  style="margin-top: 1em; margin-bottom: 1em; font-size: 0.7em"
                 >
                   <option value="SysML V2" selected="selected">SysML V2</option>
                   <option value="C#">C#</option>
@@ -186,18 +167,18 @@
                   </option>
                   <option value="UML Class Diagrams">UML Class Diagrams</option>
                 </select>
-                <p style="font-size: 1.2vw">Points at stake:</p>
+                <p style="font-size: 0.7em">Points at stake:</p>
                 <input
                   type="number"
                   value="0"
                   id="pointstake"
                   onkeypress="return /[0-9]/i.test(event.key)"
-                  style="margin-bottom: 1vw; margin-top: 1vw; font-size: 1vw"
+                  style="margin-bottom: 1em; margin-top: 1em; font-size: 0.7em"
                 />
                 <button
                   class="button-cl grow"
                   style="
-                    font-size: 1.1em;
+                    font-size: 0.7em;
                     width: 10em;
                     height: 2em;
                     margin-top: 20px;
@@ -212,7 +193,6 @@
                 </button>
               </div>
             </template>
-          </div>
         </div>
       </div>
     </div>
