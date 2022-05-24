@@ -155,9 +155,14 @@ export default {
           for (obj in nxtQuestion.tags) {
             this.tags.push(nxtQuestion.tags[obj]);
           }
-          this.difficulty = this.tags[0].name.charAt(
-            this.tags[0].name.length - 1
-          );
+          for(obj in this.tags){
+            if (this.tags[obj].name.includes("difficulty")){
+                  this.difficulty = this.tags[obj].name.charAt(
+            this.tags[0].name.length - 1            
+          )
+            }
+          }
+          
           console.log("difficulty:" + this.difficulty);
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
@@ -326,15 +331,16 @@ export default {
         },
       });
 
-      this.retrievePoints();
+      //this.retrievePoints();
 
       //var score = this.retPoints[1].score;  we will use this to tell how much the xp has increased
       this.$swal({
-        title: "Point Score",
+        title: "Congratulations!",
         text: "Correct! Your XP increased!",
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
+        backdrop: 'rgba(0,0,1,0.5)',
       }); //disable every answerclick
     },
     noAns() {
@@ -346,15 +352,16 @@ export default {
         playerId: player,
       });
 
-      this.retrievePoints();
+      //this.retrievePoints();
 
       //var score = this.retPoints[1].score; we will use this to tell how much the xp has increased
       this.$swal({
-        title: "Point Score",
+        title: "Time finished!",
         text: "You have not answered. Your XP will not increase nor decrease",
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
+        backdrop: 'rgba(0,0,1,0.5)',
       }); //disable every answerclick
     },
     wrongAns() {
@@ -369,15 +376,16 @@ export default {
         },
       });
 
-      this.retrievePoints();
+      //this.retrievePoints();
 
       //var score = this.retPoints[1].score; we will use this to tell how much the xp has decreased
       this.$swal({
-        title: "Point Score",
+        title: "Oh, no!",
         text: "Wrong! Your XP decreased...",
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
+        backdrop: 'rgba(0,0,1,0.5)',
       }); //disable every answerclick
       //document.getElementsByTagName("li").removeEventListener("click", this.check())
     },

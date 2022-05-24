@@ -115,8 +115,9 @@
               style="width: 18em; height: 10em; font-size: 1em"
             >
               <p style="margin-top: 0">
-                Questions answered: <b>25</b> <br /><br />
-                Correct answers: <b>23</b>
+                Questions answered: <b>25</b> <br />
+                Correct answers: <b>23</b> <br />
+                Bonus Points: <b>5</b>
               </p>
             </div>
           </template>
@@ -163,7 +164,7 @@
                     style="width: 13em; margin-bottom: 0.8em"
                   >
                     <pre>
- {{ index + 1 }}   {{ obj.state.PointConcept[1].score }}    {{
+   {{ index + 1 }}   {{ obj.state.PointConcept[1].score }}    {{
                         obj.playerId
                       }}</pre
                     >
