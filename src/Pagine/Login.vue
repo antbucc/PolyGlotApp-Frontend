@@ -156,7 +156,7 @@ export default {
         "?playerId=" +
         playerName;
       sessionStorage.setItem("player", playerName);
-
+      console.log(apiUrl);
       axios
         .get(apiUrl)
         .then((response) => {
@@ -168,7 +168,19 @@ export default {
               response.data == undefined ||
               response.data == ""
             ) {
-              console.log("asd");
+              this.retrieveLevel();
+              this.getRole();
+              this.$router
+                .push({
+                  name: "courses",
+                  params: {
+                    finalToken: token,
+                    playerName: this.user.username,
+                  },
+                })
+                .catch(function (error) {
+                  console.log("Login Page: " + error);
+                });
             } else {
               // here I receive the courses at which the player is registered
               sessionStorage.setItem("courses", JSON.stringify(response.data));
