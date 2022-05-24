@@ -40,91 +40,86 @@
           v-show="mode == 'I'"
           class="justify-center text-center w-full text-xl"
         >
-          <div class="box">
-            <template>
-              <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
-              <div
-                class="
-                  m-auto
-                  justify-center
-                  flex flex-col-reverse
-                  bg-white
-                  rounded-lg
-                  my-4
-                  text-center
-                  justify-center
-                  shadow-xl
-                  p-12
-                  grow
-                "
-                style="width: 35vw; font-size: 1.3vw; margin-bottom: 1vw"
-              >
-                <div v-for="obj in this.retPoints" :key="obj.id">
-                  <p>
-                    {{ obj.name }}: <b>{{ obj.score }}</b
-                    ><br />
-                  </p>
-                </div>
-              </div>
-              <div
-                class="
-                  m-auto
-                  justify-center
-                  flex flex-col-reverse
-                  bg-white
-                  rounded-lg
-                  my-4
-                  text-center
-                  justify-center
-                  shadow-xl
-                  p-12
-                  grow
-                "
-                style="width: 35vw; font-size: 1.3vw; margin-bottom: 1vw"
-              >
+          <template>
+            <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+                grow
+              "
+              style="
+                width: 18em;
+                height: 10em;
+                font-size: 1em;
+                margin-bottom: 1em;
+              "
+            >
+              
+              <div v-for="obj in this.retPoints" :key="obj.id">
                 <p>
-                  Your Level: <b>{{ this.level[0] }}</b
+                  {{ obj.name }}: <b>{{ obj.score }}</b
                   ><br />
-                  <b>Keep going!</b>
                 </p>
               </div>
-              <div
-                class="
-                  m-auto
-                  justify-center
-                  flex flex-col-reverse
-                  bg-white
-                  rounded-lg
-                  my-4
-                  text-center
-                  justify-center
-                  shadow-xl
-                  p-12
-                  grow
-                "
-                style="width: 35vw; font-size: 1.3vw; margin-bottom: 1vw"
-              >
-                <p>
-                  Questions answered: <b>25</b> <br /><br />
-                  Correct answers: <b>23</b>
-                </p>
-                <div class="images">
-                  <div class="photo">
-                    <img src="../assets/images/1.png" alt="photo" />
-                  </div>
-
-                  <div class="photo">
-                    <img src="../assets/images/2.png" alt="photo" />
-                  </div>
-
-                  <div class="photo">
-                    <img src="../assets/images/3.png" alt="photo" />
-                  </div>
-                </div>
-                <div>Your Badges:</div>
-              </div>
-            </template>
-          </div>
+              <img
+                src="../../public/logo.png"
+                alt="PolyGlot"
+                style="width: 5em; margin-top:1.8em; margin-bottom:1em"
+              />
+            </div>
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+                grow
+              "
+              style="width: 18em; font-size: 1em; margin-bottom: 1em"
+            >
+              <p>
+                Your Level: <b>{{ this.level[0] }}</b
+                ><br />
+                <b>Keep going!</b>
+              </p>
+            </div>
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+                grow
+              "
+              style="width: 18em; height: 10em; font-size: 1em"
+            >
+              <p style="margin-top: 0">
+                Questions answered: <b>25</b> <br /><br />
+                Correct answers: <b>23</b>
+              </p>
+            </div>
+          </template>
         </div>
         <div
           id="chart_container"
@@ -144,19 +139,41 @@
                   shadow-xl
                   p-12
                 "
-                style="width: 80vw; overflow-y: scroll; scrollbar-width: thin"
+                style="width: 18em; text-align: center"
               >
-                <ol style="text-align: left">
+                <ol
+                  style="
+                    text-align: left;
+                    width: 15em;
+                    height: 20em;
+                    overflow-y: scroll;
+                    scrollbar-width: thin;
+                    margin: auto;
+                  "
+                >
                   <li
-                    v-for="(obj,index) in sort(this.retBoard)"
+                    v-for="(obj, index) in sort(this.retBoard)"
                     :key="obj.playerId"
-                    :class="{ 'first': index === 0 , 'second': index === 1, 'third': index === 2}"
+                    :class="{
+                      first: index === 0,
+                      second: index === 1,
+                      third: index === 2,
+                    }"
                     class="board"
+                    style="width: 13em; margin-bottom: 0.8em"
                   >
-                    <pre> {{index+1}}    {{ obj.state.PointConcept[1].score }}       {{ obj.playerId }}</pre
+                    <pre>
+ {{ index + 1 }}   {{ obj.state.PointConcept[1].score }}    {{
+                        obj.playerId
+                      }}</pre
                     >
                   </li>
                 </ol>
+                <img
+                src="../../public/logo.png"
+                alt="PolyGlot"
+                style="width: 5em; margin-bottom: 2em; "
+              />
               </div>
             </template>
           </div>
