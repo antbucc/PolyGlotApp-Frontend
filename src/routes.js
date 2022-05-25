@@ -19,6 +19,13 @@ import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
 import store from './store/store'
 import AllAnalytics from "./Pagine/AllAnalytics.vue";
 import Analytic from "./Pagine/Analytic.vue";
+import Challenges from "./Pagine/Challenges.vue";
+import History from "./Pagine/History.vue";
+import Pendings from "./Pagine/Pendings.vue";
+import Pendings1 from "./Pagine/Pendings1.vue";
+import Newchallenge from "./Pagine/Newchallenge.vue";
+import Createdchallenge from "./Pagine/Createdchallenge";
+import Recap from "./Pagine/Recap";
 
 const routes = [
   {
@@ -100,6 +107,41 @@ const routes = [
     path: '/logout',
     name: 'logout',
     component: Logout
+  },
+  {
+    path: '/challenges',
+    name: 'challenges',
+    component: Challenges
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: History
+  },
+  {
+    path: '/pendings',
+    name: 'pendings',
+    component: Pendings
+  },
+  {
+    path: '/pendings1',
+    name: 'pendings1',
+    component: Pendings1
+  },
+  {
+    path: '/newchallenge',
+    name: 'newchallenge',
+    component: Newchallenge
+  },
+  {
+    path: '/createdchallenge',
+    name: 'createdchallenge',
+    component: Createdchallenge
+  },
+  {
+    path: '/recap',
+    name: 'recap',
+    component: Recap
   },
   {
     path: '/course/:id',
