@@ -36,7 +36,11 @@ import Credits from "vue-material-design-icons/Creation";
 import AnalyticsIcon from "vue-material-design-icons/GoogleAnalytics.vue";
 import columnChartIcon from "vue-material-design-icons/Poll.vue"
 import Loading from 'vue-loading-overlay';
-import Delete from 'vue-material-design-icons/DeleteOutline.vue'; 
+import Delete from 'vue-material-design-icons/DeleteOutline.vue';
+import ChangeQuiz from 'vue-material-design-icons/Cached.vue';
+import AddTime from 'vue-material-design-icons/TimerSand.vue';
+import DeleteAnswer from 'vue-material-design-icons/DeleteOutline.vue';
+
 import 'vue-loading-overlay/dist/vue-loading.css';
 //import toast from './Components/toast'
 
@@ -65,7 +69,10 @@ Vue.component('credits-icon', Credits);
 Vue.component('question-icon', QuestionIcon);
 Vue.component('analytics-icon', AnalyticsIcon);
 Vue.component('column-chart-icon', columnChartIcon);
-Vue.component('apexchart', VueApexCharts)
+Vue.component('apexchart', VueApexCharts);
+Vue.component('change-question', ChangeQuiz),
+Vue.component('add-time', AddTime),
+Vue.component('delete-answer', DeleteAnswer),
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 const router = new Router({ routes: routes, mode: 'history' })

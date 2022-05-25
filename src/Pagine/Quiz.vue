@@ -74,23 +74,25 @@
           <button
             class="button-cl"
             id="delete"
-            style="font-size: 1.1em; width: 10em; height: 2em"
+            style="display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;
+              font-size: 1.1em; width: 10em; height: 2em"
           >
-            Delete
+            <delete-answer/>
           </button>
           <button
             class="button-cl"
             id="change"
-            style="font-size: 1.1em; width: 10em; height: 2em"
-          >
-            Change
+            style="display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;
+              font-size: 1.1em; width: 10em; height: 2em"
+          ><change-question/>
           </button>
           <button
-            class="button-cl"
-            id="add"
-            style="font-size: 1.1em; width: 10em; height: 2em"
+              class="button-cl"
+              id="add"
+              style="display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;
+              font-size: 1.1em; width: 10em; height: 2em"
           >
-            Add time
+            <add-time/>
           </button>
         </div>
         <div>
@@ -300,21 +302,24 @@ export default {
         .getElementById("add")
         .setAttribute(
           "style",
-          "background-color: #e7eae0; font-size: 1.1em; width: 10em; height: 2em; position:relative;"
+          "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
+            "              font-size: 1.1em; width: 10em; height: 2em"
         );
       document.getElementById("add").disabled = true;
       document
         .getElementById("change")
         .setAttribute(
           "style",
-          "background-color: #e7eae0; font-size: 1.1em; width: 10em; height: 2em; position:relative;"
+            "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
+            "              font-size: 1.1em; width: 10em; height: 2em"
         );
       document.getElementById("change").disabled = true;
       document
         .getElementById("delete")
         .setAttribute(
           "style",
-          "background-color: #e7eae0; font-size: 1.1em; width: 10em; height: 2em; position:relative;"
+            "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
+            "              font-size: 1.1em; width: 10em; height: 2em"
         );
       document.getElementById("delete").disabled = true;
     },
