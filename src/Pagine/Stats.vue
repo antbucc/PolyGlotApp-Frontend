@@ -63,8 +63,7 @@
                 margin-bottom: 1em;
               "
             >
-              
-              <div v-for="obj in this.retPoints" :key="obj.id">
+              <div v-for="obj in this.retPoints" :key="obj.name">
                 <p>
                   {{ obj.name }}: <b>{{ obj.score }}</b
                   ><br />
@@ -73,7 +72,7 @@
               <img
                 src="../../public/logo.png"
                 alt="PolyGlot"
-                style="width: 5em; margin-top:1.8em; margin-bottom:1em"
+                style="width: 5em; margin-top: 1.8em; margin-bottom: 1em"
               />
             </div>
             <div
@@ -171,10 +170,10 @@
                   </li>
                 </ol>
                 <img
-                src="../../public/logo.png"
-                alt="PolyGlot"
-                style="width: 5em; margin-bottom: 2em; "
-              />
+                  src="../../public/logo.png"
+                  alt="PolyGlot"
+                  style="width: 5em; margin-bottom: 2em"
+                />
               </div>
             </template>
           </div>
@@ -529,11 +528,13 @@ export default {
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
       let url = apiUrl + "?playerId=" + player;
+
       axios.get(url).then((response) => {
         if (response.data == "error") {
           console.log("Error during stats extraction");
         } else {
           let allPoints = response.data.state.PointConcept; //here we store the pointconcept inside allpoints
+
           var obj = 0;
           for (obj in allPoints) {
             this.points = true;
@@ -541,7 +542,7 @@ export default {
             this.retPoints.push(currentPoints);
           }
         }
-        console.log(this.retPoints); // points saved in retPoints
+        // console.log("retreived Points:  " + this.retPoints); // points saved in retPoints
       });
     },
     retrieveLevel() {
@@ -558,7 +559,7 @@ export default {
           let level = response.data.customData.level; //here we store the pointconcept inside allpoints
           this.level.push(level);
         }
-        console.log(this.level); // points saved in retPoints
+        console.log("level of the player: " + this.level); // points saved in retPoints
       });
     },
     retrieveBoard() {
@@ -900,16 +901,17 @@ export default {
   computed: {},
   created() {
     this.$store.dispatch("storePage", { title: "Stats", back: false }); //Titolo messo per collegamento ad Analytics
+
     if (this.isStudent()) {
       this.response = this.retrieveLevel();
       this.response = this.retrievePoints();
       this.response = this.retrieveBoard();
-      this.mode = "I";
+      // this.mode = "I";
     } else {
-      this.retrieveCharts();
-      this.retrieveEvaluations();
-      this.addSummaryAreas();
-      this.mode = "SUM";
+      // this.retrieveCharts();
+      // this.retrieveEvaluations();
+      // this.addSummaryAreas();
+      // this.mode = "SUM";
     }
   },
   mounted() {},
