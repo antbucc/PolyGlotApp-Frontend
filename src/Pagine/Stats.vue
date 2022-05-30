@@ -455,7 +455,6 @@ export default {
       level: [],
 
       sumChart: {
-        type: "",
         series: [],
         options: {},
       },
@@ -478,9 +477,11 @@ export default {
       },
 
       quizChart: {
-        type: "pie",
         series: [],
         options: {
+          chart: {
+            type: "pie",
+          },
           labels: [],
         },
       },
@@ -624,7 +625,6 @@ export default {
         tresholds: [50, 70],
       };
       this.sumChart = {
-        type: "scatter",
         series: [
           {
             name: "Course summary",
@@ -652,6 +652,7 @@ export default {
             yaxis: [],
           },
           chart: {
+            type: "scatter",
             offsetX: 10,
             toolbar: {
               show: false,
