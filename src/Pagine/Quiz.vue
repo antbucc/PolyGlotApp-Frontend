@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col lg:flex-row bg-primary contact">
-    <div class="lg:w-4/12 lg:my-2" style="font-size: 0.9em; margin: auto;">
+    <div class="lg:w-4/12 lg:my-2" style="font-size: 0.9em; margin: auto">
       <form
         action=""
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style=" text-align:center;  width:25em; height:40em; margin:auto"
+        style="text-align: center; width: 25em; height: 40em; margin: auto"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -74,25 +74,51 @@
           <button
             class="button-cl"
             id="delete"
-            style="display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;
-              font-size: 1.1em; width: 10em; height: 2em"
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-left: 0.5em;
+              margin-right: 0.5em;
+              font-size: 1.1em;
+              width: 10em;
+              height: 2em;
+            "
+            @click="deleteAns()"
           >
-            <delete-answer/>
+            <delete-answer />
           </button>
           <button
             class="button-cl"
             id="change"
-            style="display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;
-              font-size: 1.1em; width: 10em; height: 2em"
-          ><change-question/>
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-left: 0.5em;
+              margin-right: 0.5em;
+              font-size: 1.1em;
+              width: 10em;
+              height: 2em;
+            " @click="changeQuestion()"
+          >
+            <change-question />
           </button>
           <button
-              class="button-cl"
-              id="add"
-              style="display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;
-              font-size: 1.1em; width: 10em; height: 2em"
+            class="button-cl"
+            id="add"
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-left: 0.5em;
+              margin-right: 0.5em;
+              font-size: 1.1em;
+              width: 10em;
+              height: 2em;
+            " @click="addTime()"
           >
-            <add-time/>
+            <add-time />
           </button>
         </div>
         <div>
@@ -135,6 +161,7 @@ export default {
       retPoints: [],
       points: true,
       difficulty: 0,
+      maxTime:50,
       tags: [],
     };
   },
@@ -157,14 +184,14 @@ export default {
           for (obj in nxtQuestion.tags) {
             this.tags.push(nxtQuestion.tags[obj]);
           }
-          for(obj in this.tags){
-            if (this.tags[obj].name.includes("difficulty")){
-                  this.difficulty = this.tags[obj].name.charAt(
-            this.tags[0].name.length - 1            
-          )
+          for (obj in this.tags) {
+            if (this.tags[obj].name.includes("difficulty")) {
+              this.difficulty = this.tags[obj].name.charAt(
+                this.tags[0].name.length - 1
+              );
             }
           }
-          
+
           console.log("difficulty:" + this.difficulty);
           document.getElementById("text").innerHTML = nxtQuestion.questiontext;
           var type = nxtQuestion.questiontype;
@@ -310,7 +337,7 @@ export default {
         .getElementById("change")
         .setAttribute(
           "style",
-            "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
+          "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
             "              font-size: 1.1em; width: 10em; height: 2em"
         );
       document.getElementById("change").disabled = true;
@@ -318,7 +345,7 @@ export default {
         .getElementById("delete")
         .setAttribute(
           "style",
-            "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
+          "background-color: #e7eae0; display: flex; justify-content: center; align-items: center; margin-left:0.5em; margin-right: 0.5em;\n" +
             "              font-size: 1.1em; width: 10em; height: 2em"
         );
       document.getElementById("delete").disabled = true;
@@ -345,7 +372,7 @@ export default {
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
-        backdrop: 'rgba(0,0,1,0.5)',
+        backdrop: "rgba(0,0,1,0.5)",
       }); //disable every answerclick
     },
     noAns() {
@@ -366,7 +393,7 @@ export default {
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
-        backdrop: 'rgba(0,0,1,0.5)',
+        backdrop: "rgba(0,0,1,0.5)",
       }); //disable every answerclick
     },
     wrongAns() {
@@ -390,7 +417,7 @@ export default {
         showCancelButton: false,
         showCloseButton: false,
         showLoaderOnConfirm: true,
-        backdrop: 'rgba(0,0,1,0.5)',
+        backdrop: "rgba(0,0,1,0.5)",
       }); //disable every answerclick
       //document.getElementsByTagName("li").removeEventListener("click", this.check())
     },
@@ -415,6 +442,42 @@ export default {
         //console.log(this.retPoints[0].score); // points saved in retPoints
       });
     },
+    changeQuestion() {
+      var que = document.getElementById("text")
+      que.innerHTML="";
+      var list = document.getElementById("ansUl")
+      while (list.hasChildNodes){
+        list.removeChild(list.firstElementChild)
+      }
+      this.retrieveQuestion;
+      //elimino testo della domanda, poi elimino tutti i li di ul e richiamo retrievequestion e answer; poi setto nuovamente il tempo a 50
+    },
+    deleteAns() {
+      // var url = process.env.VUE_APP_BASE_URL + "deleteAnswer";
+      // var player = sessionStorage.getItem("player");
+      // //update the points by making a post request with playerid and time passed for answer
+      // axios.post(url, {
+      //   playerId: player,
+      // });
+      var que = document.getElementById("ansUl");
+      var fAns = que.firstElementChild
+      if(!this.correct.includes(fAns.id)){
+        que.removeChild(fAns)
+      }else{
+        que.removeChild(fAns.nextElementSibling)
+      }
+      console.log(que)
+    },
+    addTime() {
+      // var url = process.env.VUE_APP_BASE_URL + "addTime";
+      // var player = sessionStorage.getItem("player");
+      // //update the points by making a post request with playerid and time passed for answer
+      // axios.post(url, {
+      //   playerId: player,
+      // });
+      this.maxTime = 100 - this.ansTime;
+      this.seconds = 100 - this.ansTime;
+    },
   },
   computed: {
     percent() {
@@ -427,11 +490,11 @@ export default {
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
 
-     var per = 100;
+    var per = 100;
     this.intval = setInterval(() => {
       this.ansTime++;
       if (this.percentage > 0) {
-        this.percentage -= per / 50;
+        this.percentage -= per / this.maxTime;
         this.seconds -= 1;
       }
       //this is 100/maxquestiontime (in this case, max = 10s). for example, if we want to be maximum 20 seconds, we will write 5
@@ -440,7 +503,6 @@ export default {
         this.check();
       }
     }, 1000);
-    
   },
 };
 </script>

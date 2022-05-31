@@ -185,6 +185,7 @@ export default {
               // here I receive the courses at which the player is registered
               sessionStorage.setItem("courses", JSON.stringify(response.data));
               this.retrieveLevel();
+              this.retrieveBonus();
               this.getRole();
               this.$router
                 .push({
@@ -259,6 +260,20 @@ export default {
         } else {
           let level = response.data.customData.level; //here we store the pointconcept inside allpoints
           sessionStorage.setItem("level", level);
+        }
+      });
+    },
+    retrieveBonus(){
+      const player = sessionStorage.getItem("player");
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PLAYER_STATUS;
+      let url = apiUrl + "?playerId=" + player;
+      axios.get(url).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during stats extraction");
+        } else {
+          let bonus = response.data.state.PointConcept[1].score; //here we store the pointconcept inside allpoints
+          sessionStorage.setItem("bonus", bonus);
         }
       });
     },

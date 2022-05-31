@@ -64,8 +64,8 @@
               "
             >
               
-              <div v-for="obj in this.retPoints" :key="obj.id">
-                <p>
+              <div v-for="obj in this.retPoints" :key="obj.id" >
+                <p v-if="obj.name != 'CoursesCoins'">
                   {{ obj.name }}: <b>{{ obj.score }}</b
                   ><br />
                 </p>
@@ -164,7 +164,7 @@
                     style="width: 13em; margin-bottom: 0.8em"
                   >
                     <pre>
-   {{ index + 1 }}   {{ obj.state.PointConcept[1].score }}    {{
+   {{ index + 1 }}   {{ obj.state.PointConcept[2].score }}    {{
                         obj.playerId
                       }}</pre
                     >
@@ -515,7 +515,7 @@ export default {
     sort: function (arr) {
       // sort players by xp
       return arr.slice().sort(function (a, b) {
-        return b.state.PointConcept[1].score - a.state.PointConcept[1].score;
+        return b.state.PointConcept[2].score - a.state.PointConcept[2].score;
       });
     },
     changeMode(mode) {
