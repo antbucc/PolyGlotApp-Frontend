@@ -100,7 +100,8 @@
               font-size: 1.1em;
               width: 10em;
               height: 2em;
-            " @click="changeQuestion()"
+            "
+            @click.prevent="changeQuestion()"
           >
             <change-question />
           </button>
@@ -116,7 +117,8 @@
               font-size: 1.1em;
               width: 10em;
               height: 2em;
-            " @click="addTime()"
+            "
+            @click="addTime()"
           >
             <add-time />
           </button>
@@ -161,7 +163,7 @@ export default {
       retPoints: [],
       points: true,
       difficulty: 0,
-      maxTime:50,
+      maxTime: 50,
       tags: [],
     };
   },
@@ -172,7 +174,7 @@ export default {
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_NEXT_QUESTION;
       //here i store the courseId clicked on quizzes to know from which course choose the questions
-      var id = sessionStorage.getItem("courseid")
+      var id = sessionStorage.getItem("courseid");
       let url = apiUrl + "?token=" + token + "&courseid=" + id;
 
       axios.get(url).then((response) => {
@@ -207,6 +209,9 @@ export default {
       });
     },
     retrieveAnswers(id) {
+      var list = document.getElementById("ansUl");
+      list.innerHTML = "";
+
       const token = sessionStorage.getItem("token");
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTION_OPTION;
@@ -443,13 +448,18 @@ export default {
       });
     },
     changeQuestion() {
-      var que = document.getElementById("text") //elimino testo domanda
-      que.innerHTML="";
-      var list = document.getElementById("ansUl") //prendo risposte dalla lista e le elimino una alla volta
-      while (list.hasChildNodes){
-        list.removeChild(list.firstElementChild)
-      }
-      this.retrieveQuestion; //ripeto il retrieve domanda
+      //var que = document.getElementById("text"); //elimino testo domanda
+      //alert("que: " + que);
+      this.retrieveQuestion(); //ripeto il retrieve domanda
+      //  que.innerHTML = "";
+      //  var list = document.getElementById("ansUl"); //prendo risposte dalla lista e le elimino una alla volta
+
+      //this.$router.go();
+      // const courseSelected = sessionStorage.getItem("courseid");
+      //alert("arrivo qui: " + courseSelected);
+      //   while (list.hasChildNodes) {
+      //     list.removeChild(list.firstElementChild);
+      //  }
     },
     deleteAns() {
       // var url = process.env.VUE_APP_BASE_URL + "deleteAnswer";
@@ -459,13 +469,14 @@ export default {
       //   playerId: player,
       // });
       var que = document.getElementById("ansUl"); //prende lista risposte
-      var fAns = que.firstElementChild //prende prima risposta
-      if(!this.correct.includes(fAns.id)){ //se prima risposta non è corretta
-        que.removeChild(fAns) //la rimuove
-      }else{
-        que.removeChild(fAns.nextElementSibling) //altrimenti rimuove quella subito dopo
+      var fAns = que.firstElementChild; //prende prima risposta
+      if (!this.correct.includes(fAns.id)) {
+        //se prima risposta non è corretta
+        que.removeChild(fAns); //la rimuove
+      } else {
+        que.removeChild(fAns.nextElementSibling); //altrimenti rimuove quella subito dopo
       }
-      console.log(que)
+      console.log(que);
     },
     addTime() {
       // var url = process.env.VUE_APP_BASE_URL + "addTime";
@@ -474,8 +485,8 @@ export default {
       // axios.post(url, {
       //   playerId: player,
       // });
-      this.maxTime = 100 - this.ansTime;  //tempo massimo diventa 100 (doppio di 50) - quello passato finora
-      this.seconds = 100 - this.ansTime;  //questa serve per aumentare il tempo anche per la timebar
+      this.maxTime = 100 - this.ansTime; //tempo massimo diventa 100 (doppio di 50) - quello passato finora
+      this.seconds = 100 - this.ansTime; //questa serve per aumentare il tempo anche per la timebar
     },
   },
   computed: {
@@ -484,7 +495,8 @@ export default {
     },
   },
   created() {
-    console.log("arrivo qui - creazione pagina Quiz.vue");
+    alert("creo la pagina");
+    console.log("arrivo qui  - creazione pagina Quiz.vue");
     //this.retrievePoints();
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
     this.response = this.retrieveQuestion();
