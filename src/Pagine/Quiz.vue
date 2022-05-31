@@ -448,18 +448,7 @@ export default {
       });
     },
     changeQuestion() {
-      //var que = document.getElementById("text"); //elimino testo domanda
-      //alert("que: " + que);
       this.retrieveQuestion(); //ripeto il retrieve domanda
-      //  que.innerHTML = "";
-      //  var list = document.getElementById("ansUl"); //prendo risposte dalla lista e le elimino una alla volta
-
-      //this.$router.go();
-      // const courseSelected = sessionStorage.getItem("courseid");
-      //alert("arrivo qui: " + courseSelected);
-      //   while (list.hasChildNodes) {
-      //     list.removeChild(list.firstElementChild);
-      //  }
     },
     deleteAns() {
       // var url = process.env.VUE_APP_BASE_URL + "deleteAnswer";
