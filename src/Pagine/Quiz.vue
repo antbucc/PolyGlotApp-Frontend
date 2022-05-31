@@ -211,6 +211,7 @@ export default {
     retrieveAnswers(id) {
       var list = document.getElementById("ansUl");
       list.innerHTML = "";
+      this.correct = [];
 
       const token = sessionStorage.getItem("token");
       var apiUrl =
@@ -223,6 +224,7 @@ export default {
           console.log("Error during answer extraction");
         } else {
           let allAns = response.data.answers;
+          alert("qui: " + response.data.correct[0]);
           this.correct.push(response.data.correct[0]);
           var obj = 0;
           for (obj in allAns) {
@@ -484,7 +486,6 @@ export default {
     },
   },
   created() {
-    alert("creo la pagina");
     console.log("arrivo qui  - creazione pagina Quiz.vue");
     //this.retrievePoints();
     this.$store.dispatch("storePage", { title: "Quiz", back: false });
