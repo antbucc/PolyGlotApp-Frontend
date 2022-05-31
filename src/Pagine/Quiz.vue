@@ -172,7 +172,7 @@ export default {
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_NEXT_QUESTION;
       //here i store the courseId clicked on quizzes to know from which course choose the questions
-      var id = this.$route.params.courseId;
+      var id = sessionStorage.getItem("courseid")
       let url = apiUrl + "?token=" + token + "&courseid=" + id;
 
       axios.get(url).then((response) => {

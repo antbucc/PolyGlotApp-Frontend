@@ -63,14 +63,9 @@
                 margin-bottom: 1em;
               "
             >
-<<<<<<< HEAD
               
               <div v-for="obj in this.retPoints" :key="obj.id" >
                 <p v-if="obj.name != 'CoursesCoins'">
-=======
-              <div v-for="obj in this.retPoints" :key="obj.name">
-                <p>
->>>>>>> a29d834ade806bc00b92f3aeeb0476f371571947
                   {{ obj.name }}: <b>{{ obj.score }}</b
                   ><br />
                 </p>
@@ -443,6 +438,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>

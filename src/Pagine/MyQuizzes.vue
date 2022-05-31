@@ -220,7 +220,8 @@ export default {
     },
     doQuiz(id) {
       //here i pass the id to quiz to have the quiz for the course i clicked
-      this.$router.push({ name: "quiz", params: { courseId: id } });
+      sessionStorage.setItem("courseid", id);
+      //this.$router.push({ name: "quiz", params: { courseId: id } });
     },
   },
   computed: {},
