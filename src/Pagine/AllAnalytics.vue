@@ -23,7 +23,7 @@
             style="font-size:1.1vw"
           >
             Educational</button>
-          <button
+          <!--<button
             class="flex-1 py-2 px-6 block focus:outline-none hover:bg-blue-700"
             :class="
               mode == 'GAME' ? ' border-blue-300 border-b-4 text-blue-300' : ''
@@ -42,7 +42,7 @@
             style="font-size:1.1vw"
           >
             Techninc
-          </button>
+          </button>-->
         </nav>
       </div>
       <div class="bg-opacity-0 py-2">
@@ -97,6 +97,7 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
+                  :chartType="analytic.chartType"
                 /> <!--Mettere id corso-->
               </template>
             </template>
@@ -140,6 +141,7 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
+                  :chartType="analytic.chartType"
                 />
               </template
             ></template>
@@ -183,6 +185,7 @@
                   :key="analytic.id"
                   :id="analytic.id"
                   :title="analytic.title"
+                  :chartType="analytic.chartType"
                 />
               </template
             ></template>
@@ -195,6 +198,7 @@
 
 <script>
   import AnalyticCard from "../Components/AnalyticCard.vue";
+  import axios from "axios";
   
   export default {
     name: 'AllAnalytics',
@@ -202,25 +206,7 @@
     data: function () {
       return {
         selectedCourse: {},
-        analytics: [
-          [
-            {
-              id: "1",
-              title: "Riassunto quiz"
-            },
-            {
-              id: "2",
-              title: "Confronto quiz argomento"
-            }
-          ],
-          [
-            {
-              id: "3",
-              title: "Temp example"
-            }
-          ],
-          []
-        ],
+        analytics: [[],[],[]],
         mode: "EDU"
       }
     },
@@ -228,11 +214,25 @@
       changeMode(mode) {
         if (this.mode == mode) return;
         this.mode = mode;
+      },
+      retrieveAnalytics() {
+        var url =
+          process.env.VUE_APP_DBSRV_URL + process.env.VUE_APP_ANALYTICS_SUMMARY;
+        axios.get(url).then((response) => {
+          response.data.forEach(element => {
+            this.analytics[element.category].push({
+              id: element._id,
+              title: element.title,
+              chartType: element.chart.options.chart.type
+            })
+          });
+        })
       }
     },
     created() {
       this.$store.dispatch("storePage", { title: "Analytics", back: false });
       this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[sessionStorage.getItem("selectedCourse")];
+      this.retrieveAnalytics();
     }
   }
 </script>

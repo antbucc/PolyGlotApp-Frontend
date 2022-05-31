@@ -117,7 +117,7 @@
               <div class="lg: w-2/5 lg: pl-5">
                 <!--filtro-->
                 <template>
-                  <analytic-filter :filters="filter.filters" @update="updateTable" />
+                  <analytic-filter :filters="filters" @update="update" />
                 </template>
               </div>
             </template>
@@ -185,13 +185,13 @@
                   justify-center
                 ">
                   <!--grafico-->
-                  <apexchart height="430" :type="chart.type" :options="chart.options" :series="chart.series" />
+                  <apexchart height="430" :options="chart.options" :series="chart.series" />
                 </div>
               </div>
               <div class="lg:w-2/5 lg: pl-5">
                 <!--filtro-->
                 <template>
-                  <analytic-filter :filters="filter.filters" @update="updateChart" />
+                  <analytic-filter :filters="filters" @update="update" />
                 </template>
               </div>
             </template>
@@ -203,12 +203,14 @@
 </template>
 
 <script>
+import axios from "axios";
 import AnalyticFilter from "../Components/AnalyticFilter.vue";
 export default {
   name: "Analytic",
   props: {
     id: String,
-    title: String
+    title: String,
+    chartType: String
   },
   components: { AnalyticFilter },
   data: function () {
@@ -217,20 +219,21 @@ export default {
         aTitle: this.title,
         mode: "TAB",
         selectedCourse: {},
+        retrievedData: {},
         table: {
           head: [],
           data: [],
           firstHead: true
         },
         chart: {
-          type: "",
           series: [],
           options: {
+            chart: {
+              type: this.chartType
+            }
           }
         },
-        filter: {
-          filters: []
-        }
+        filters: []
     };
   },
   methods: {
@@ -238,132 +241,76 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
-    updateTable(filter) {
-      //const player = sessionStorage.getItem("player");
-      console.log(filter)
+    initPage(id) {
+      this.retrievedData = {}
+      var apiUrl =
+        process.env.VUE_APP_DBSRV_URL + process.env.VUE_APP_ANALYTICS;
+      let url = apiUrl + "?analyticId=" + id;
+      axios.get(url).then((response) => {
+        //table static building
+        this.table.head = response.data.table.head
+        response.data.table.firstColumn.forEach(element => {
+          this.table.data.push([element])
+        });
+        this.table.firstHead = !!response.data.table.firstColumn.length
+        //chart static building
+        this.chart.options = response.data.chart.options
+        //Adding filters
+        this.filters = response.data.filters
+      })
+      //Da recuperare dati da trasformare per chart e tabella in update
+      console.log("Retrieved analytic ",id);
     },
-    updateChart(filter) {
-      //const player = sessionStorage.getItem("");
-      console.log(filter)
+    update() {
+      this.updateChart()
+      this.updateTable()
+      console.log("Updated")
+    },
+    updateChart() {
+      ///*
+      this.chart.series = [80,20,15,5]
+      //*/
+      /*
+      this.chart.series = [
+          {
+            name: "Risposte corrette",
+            data: [80,60,90]
+          }, {
+            name: "Risposte sbagliate",
+            data: [20,30,15]
+          }, {
+            name: "Senza risposta",
+            data: [15,10,10]
+          }
+        ]
+      //*/
+      console.log("ChartUpdated");
+    },
+    updateTable() {
+      /*
+      this.table.data = [
+        ["Risposte corrette",80],
+        ["Risposte sbagliate",20],
+        ["Senza risposta",15],
+        ["Senza partecipazione",5]
+      ]
+      //*/
+      /*
+      this.table.data = [
+        ["BPMN",80,20,15],
+        ["Requisiti non funzionali",60,30,10],
+        ["Requisiti funzionali",90,15,10]
+      ]
+      */
+      console.log("TableUpdated");
     }
   },
   created() {
     this.$store.dispatch("storePage", {title:"Analytic", back:false });
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[sessionStorage.getItem("selectedCourse")];
-    /*
-    this.table = {
-      head: [],
-      data: [
-        ["Risposte corrette",80],
-        ["Risposte sbagliate",20],
-        ["Senza risposta",15],
-        ["Senza partecipazione",5]
-      ],
-      firstHead: true
-    }
-    this.chart = {
-      type: "pie",
-      series: [80,20,15,5],
-      options: {
-        labels: [
-          "Risposte corrette",
-          "Risposte sbagliate",
-          "Senza risposta",
-          "Senza partecipazione"
-        ]
-      }
-    }
-    this.filter.filters = [
-      {
-        title: "Quiz",
-        ref: "quiz",
-        dataType: "id",
-        selected: { name: '3', view_name: 'Last: BPMN' }, //L'ultimo quiz è "Last: " + titolo
-        options: [
-          { name: '3', view_name: 'Last: BPMN', default: true },
-          { name: '2', view_name: 'Requisiti non funzionali', default: false },
-          { name: '1', view_name: 'Requisiti funzionali', default: false },
-        ]
-      }
-    ]
-    */
-    ///*
-    this.table = {
-      head: [
-        "",
-        "Risposte corrette",
-        "Risposte sbagliate",
-        "Senza risposta"
-      ],
-      data: [
-        ["BPMN",80,20,15],
-        ["Requisiti non funzionali",60,30,10],
-        ["Requisiti funzionali",90,15,10]
-      ],
-      firstHead: true
-    }
-    this.chart = {
-      type: "bar",
-      series: [
-        {
-          name: "Risposte corrette",
-          data: [80,60,90]
-        }, {
-          name: "Risposte sbagliate",
-          data: [20,30,15]
-        }, {
-          name: "Senza risposta",
-          data: [15,10,10]
-        }
-      ],
-      options: {
-        chart: {
-          type: 'bar',
-          stacked: true,
-          toolbar: {
-            show: false
-          }
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            borderRadius: 10
-          },
-        },
-        xaxis: {
-          type: 'category',
-          categories: [
-            "BPMN","Requisiti non funzionali","Requisiti funzionali"
-          ],
-        },
-        yaxis: {
-          max: 120 //numero di studenti partecipanti al corso
-        }
-      }
-    }
-    this.filter.filters = [
-      {
-        title: "Topic",
-        ref: "topic",
-        dataType: "id",
-        selected: { name: '3', view_name: 'Last: BPMN' }, //L'ultimo quiz è "Last: " + titolo
-        options: [
-          { name: '3', view_name: 'Last: BPMN', default: true },
-          { name: '2', view_name: 'Requisiti non funzionali', default: false },
-          { name: '1', view_name: 'Requisiti funzionali', default: false },
-        ]
-      },
-      {
-        title: "Data range",
-        ref: "dataRange",
-        dataType: "dataRange",
-        selected: { name: '13-09-2021_22-04-2022', view_name: 'This course year' }, //name di "This course year": data inizio corso-data di oggi
-        options: [
-          { name: '13-09-2021_22-04-2022', view_name: 'This course year', default: true },
-        ]
-      }
-    ]//*/
-  },
+    this.initPage(this.aId) //mettere id
+    this.update()
+  }
 };
 </script>
 
