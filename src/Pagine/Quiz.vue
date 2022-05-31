@@ -443,14 +443,13 @@ export default {
       });
     },
     changeQuestion() {
-      var que = document.getElementById("text")
+      var que = document.getElementById("text") //elimino testo domanda
       que.innerHTML="";
-      var list = document.getElementById("ansUl")
+      var list = document.getElementById("ansUl") //prendo risposte dalla lista e le elimino una alla volta
       while (list.hasChildNodes){
         list.removeChild(list.firstElementChild)
       }
-      this.retrieveQuestion;
-      //elimino testo della domanda, poi elimino tutti i li di ul e richiamo retrievequestion e answer; poi setto nuovamente il tempo a 50
+      this.retrieveQuestion; //ripeto il retrieve domanda
     },
     deleteAns() {
       // var url = process.env.VUE_APP_BASE_URL + "deleteAnswer";
@@ -459,12 +458,12 @@ export default {
       // axios.post(url, {
       //   playerId: player,
       // });
-      var que = document.getElementById("ansUl");
-      var fAns = que.firstElementChild
-      if(!this.correct.includes(fAns.id)){
-        que.removeChild(fAns)
+      var que = document.getElementById("ansUl"); //prende lista risposte
+      var fAns = que.firstElementChild //prende prima risposta
+      if(!this.correct.includes(fAns.id)){ //se prima risposta non è corretta
+        que.removeChild(fAns) //la rimuove
       }else{
-        que.removeChild(fAns.nextElementSibling)
+        que.removeChild(fAns.nextElementSibling) //altrimenti rimuove quella subito dopo
       }
       console.log(que)
     },
@@ -475,8 +474,8 @@ export default {
       // axios.post(url, {
       //   playerId: player,
       // });
-      this.maxTime = 100 - this.ansTime;
-      this.seconds = 100 - this.ansTime;
+      this.maxTime = 100 - this.ansTime;  //tempo massimo diventa 100 (doppio di 50) - quello passato finora
+      this.seconds = 100 - this.ansTime;  //questa serve per aumentare il tempo anche per la timebar
     },
   },
   computed: {
