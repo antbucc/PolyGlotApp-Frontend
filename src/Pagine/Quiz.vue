@@ -84,7 +84,7 @@
               width: 10em;
               height: 2em;
             "
-            @click="deleteAns()"
+            @click.prevent="deleteAns()"
           >
             <delete-answer />
           </button>
@@ -118,7 +118,7 @@
               width: 10em;
               height: 2em;
             "
-            @click="addTime()"
+            @click.prevent="addTime()"
           >
             <add-time />
           </button>
@@ -224,7 +224,6 @@ export default {
           console.log("Error during answer extraction");
         } else {
           let allAns = response.data.answers;
-          alert("qui: " + response.data.correct[0]);
           this.correct.push(response.data.correct[0]);
           var obj = 0;
           for (obj in allAns) {
