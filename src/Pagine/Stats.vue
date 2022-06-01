@@ -537,7 +537,8 @@ export default {
           console.log("Error during stats extraction");
         } else {
           let allPoints = response.data.state.PointConcept; //here we store the pointconcept inside allpoints
-
+          var bonus = allPoints[1].score;
+          sessionStorage.setItem("bonus",bonus);
           var obj = 0;
           for (obj in allPoints) {
             this.points = true;

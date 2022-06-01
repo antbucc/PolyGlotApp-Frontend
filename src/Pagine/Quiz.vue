@@ -83,7 +83,8 @@
               font-size: 1.1em;
               width: 10em;
               height: 2em;
-            "
+            " 
+            v-if="bonus >= 3"
             @click.prevent="deleteAns()"
           >
             <delete-answer />
@@ -101,6 +102,7 @@
               width: 10em;
               height: 2em;
             "
+            v-if="bonus >= 5"
             @click.prevent="changeQuestion()"
           >
             <change-question />
@@ -118,6 +120,7 @@
               width: 10em;
               height: 2em;
             "
+            v-if="bonus >= 3"
             @click.prevent="addTime()"
           >
             <add-time />
@@ -165,6 +168,8 @@ export default {
       difficulty: 0,
       maxTime: 50,
       tags: [],
+      bonus: sessionStorage.getItem("bonus"),
+      ansBool : true,
     };
   },
   methods: {
@@ -301,6 +306,7 @@ export default {
         });*/
       }
       // does it in every case
+      this.ansBool = false;
       document.getElementById("next").disabled = false;
       document
         .getElementById("next")
@@ -458,15 +464,20 @@ export default {
       // axios.post(url, {
       //   playerId: player,
       // });
+      if(this.ansBool == true){
       var que = document.getElementById("ansUl"); //prende lista risposte
-      var fAns = que.firstElementChild; //prende prima risposta
-      if (!this.correct.includes(fAns.id)) {
-        //se prima risposta non è corretta
-        que.removeChild(fAns); //la rimuove
-      } else {
-        que.removeChild(fAns.nextElementSibling); //altrimenti rimuove quella subito dopo
-      }
-      console.log(que);
+      if (que.childElementCount != 1) { //se lista non ha un solo figlio (una sola risposta)
+        console.log("cancello risposta")
+        var fAns = que.firstElementChild; //prende prima risposta
+        if (!this.correct.includes(parseInt(fAns.id))) {
+          //se prima risposta non è corretta
+          que.removeChild(fAns); //la rimuove
+        } else {
+          if (fAns.nextElementSibling) {
+            que.removeChild(fAns.nextElementSibling); //altrimenti rimuove quella subito dopo
+          }
+        }
+      }}
     },
     addTime() {
       // var url = process.env.VUE_APP_BASE_URL + "addTime";
@@ -477,6 +488,7 @@ export default {
       // });
       this.maxTime = 100 - this.ansTime; //tempo massimo diventa 100 (doppio di 50) - quello passato finora
       this.seconds = 100 - this.ansTime; //questa serve per aumentare il tempo anche per la timebar
+      this.percentage = 100;
     },
   },
   computed: {
