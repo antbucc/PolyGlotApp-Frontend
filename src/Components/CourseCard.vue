@@ -60,9 +60,9 @@
               px-2
             "
             style="margin: auto; border-radius: 15px"
-            @click="$router.push('/stats')"
+            @click="selectAndRedirect('/gameStatus')"
           >
-            <performance-icon class="pr-1" />Statistics
+            <performance-icon class="pr-1" />Game diary
           </button>
           <button
             type="button"
@@ -80,9 +80,9 @@
               px-2
             "
             style="margin: auto; border-radius: 15px"
-            @click="toCourseAnalytics()"
+            @click="selectAndRedirect('/learningStatus')"
           >
-            <analytics-icon class="pr-1" />Analytics
+            <analytics-icon class="pr-1" />Learning Status
           </button>
         </template>
         <template v-else-if="!dRegistered">
@@ -122,10 +122,6 @@ export default {
     title: String,
     coursePosition: Number,
     registered: Boolean,
-    fromAnalytics: {
-      type: Boolean,
-      default: false,
-    },
     // logo: String,
     // description: String,
     // active: Boolean,
@@ -299,9 +295,9 @@ export default {
         });
        */
     },
-    toCourseAnalytics() {
+    selectAndRedirect(destination) {
       sessionStorage.setItem("selectedCourse", this.dPosition);
-      this.$router.push("/analytics");
+      this.$router.push(destination);
     },
   },
   mounted: function () {

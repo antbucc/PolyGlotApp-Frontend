@@ -52,7 +52,6 @@ export default {
   mounted: function() {
     let tmp = false;
     let i = 0;
-    console.log(this.options.length);
     while (!tmp && i < this.options.length) {
       if (this.options[i].default) {
         tmp = true;

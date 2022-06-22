@@ -140,7 +140,7 @@
               position: relative;
             "
             id="next"
-            @click="$router.push('/stats')"
+            @click="$router.push('/gameStatus')"
           >
             Continue
           </button>

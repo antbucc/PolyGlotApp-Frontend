@@ -1,5 +1,17 @@
 <template>
-  <router-link :to="{name: 'analytic', params: { id: aId, title: aTitle, courseId: courseId, chartType: aChartType }}">
+  <router-link
+    :to="{
+      name: 'analytic',
+      params: {
+        id: id,
+        title: title,
+        custom: custom,
+        chartType: chartType,
+        buildTable: buildTable,
+        buildFilters: buildFilters,
+      },
+    }"
+  >
     <div
       class="
         m-auto
@@ -20,10 +32,10 @@
       <div class="flex flex-col py-6 lg:mx-2 justify-center">
         <div class="px-2">
           <h2
-            class="text-2xl font-semibold break-normal"
+            class="text-2xl font-semibold break-normal text-center"
             style="font-size: 1em"
           >
-            {{ aTitle }}
+            {{ title }}
           </h2>
         </div>
       </div>
@@ -37,15 +49,10 @@ export default {
   props: {
     id: String,
     title: String,
-    courseId: String,
-    chartType: String
+    custom: Boolean,
+    chartType: String,
+    buildTable: Boolean,
+    buildFilters: Boolean,
   },
-  data: function () {
-    return {
-      aId: this.id,
-      aTitle: this.title,
-      aChartType: this.chartType
-    };
-  }
 };
 </script>

@@ -1,5 +1,3 @@
-
-
 import Homepage from "./Pagine/Homepage.vue";
 import Info from "./Pagine/Info.vue";
 import Contatti from "./Pagine/Contatti.vue";
@@ -8,7 +6,6 @@ import Course from "./Pagine/Campagna/Campagna.vue";
 import Privacy from "./Pagine/Campagna/Privacy.vue";
 import Credits from "./Pagine/Credits.vue";
 import Login from "./Pagine/Login.vue";
-import Stats from "./Pagine/Stats.vue";
 import MyQuizzes from "./Pagine/MyQuizzes.vue"
 import Rules from "./Pagine/Campagna/Rules.vue";
 import Callback from "./Pagine/Callback.vue";
@@ -17,8 +14,9 @@ import MyPerformance from "./Pagine/Campagna/MyPerformance.vue";
 import Quiz from "./Pagine/Quiz.vue";
 import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
 import store from './store/store'
-import AllAnalytics from "./Pagine/AllAnalytics.vue";
-import Analytic from "./Pagine/Analytic.vue";
+import AnalyticSwitch from "./Pagine/AnalyticSwitch.vue";
+import AnalyticsList from "./Pagine/AnalyticsList.vue";
+import GameStatusSwitch from "./Pagine/GameStatusSwitch.vue";
 import Challenges from "./Pagine/Challenges.vue";
 import History from "./Pagine/History.vue";
 import Pendings from "./Pagine/Pendings.vue";
@@ -71,26 +69,21 @@ const routes = [
     // }
   },
   {
-    path: '/stats',
-    name: 'stats',
-    component: Stats
+    path: '/gameStatus',
+    name: 'gameStatus',
+    component: GameStatusSwitch,
+    props: { category: 1 }
   },
   {
-    path: '/analytics',
-    name: 'analytics',
-    component: AllAnalytics,
-    /*beforeEnter(to, from, next) {
-      if (store.getters.isAuthenticated) {
-        next()
-      } else {
-        next('/')
-      }
-    }*/
+    path: '/learningStatus',
+    name: 'learningStatus',
+    component: AnalyticsList,
+    props: { category: 0 }
   },
   {
     path: '/analytic',
     name: 'analytic',
-    component: Analytic,
+    component: AnalyticSwitch,
     props: true
   },
   {
