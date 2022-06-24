@@ -267,7 +267,7 @@ export default {
     initPage(id) {
       this.retrievedData = {};
       var apiUrl =
-        process.env.VUE_APP_DBSRV_URL + process.env.VUE_APP_ANALYTICS;
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
       let url = apiUrl + "?analyticId=" + id;
       axios.get(url).then((response) => {
         if (

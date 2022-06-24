@@ -3,6 +3,7 @@
     v-if="GameStatus"
     :is="GameStatus"
     :key="GameStatus.__file"
+    :title="title"
     :category="category"
   ></component>
 </template>
@@ -11,6 +12,7 @@
 export default {
   name: "GameStatusSwitch",
   props: {
+    title: String,
     category: Number,
   },
   data() {
@@ -36,13 +38,13 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
-    // When first entering the route<
+    // When first entering the route
     next((vm) => vm.updateComponent());
   },
   beforeRouteUpdate(to, from, next) {
     // When changing from one dynamic route to another
     this.updateComponent();
     next();
-  },
+  }
 };
 </script>

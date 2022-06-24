@@ -74,6 +74,7 @@ export default {
   name: "AnalyticsList",
   components: { AnalyticCard },
   props: {
+    title: String,
     category: Number,
   },
   data: function () {
@@ -86,7 +87,7 @@ export default {
   methods: {
     retrieveAnalytics() {
       let url =
-        process.env.VUE_APP_DBSRV_URL + process.env.VUE_APP_ANALYTICS_SUMMARY;
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS_SUMMARY;
       let apiUrl = url + "?category=" + this.category;
       axios.get(apiUrl).then((response) => {
         response.data.forEach((element) => {
@@ -106,7 +107,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("storePage", { title: "Analytics", back: false });
+    this.$store.dispatch("storePage", { title: this.title, back: false });
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[
       sessionStorage.getItem("selectedCourse")
     ];

@@ -133,6 +133,9 @@ import Leaderboard from "./CustomAnalytics/6.vue";
 export default {
   name: "StudentGameStatus",
   components: { Leaderboard },
+  props: {
+    title: String
+  },
   data: function () {
     return {
       retPoints: [],
@@ -198,7 +201,7 @@ export default {
   },
   computed: {},
   created() {
-    this.$store.dispatch("storePage", { title: "Game diary", back: false });
+    this.$store.dispatch("storePage", { title: this.title, back: false });
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[
       sessionStorage.getItem("selectedCourse")
     ];

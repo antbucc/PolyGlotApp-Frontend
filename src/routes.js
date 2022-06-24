@@ -72,13 +72,19 @@ const routes = [
     path: '/gameStatus',
     name: 'gameStatus',
     component: GameStatusSwitch,
-    props: { category: 1 }
+    props: {
+      title: "Game diary",
+      category: 1
+    }
   },
   {
     path: '/learningStatus',
     name: 'learningStatus',
     component: AnalyticsList,
-    props: { category: 0 }
+    props: {
+      title: "Learning status",
+      category: 0
+    }
   },
   {
     path: '/analytic',

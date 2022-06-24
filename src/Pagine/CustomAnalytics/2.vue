@@ -255,7 +255,7 @@ export default {
       };
 
       var apiUrl =
-        process.env.VUE_APP_DBSRV_URL + process.env.VUE_APP_ANALYTICS;
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
       let url = apiUrl + "?analyticId=" + this.id;
       await axios.get(url).then((response) => {
         this.sumChart.options = response.data.chart.options;
