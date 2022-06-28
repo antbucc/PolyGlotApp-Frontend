@@ -88,7 +88,7 @@ export default {
     retrieveAnalytics() {
       let url =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS_SUMMARY;
-      let apiUrl = url + "?category=" + this.category;
+      let apiUrl = url + "?courseid=" + this.selectedCourse.id + "&category=" + this.category + "&token=" + sessionStorage.getItem("token");
       axios.get(apiUrl).then((response) => {
         response.data.forEach((element) => {
           this.analytics.push({
