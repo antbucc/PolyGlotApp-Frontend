@@ -62,7 +62,7 @@
             style="margin: auto; border-radius: 15px"
             @click="selectAndRedirect('/gameStatus')"
           >
-            <performance-icon class="pr-1" />Game diary
+            <game-status-icon class="pr-1" />Game diary
           </button>
           <button
             type="button"
@@ -82,7 +82,7 @@
             style="margin: auto; border-radius: 15px"
             @click="selectAndRedirect('/learningStatus')"
           >
-            <analytics-icon class="pr-1" />Learning Status
+            <learning-status-icon class="pr-1" />Learning Status
           </button>
         </template>
         <template v-else-if="!dRegistered">

@@ -34,7 +34,9 @@ import Privacy from "vue-material-design-icons/FileDocumentEditOutline";
 import Back from "vue-material-design-icons/ArrowLeft";
 import Credits from "vue-material-design-icons/Creation";
 import AnalyticsIcon from "vue-material-design-icons/GoogleAnalytics.vue";
-import columnChartIcon from "vue-material-design-icons/Poll.vue"
+import ColumnChartIcon from "vue-material-design-icons/Poll.vue"
+import GameStatusIcon from "vue-material-design-icons/Gamepad.vue";
+import LearningStautusIcon from "vue-material-design-icons/ClipboardText.vue";
 import Loading from 'vue-loading-overlay';
 import Delete from 'vue-material-design-icons/DeleteOutline.vue';
 import ChangeQuiz from 'vue-material-design-icons/Cached.vue';
@@ -68,7 +70,9 @@ Vue.component('back-icon', Back);
 Vue.component('credits-icon', Credits);
 Vue.component('question-icon', QuestionIcon);
 Vue.component('analytics-icon', AnalyticsIcon);
-Vue.component('column-chart-icon', columnChartIcon);
+Vue.component('column-chart-icon', ColumnChartIcon);
+Vue.component('game-status-icon', GameStatusIcon);
+Vue.component('learning-status-icon', LearningStautusIcon);
 Vue.component('apexchart', VueApexCharts);
 Vue.component('change-question', ChangeQuiz),
 Vue.component('add-time', AddTime),
