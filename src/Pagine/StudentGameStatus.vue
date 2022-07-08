@@ -110,10 +110,10 @@
             "
             style="width: 18em; height: 10em; font-size: 1em"
           >
-            <p style="margin-top: 0">
-              Questions answered: <b>25</b> <br />
-              Correct answers: <b>23</b> <br />
-              Bonus Points: <b>5</b>
+            <p>
+              You're <b>{{ this.leaderboardPos }}{{ suffixPos }}</b>
+              <br />
+              in the leaderboard
             </p>
           </div>
         </template>
@@ -143,6 +143,8 @@ export default {
       mode: "I",
       level: [],
       selectedCourse: {},
+      leaderboardPos: 0,
+      suffixPos: "th",
     };
   },
   methods: {
@@ -198,6 +200,29 @@ export default {
         console.log("level of the player: " + this.level); // points saved in retPoints
       });
     },
+    retrievePosition() {
+      const player = sessionStorage.getItem("player");
+      var apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
+      axios.get(apiUrl).then((response) => {
+        if (response.data == "error") {
+          console.log("Error during game extraction");
+        } else {
+          this.leaderboardPos = this.sort(response.data.content).findIndex(p => p.playerId === player) + 1;
+          switch (this.leaderboardPos) {
+            case 1:
+              this.suffixPos = "st";
+              break;
+            case 2:
+              this.suffixPos = "nd";
+              break;
+            case 3:
+              this.suffixPos = "rd";
+              break;
+          }
+        }
+      });
+    }
   },
   computed: {},
   created() {
@@ -207,6 +232,7 @@ export default {
     ];
     this.response = this.retrieveLevel();
     this.response = this.retrievePoints();
+    this.response = this.retrievePosition();
   },
 };
 </script>
