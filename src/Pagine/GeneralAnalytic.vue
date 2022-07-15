@@ -265,7 +265,6 @@ export default {
       this.mode = mode;
     },
     initPage(id) {
-      this.retrievedData = {};
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
       let url = apiUrl + "?analyticId=" + id;
@@ -280,6 +279,7 @@ export default {
             this.table.data.push([element]);
           });
           this.table.firstHead = !!response.data.table.firstColumn.length;
+          //Quando arrivano i dati vedere come mettere colonne prese dinamicamente (es. quiz)
         }
         //chart static building
         this.chart.options =
@@ -292,7 +292,8 @@ export default {
             ? response.data.filters
             : [];
       });
-      //Da recuperare dati da trasformare per chart e tabella in update
+      this.retrievedData = {}; //Da recuperare dati da trasformare per chart e tabella in update
+      //Qualche chart ha bisogno di avere anche categorie o giù di lì (es. quiz come asse x in categories dei grafi a colonne)
       console.log("Retrieved analytic ", id);
     },
     update() {
@@ -305,23 +306,37 @@ export default {
       console.log("Updated");
     },
     updateChart() {
-      ///*
+      /*
       this.chart.series = [80, 20, 15, 5];
       //*/
       /*
       this.chart.series = [
-          {
-            name: "Risposte corrette",
-            data: [80,60,90]
-          }, {
-            name: "Risposte sbagliate",
-            data: [20,30,15]
-          }, {
-            name: "Senza risposta",
-            data: [15,10,10]
-          }
-        ]
+        {
+          name: "Risposte corrette",
+          data: [80,60,90]
+        }, {
+          name: "Risposte sbagliate",
+          data: [20,30,15]
+        }, {
+          name: "Senza risposta",
+          data: [15,10,10]
+        }
+      ]
       //*/
+      /*
+      this.chart.series = [
+        {
+          name: "Learning level",
+          data: [5,3,4]
+        }
+      ]
+      //*/
+      this.chart.series = [
+        {
+          name: "Partecipation level",
+          data: [5,4,3]
+        }
+      ]
       console.log("ChartUpdated");
     },
     updateTable() {
@@ -340,6 +355,20 @@ export default {
         ["Requisiti funzionali",90,15,10]
       ]
       */
+      /*
+      this.table.data = [
+        ["BPMN",5],
+        ["Requisiti non funzionali",3],
+        ["Requisiti funzionali",4]
+      ]
+      //*/
+      /*
+      this.table.data = [
+        ["BPMN",5],
+        ["Requisiti non funzionali",4],
+        ["Requisiti funzionali",3]
+      ]
+      //*/
       console.log("TableUpdated");
     },
   },
