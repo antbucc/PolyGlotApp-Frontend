@@ -217,7 +217,7 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
-    getEvaluation(value, tresholds) {
+    getEvaluation(value, tresholds) { //Give evaluation text based on data wrt tresholds
       let again = true;
       let i = 0;
       let result = 0;
@@ -235,72 +235,79 @@ export default {
       }
       return result;
     },
-    async retrieveCharts() {
-      this.summary = {
-        values: {
-          course: {
-            learning: 85, //TypeOfValue: percentuale
-            partecipation: 75, //TypeOfValue: percentuale
+    retrieveCharts() {
+      return new Promise(async (resolve, reject) => {
+        //Retrieve data
+        this.summary = {
+          values: {
+            course: {
+              learning: 85, //TypeOfValue: percentuale
+              partecipation: 75, //TypeOfValue: percentuale
+            },
+            lQ: {
+              //Last quiz
+              learning: 65, //TypeOfValue: percentuale
+              partecipation: 95, //TypeOfValue: percentuale
+            },
           },
-          lQ: {
-            //Last quiz
-            learning: 65, //TypeOfValue: percentuale
-            partecipation: 95, //TypeOfValue: percentuale
+          tresholds: {
+            learning: [50, 70], //TypeOfValue: percentuale
+            partecipation: [50, 70], //TypeOfValue: percentuale
           },
-        },
-        tresholds: {
-          learning: [50, 70], //TypeOfValue: percentuale
-          partecipation: [50, 70], //TypeOfValue: percentuale
-        },
-      };
+        };
 
-      var apiUrl =
-        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
-      let url = apiUrl + "?analyticId=" + this.id;
-      await axios.get(url).then((response) => {
-        this.sumChart.options = response.data.chart.options;
+        //Retrieve chart structure
+        var apiUrl =
+          process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
+        let url = apiUrl + "?analyticId=" + this.id;
+        await axios.get(url).then((response) => {
+          this.sumChart.options = response.data.chart.options;
+        }).catch((err) => reject(err));
+
+        //Put data into chart
+        this.sumChart.series = [
+          {
+            name: "Course summary",
+            data: [
+              [
+                this.summary.values.course.partecipation,
+                this.summary.values.course.learning,
+              ],
+            ],
+          },
+          {
+            name: "Last quiz",
+            data: [
+              [
+                this.summary.values.lQ.partecipation,
+                this.summary.values.lQ.learning,
+              ],
+            ],
+          },
+        ];
+        this.lastQuiz = "BPMN";
+        resolve("Chart retrieved")
       });
-
-      this.sumChart.series = [
-        {
-          name: "Course summary",
-          data: [
-            [
-              this.summary.values.course.partecipation,
-              this.summary.values.course.learning,
-            ],
-          ],
-        },
-        {
-          name: "Last quiz",
-          data: [
-            [
-              this.summary.values.lQ.partecipation,
-              this.summary.values.lQ.learning,
-            ],
-          ],
-        },
-      ];
-      this.lastQuiz = "BPMN";
     },
     retrieveEvaluations() {
+      //Texts and colors for evaluation on the right and colors for chart areas
       let temp = [
         {
           title: "Poor",
           class: "text-danger",
-          areaColor: "#dc3545",
+          areaColor: "#dc3545", //Red
         },
         {
           title: "Decent",
           class: "text-warning",
-          areaColor: "#ffc107",
+          areaColor: "#ffc107", //Yellow
         },
         {
           title: "Good",
           class: "text-secondary_light",
-          areaColor: "#5ab45f",
+          areaColor: "#5ab45f", //Green
         },
-      ]; //,"Terrible","Excellent"
+      ];
       this.evaluations.learning = temp;
       this.evaluations.partecipation = temp;
       this.evaluations.understanding = temp;
@@ -310,20 +317,21 @@ export default {
         {
           title: "Action needed",
           class: "text-danger",
-          areaColor: "#dc3545",
+          areaColor: "#dc3545", //Red
         },
         {
           title: "Recommended interventions",
           class: "text-warning",
-          areaColor: "#ffc107",
+          areaColor: "#ffc107", //Yellow
         },
         {
           title: "Ideal",
           class: "text-secondary_light",
-          areaColor: "#5ab45f",
+          areaColor: "#5ab45f", //Green
         },
       ];
 
+      //Evaluations based on data
       this.evalPos.learning = this.getEvaluation(
         this.summary.values.course.learning,
         this.summary.tresholds.learning
@@ -350,7 +358,7 @@ export default {
         this.evalPos.lQPartecipation
       ); //Pensare ad una conversione più generica
     },
-    addSummaryAreas() {
+    addEvaluationAreas() { //Adds annotation areas to the chart to create evaluations areas
       let tTemp = this.summary.tresholds.learning;
       let eTemp = this.evaluations.learning;
 
@@ -408,13 +416,13 @@ export default {
     },
     async initTeacherStats() {
       await this.retrieveCharts();
-      await this.retrieveEvaluations();
-      await this.addSummaryAreas();
+      this.retrieveEvaluations();
+      this.addEvaluationAreas();
     },
   },
   computed: {},
   created() {
-    this.$store.dispatch("storePage", { title: "Analytic", back: false }); //Titolo messo per collegamento ad Analytics
+    this.$store.dispatch("storePage", { title: this.title, back: false });
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[
       sessionStorage.getItem("selectedCourse")
     ];
