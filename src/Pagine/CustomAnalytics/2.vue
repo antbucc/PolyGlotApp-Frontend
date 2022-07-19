@@ -235,8 +235,7 @@ export default {
       }
       return result;
     },
-    retrieveCharts() {
-      return new Promise(async (resolve, reject) => {
+    async retrieveCharts() {
         //Retrieve data
         this.summary = {
           values: {
@@ -286,8 +285,6 @@ export default {
           },
         ];
         this.lastQuiz = "BPMN";
-        resolve("Chart retrieved")
-      });
     },
     retrieveEvaluations() {
       //Texts and colors for evaluation on the right and colors for chart areas
