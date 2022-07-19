@@ -2,15 +2,14 @@
   <div class="bg-primary">
     <div class="flex flex-col bg-primary">
       <div class="justify-center text-center w-full text-xl">
-        <div class="bg-opacity-0 flex pt-6">
-          <div class="lg: w-3/5">
+        <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6">
+          <div class="w-full lg:w-3/5">
             <div
               class="
                 bg-white
                 rounded-lg
                 shadow-xl
-                lg:
-                min-h-full
+                lg:min-h-full
                 justify-center
                 pr-6
               "
@@ -24,7 +23,7 @@
               <!--Da sistemare pallino tagliato sulla destra-->
             </div>
           </div>
-          <div class="lg: w-2/5 lg: pl-5">
+          <div class="w-full lg:w-2/5 lg:pl-5">
             <div class="flex-col p-2 text-white text-gray-700 z-10">
               <div class="flex-col">
                 <div class="flex-col pb-4">
@@ -261,7 +260,7 @@ export default {
         let url = apiUrl + "?analyticId=" + this.id;
         await axios.get(url).then((response) => {
           this.sumChart.options = response.data.chart.options;
-        }).catch((err) => reject(err));
+        });
 
         //Put data into chart
         this.sumChart.series = [
