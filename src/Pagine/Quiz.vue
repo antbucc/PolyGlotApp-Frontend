@@ -83,12 +83,12 @@
               font-size: 1.1em;
               width: 10em;
               height: 2em;
-            " 
-            v-if="bonus >= 3"
+            "
             @click.prevent="deleteAns()"
           >
             <delete-answer />
           </button>
+
           <button
             class="button-cl"
             id="change"
@@ -102,7 +102,6 @@
               width: 10em;
               height: 2em;
             "
-            v-if="bonus >= 5"
             @click.prevent="changeQuestion()"
           >
             <change-question />
@@ -120,7 +119,6 @@
               width: 10em;
               height: 2em;
             "
-            v-if="bonus >= 3"
             @click.prevent="addTime()"
           >
             <add-time />
@@ -519,4 +517,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.disabled {
+  pointer-events: none;
+}
+</style>

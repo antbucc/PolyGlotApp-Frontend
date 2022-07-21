@@ -17,6 +17,7 @@
           "
           style="width: 18em; text-align: center"
         >
+
           <ol
             style="
               text-align: left;
@@ -50,6 +51,27 @@
             alt="PolyGlot"
             style="width: 5em; margin-bottom: 2em"
           />
+
+          <!--<table>
+            <thead>
+            <tr>
+              <template v-for="(cell, index) in table.head">
+                <th :key="index">{{ cell }}</th>
+              </template>
+            </tr>
+            </thead>
+            <tbody>
+            <template v-for="(obj, index) in sort(this.retBoard)">
+              <tr :class="{first:index==0,second:index==1,
+                  third:index==2}" :key="obj.playerId">
+                <td :key="index">{{ index + 1 }}</td>
+                <td :key="index">{{ obj.playerId }}</td>
+                <td :key="index">{{ obj.state.PointConcept[2].score }}</td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+          -->
         </div>
       </template>
     </div>
