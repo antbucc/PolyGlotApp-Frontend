@@ -17,7 +17,10 @@ module.exports = {
       warning:'#ffc107',
       info:'#17a2b8',
       white:"#FFFFFF",
-      background:"#f1f3f4"
+      black:"#000000",
+      gray:"#909090",
+      background:"#f1f3f4",
+      background_darker:"#e1e3e4"
     }
   },
   plugins: [],

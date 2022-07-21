@@ -38,6 +38,8 @@ import ColumnChartIcon from "vue-material-design-icons/Poll.vue"
 import GameStatusIcon from "vue-material-design-icons/Gamepad.vue";
 import LearningStautusIcon from "vue-material-design-icons/ClipboardText.vue";
 import EyeIcon from "vue-material-design-icons/Eye.vue";
+import SelectArrowUpIcon from "vue-material-design-icons/ChevronUp.vue";
+import SelectArrowDownIcon from "vue-material-design-icons/ChevronDown.vue";
 import Loading from 'vue-loading-overlay';
 import Delete from 'vue-material-design-icons/DeleteOutline.vue';
 import ChangeQuiz from 'vue-material-design-icons/Cached.vue';
@@ -75,6 +77,8 @@ Vue.component('column-chart-icon', ColumnChartIcon);
 Vue.component('game-status-icon', GameStatusIcon);
 Vue.component('learning-status-icon', LearningStautusIcon);
 Vue.component('eye-icon', EyeIcon);
+Vue.component('select-arrow-up-icon',SelectArrowUpIcon);
+Vue.component('select-arrow-down-icon',SelectArrowDownIcon);
 Vue.component('apexchart', VueApexCharts);
 Vue.component('change-question', ChangeQuiz),
 Vue.component('add-time', AddTime),

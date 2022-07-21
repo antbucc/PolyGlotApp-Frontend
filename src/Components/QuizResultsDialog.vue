@@ -5,7 +5,6 @@
       left-0
       absolute
       w-full
-      min-h-full
       bg-transparent
       flex
       justify-center
@@ -28,7 +27,7 @@
     >
       <div
         class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="text-align: center; width: 25em; height: 40em; margin: auto"
+        style="text-align: center; width: 25em;"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -88,18 +87,26 @@ export default {
   name: "QuizResultsDialog",
   props: {
     open: Boolean,
-    id: String,
-    difficulty: Number,
-    type: String,
-    questiontext: String,
-    answers: Array
   },
   data: function () {
     return {
       correct: [],
+      id: "",
+      difficulty: 0,
+      type: "",
+      questiontext: "",
+      answers: []
     };
   },
   methods: {
+    changeQuiz(id,difficulty,type,questiontext,answers) {
+      this.id = id;
+      this.difficulty = difficulty;
+      this.type = type;
+      this.questiontext = questiontext;
+      this.answers = answers;
+      this.viewQuiz();
+    },
     viewQuiz() {
       document.getElementById("text").innerHTML = this.questiontext;
       
@@ -140,12 +147,12 @@ export default {
         if (this.correct.includes(resps[i].id)) {
           resps[i].setAttribute(
             "style",
-            "background-color:#19b533  ; text-align: center; color:white; width: 15em; font-size: 1.1em;  "
+            "background-color:#19b533; text-align: center; color:white; width: 15em; font-size: 1.1em;  "
           );
         } else {
           resps[i].setAttribute(
             "style",
-            "background-color:#b52919;  text-align: center; color:white; width: 15em;font-size: 1.1em; "
+            "background-color:#b52919; text-align: center; color:white; width: 15em;font-size: 1.1em; "
           );
         }
       }

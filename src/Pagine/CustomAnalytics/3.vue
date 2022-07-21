@@ -7,7 +7,7 @@
             class="
               flex flex-col
               sm:flex-row sm:flex-wrap sm:justify-center
-              md:px-12
+              px-8
             "
             ref="sibiling"
           >
@@ -38,96 +38,353 @@
                   }}</span>
                 </div>
               </div>
-              <!--tabella-->
-              <table
-                class="
-                  table-fixed
-                  justify-center
-                  text-center
-                  w-full
-                  text-xl
-                  bg-white
-                  rounded-lg
-                  logTable
-                "
-              >
-                <thead>
-                  <tr>
-                    <th colspan="7" class="name">Name</th>
-                  </tr>
-                  <tr>
-                    <th class="informations">Type</th>
-                    <th class="informations">Topic</th>
-                    <th class="informations">Difficulty</th>
-                    <th class="informations">Date</th>
-                    <th class="informations">Outcome</th>
-                    <th class="informations">Time</th>
-                    <th class="informations">Points</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <template v-for="(row, rowIndex) in quizes">
-                    <tr :key="rowIndex + '-name'">
-                      <td align="center" colspan="7" class="name">
-                        {{ row.name }}
-                        <button @click="show = true"><eye-icon /></button>
-                      </td>
+              <!--tabella/Elenco-->
+              <div class="hidden md:flex w-full">
+                <table
+                  cellspacing="0"
+                  class="
+                    table-fixed
+                    justify-center
+                    text-center
+                    w-full
+                    text-xl
+                    bg-white
+                    border-separate
+                  "
+                >
+                  <thead class="sticky" style="top: 62px">
+                    <tr>
+                      <th colspan="6" class="name">Name</th>
                     </tr>
-                    <tr :key="rowIndex + '-informations'">
-                      <template
-                        v-for="(cell, index) in (({
-                          topic,
-                          type,
-                          difficulty,
-                          date,
-                          outcome,
-                          time,
-                          points,
-                        }) => ({
-                          topic,
-                          type,
-                          difficulty,
-                          date,
-                          outcome,
-                          time,
-                          points,
-                        }))(row)"
-                      >
-                        <td
-                          :key="index"
-                          class="informations"
-                          :class="
-                            cell == 'Success'
-                              ? 'bg-secondary'
-                              : cell == 'Parzial'
-                              ? 'bg-warning'
-                              : cell == 'Fail'
-                              ? 'bg-danger'
-                              : ''
-                          "
-                        >
-                          {{ cell }}
+                    <tr>
+                      <th colspan="4" class="bg-white">Topic</th>
+                      <th class="bg-white">Difficulty</th>
+                      <th class="bg-white">Outcome</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="bg-white informations">Date</th>
+                      <th colspan="2" class="bg-white informations">Type</th>
+                      <th class="bg-white informations">Time</th>
+                      <th class="bg-white informations">Points</th>
+                    </tr>
+                    <!--<tr>
+                      <th colspan="7" class="name">Name</th>
+                    </tr>
+                    <tr>
+                      <th colspan="3" class="bg-white">Topic</th>
+                      <th class="bg-white informations" rowspan="3">Difficulty</th>
+                      <th class="bg-white informations" rowspan="3">Time</th>
+                      <th class="bg-white informations" rowspan="3">Points</th>
+                      <th class="bg-white informations" rowspan="3">Outcome</th>
+                    </tr>
+                    <tr>
+                      <th colspan="3" class="bg-white">Date</th>
+                    </tr>
+                    <tr>
+                      <th colspan="3" class="bg-white informations">Type</th>
+                    </tr>-->
+                  </thead>
+                  <tbody>
+                    <template v-for="(row, rowIndex) in quizes">
+                      <tr :key="rowIndex + '-name'">
+                        <td align="center" colspan="6 " class="name">
+                          {{ row.name }}
+                          <button @click="viewQuiz(rowIndex)" :disabled="show"><eye-icon /></button>
                         </td>
-                      </template>
-                    </tr>
-                  </template>
-                </tbody>
-              </table>
+                      </tr>
+                      <tr :key="rowIndex + '-informations_1'">
+                        <template
+                          v-for="(cell, index) in (({
+                            topic,
+                            difficulty,
+                            outcome,
+                          }) => ({
+                            topic,
+                            difficulty,
+                            outcome,
+                          }))(row)"
+                        >
+                          <td
+                            :key="index"
+                            :colspan="index == 'topic' ? 4 : 1"
+                            :class="{
+                              'bg-secondary': cell == 'OK',
+                              'bg-warning': cell == 'PARTIAL',
+                              'bg-danger': cell == 'NOK',
+                              'bg-gray': cell == 'NOANSWER',
+                            }
+                            "
+                          >
+                            {{
+                              index != "outcome"
+                                ? cell
+                                : cell == "OK"
+                                ? "Success"
+                                : cell == "PARTIAL"
+                                ? "Partial"
+                                : cell == "NOK"
+                                ? "Failed"
+                                : cell == "NOANSWER"
+                                ? "No Answer"
+                                : ""
+                            }}
+                          </td>
+                        </template>
+                      </tr>
+                      <tr :key="rowIndex + '-informations_2'">
+                        <template
+                          v-for="(cell, index) in (({
+                            date,
+                            type,
+                            time,
+                            points,
+                          }) => ({
+                            date,
+                            type,
+                            time,
+                            points,
+                          }))(row)"
+                        >
+                          <td
+                            :key="index"
+                            :colspan="
+                              index == 'type' || index == 'date' ? 2 : 1
+                            "
+                            :class="rowIndex != quizes.length-1 ? 'informations' : ''"
+                          >
+                            {{
+                              index != "type"
+                                ? cell
+                                : cell == "multichoice"
+                                ? "Multichoice"
+                                : cell == "truefalse"
+                                ? "True/False"
+                                : cell
+                            }}{{ index == "time" ? "s" : "" }}
+                          </td>
+                        </template>
+                      </tr>
+                      <!--<tr :key="rowIndex + '-name'">
+                        <td align="center" colspan="7" class="name">
+                          {{ row.name }}
+                          <button @click="viewQuiz(rowIndex)" :disabled="show">
+                            <eye-icon />
+                          </button>
+                        </td>
+                      </tr>
+                      <tr :key="rowIndex + '-informations_1'">
+                        <template
+                          v-for="(cell, index) in (({
+                            topic,
+                            difficulty,
+                            time,
+                            points,
+                            outcome,
+                          }) => ({
+                            topic,
+                            difficulty,
+                            time,
+                            points,
+                            outcome,
+                          }))(row)"
+                        >
+                          <td
+                            :key="index"
+                            :colspan="index == 'topic' ? 3 : 1"
+                            :rowspan="index != 'topic' ? 3 : 1"
+                            :class="{
+                              'bg-secondary': cell == 'OK',
+                              'bg-warning': cell == 'PARTIAL',
+                              'bg-danger': cell == 'NOK',
+                              'bg-gray': cell == 'NOANSWER',
+                              'informations': rowIndex != quizes.length-1 && index != 'topic',
+                            }"
+                          >
+                            {{
+                              index != "outcome"
+                                ? cell
+                                : cell == "OK"
+                                ? "Success"
+                                : cell == "PARTIAL"
+                                ? "Partial"
+                                : cell == "NOK"
+                                ? "Failed"
+                                : cell == "NOANSWER"
+                                ? "No Answer"
+                                : ""
+                            }}
+                          </td>
+                        </template>
+                      </tr>
+                      <tr :key="rowIndex + '-informations_2'">
+                        <td colspan="3">{{ row.date }}</td>
+                      </tr>
+                      <tr :key="rowIndex + '-informations_3'">
+                        <td colspan="3" :class="rowIndex != quizes.length-1 ? 'informations' : ''">
+                          {{
+                            row.type == "multichoice"
+                              ? "Multichoice"
+                              : row.type == "truefalse"
+                              ? "True/False"
+                              : row.type
+                          }}
+                        </td>
+                      </tr>-->
+                    </template>
+                  </tbody>
+                </table>
+              </div>
+              <div class="flex md:hidden w-full flex-col">
+                <template v-for="(quiz, quizIndex) in quizes">
+                  <div :key="quizIndex" class="w-full py-2 text-black">
+                    <div
+                      class="
+                        text-white
+                        bg-background
+                        hover:bg-background_darker
+                        border-2 border-black
+                        rounded-lg
+                        py-2.5
+                        flex flex-row
+                        w-full
+                      "
+                      @click="
+                        quizes[quizIndex].expanded = !quizes[quizIndex].expanded
+                      "
+                    >
+                      <label class="text-black w-full text-left pl-2">{{
+                        quiz.name
+                      }}</label>
+                      <select-arrow-down-icon
+                        v-if="!quizes[quizIndex].expanded"
+                        fillColor="#000000"
+                        :size="29"
+                        class="pr-2"
+                      />
+                      <select-arrow-up-icon
+                        v-else
+                        fillColor="#000000"
+                        :size="29"
+                        class="pr-2"
+                      />
+                    </div>
+                    <!-- Dropdown menu -->
+                    <div
+                      class="w-full z-10 bg-white rounded flex-col sm:flex-row"
+                      :class="{
+                        hidden: !quizes[quizIndex].expanded,
+                        flex: quizes[quizIndex].expanded,
+                      }"
+                    >
+                      <div class="w-full flex-col">
+                        <template
+                          v-for="(value, property) in (({
+                            topic,
+                            date,
+                            difficulty,
+                            outcome,
+                          }) => ({
+                            topic,
+                            date,
+                            difficulty,
+                            outcome,
+                          }))(quiz)"
+                        >
+                          <div
+                            :key="property"
+                            class="flex flex-row w-full pl-3"
+                          >
+                            <label class="text-left"
+                              >{{
+                                property.charAt(0).toUpperCase() +
+                                property.slice(1)
+                              }}:</label
+                            >
+                            <label
+                              class="text-left pl-1"
+                              :class="
+                                property != 'outcome'
+                                  ? ''
+                                  : value == 'OK'
+                                  ? 'text-secondary'
+                                  : value == 'PARTIAL'
+                                  ? 'text-warning'
+                                  : value == 'NOK'
+                                  ? 'text-danger'
+                                  : value == 'NOANSWER'
+                                  ? 'text-gray'
+                                  : ''
+                              "
+                            >
+                              {{
+                                property != "outcome"
+                                  ? value
+                                  : value == "OK"
+                                  ? "Success"
+                                  : value == "PARTIAL"
+                                  ? "Partial"
+                                  : value == "NOK"
+                                  ? "Failed"
+                                  : value == "NOANSWER"
+                                  ? "No Answer"
+                                  : ""
+                              }}
+                            </label>
+                          </div>
+                        </template>
+                      </div>
+                      <div class="w-full flex-col">
+                        <template
+                          v-for="(value, property) in (({
+                            type,
+                            time,
+                            points,
+                          }) => ({
+                            type,
+                            time,
+                            points,
+                          }))(quiz)"
+                        >
+                          <div
+                            :key="property"
+                            class="flex flex-row w-full pl-3"
+                          >
+                            <label class="text-left"
+                              >{{
+                                property.charAt(0).toUpperCase() +
+                                property.slice(1)
+                              }}:</label
+                            >
+                            <label class="text-left pl-1">
+                              {{
+                                property != "type"
+                                  ? value
+                                  : value == "multichoice"
+                                  ? "Multichoice"
+                                  : value == "truefalse"
+                                  ? "True/False"
+                                  : value
+                              }}{{ property == "time" ? "s" : "" }}
+                            </label>
+                          </div>
+                        </template>
+                        <div class="flex flex-row w-full pl-3">
+                          <label class="text-left pl-1"
+                            >Visualize quiz:
+                            <button @click="viewQuiz(quizIndex)" :disabled="show">
+                              <eye-icon /></button
+                          ></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
             </template>
           </div>
         </div>
       </div>
-      <quiz-results-dialog
-        v-if="loaded"
-        :open="show"
-        @close="show = false"
-        :id="quizes[quizToView].idnumber"
-        :difficulty="quizes[quizToView].difficulty"
-        :type="quizes[quizToView].type"
-        :questiontext="quizes[quizToView].questiontext"
-        :answers="quizes[quizToView].answer"
-      />
-      <!--:style="absoluteAlternatives"-->
+      <quiz-results-dialog ref="dialog" :open="show" @close="show = false" />
     </div>
   </div>
 </template>
@@ -159,15 +416,24 @@ export default {
           outcome: "",
           time: 0,
           points: 0,
+          expanded: false,
         },
       ],
       selectedCourse: {},
       show: false,
-      quizToView: 0,
-      loaded: false,
     };
   },
   methods: {
+    viewQuiz(position) {
+      this.$refs["dialog"].changeQuiz(
+        this.quizes[position].idnumber,
+        this.quizes[position].difficulty,
+        this.quizes[position].type,
+        this.quizes[position].questiontext,
+        this.quizes[position].answer
+      );
+      this.show = true;
+    },
     async retrieveQuizes() {
       var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTIONS;
       let url = apiUrl + "?course=" + this.selectedCourse.title;
@@ -181,6 +447,7 @@ export default {
             difficulty: Number.parseInt(quiz.difficulty.split("-")[1]),
             questiontext: quiz.questiontext,
             answer: quiz.answer,
+            expanded: false,
           });
         })
       );
@@ -188,8 +455,8 @@ export default {
         {
           idnumber: "8",
           date: new Date().toLocaleDateString("en-GB"),
-          outcome: "Success",
-          time: 7.000001,
+          outcome: "OK",
+          time: 7,
           points: 103,
         },
       ]; //Mettere dati dinamici
@@ -210,7 +477,6 @@ export default {
         }
       }
       this.quizes.shift();
-      this.loaded = true;
     },
   },
   computed: {
@@ -237,17 +503,10 @@ td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-.logTable {
-  border: 2px solid black;
-  border-collapse: collapse;
-}
 .name {
   background-color: #dfdfdf;
 }
-td.name {
-  border-top: 2px solid black;
-}
 .informations {
-  border-bottom: 2px solid black;
+  border-bottom: 3px solid black;
 }
 </style>
