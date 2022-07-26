@@ -1,7 +1,7 @@
 <template>
   <div class="bg-primary">
     <div class="flex flex-col bg-primary">
-      <div class="text-md w-full" v-if="components.table && components.chart">
+      <div class="invisible lg:visible text-md w-full" v-if="components.table && components.chart">
         <nav class="flex flex-row text-white bg-primary">
           <button
             class="
@@ -35,6 +35,14 @@
           </button>
         </nav>
       </div>
+      <div class="visible lg:invisible text-md w-full" v-if="components.table && components.chart">
+        <nav class="flex text-white bg-primary mx-5">
+          <select ref="nav" class="w-full text-center customSelect text-xl font-semibold" @change="changeMode($event.target.value)" v-model="mode">
+            <option value="TAB" selected="selected" class="customOption">Table</option>
+            <option value="CHART" class="customOption">Chart</option>
+          </select>
+        </nav>
+      </div>
       <div class="bg-opacity-0 py-2">
         <template v-if="components.table">
           <div
@@ -43,9 +51,7 @@
           >
             <div
               class="
-                flex flex-row
-                sm:flex-row sm:flex-wrap sm:justify-center
-                md:px-12
+                flex flex-col lg:flex-row px-6
               "
             >
               <template v-if="/*!this.analytics[0].length*/ false">
@@ -68,23 +74,19 @@
                 </div>
               </template>
               <template v-else>
-                <div class="lg: w-3/5">
+                <div class="w-full" :class="{'lg:w-3/5':components.filters}">
                   <div
                     class="
                       flex-col
                       p-2
                       bg-primary
                       text-white text-gray-700
-                      z-10
                     "
                   >
                     <div class="flex">
                       <span class="text-2xl font-semibold">{{
                         selectedCourse.title
                       }}</span>
-                    </div>
-                    <div class="flex">
-                      <span class="text-xl">{{ aTitle }}</span>
                     </div>
                   </div>
                   <!--tabella-->
@@ -123,7 +125,7 @@
                     </tbody>
                   </table>
                 </div>
-                <div v-if="components.filters" class="lg: w-2/5 lg: pl-5">
+                <div v-if="components.filters" class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5">
                   <!--filtro-->
                   <template>
                     <analytic-filter :filters="filters" @update="update" />
@@ -141,9 +143,7 @@
           >
             <div
               class="
-                flex flex-col
-                sm:flex-row sm:flex-wrap sm:justify-center
-                md:px-12
+                flex flex-col lg:flex-row px-6
               "
             >
               <template v-if="/*!this.analytics[1].length*/ false">
@@ -166,14 +166,13 @@
                 </div>
               </template>
               <template v-else>
-                <div class="m-auto flex flex-col lg: w-3/5">
+                <div class="w-full m-auto flex flex-col lg:w-3/5">
                   <div
                     class="
                       flex-col
                       p-2
                       bg-primary
                       text-white text-gray-700
-                      z-10
                     "
                   >
                     <div class="flex">
@@ -181,15 +180,13 @@
                         selectedCourse.title
                       }}</span>
                     </div>
-                    <div class="flex">
-                      <span class="text-xl">{{ aTitle }}</span>
-                    </div>
                   </div>
                   <div
                     class="
                       bg-white
                       rounded-lg
                       shadow-xl
+                      min-h-fit
                       lg:
                       min-h-full
                       justify-center
@@ -203,7 +200,7 @@
                     />
                   </div>
                 </div>
-                <div v-if="components.filters" class="lg:w-2/5 lg: pl-5">
+                <div v-if="components.filters" class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5">
                   <!--filtro-->
                   <template>
                     <analytic-filter :filters="filters" @update="update" />
@@ -234,7 +231,6 @@ export default {
   data: function () {
     return {
       aId: this.id,
-      aTitle: this.title,
       mode: "TAB",
       selectedCourse: {},
       retrievedData: {},
@@ -282,10 +278,23 @@ export default {
           //Quando arrivano i dati vedere come mettere colonne prese dinamicamente (es. quiz)
         }
         //chart static building
-        this.chart.options =
-          this.components.chart && response.data.chart.options != undefined
-            ? response.data.chart.options
-            : {};
+        if (this.components.chart && response.data.chart.options) {
+          console.log(response.data);
+          let tmpChart = response.data.chart;
+          if (tmpChart.functions != undefined && tmpChart.functions.length) {
+            let fn;
+            for (const path of tmpChart.functions) {
+              fn = tmpChart["options"];
+              const limit = path.length - 1;
+              for (let i = 0; i < limit; ++i) {
+                fn = fn[path[i]] ?? (fn[path[i]] = { });
+              }
+              fn[path[limit]] = Function(fn[path[limit]].arguments,fn[path[limit]].body);
+              //fn[path[limit]] = eval("(" + fn[path[limit]] + ")");
+            }
+          }
+          this.chart.options = response.data.chart.options;
+        }
         //Adding filters
         this.filters =
           this.components.filters && response.data.filters != undefined
@@ -307,36 +316,38 @@ export default {
     },
     updateChart() {
       /*
-      this.chart.series = [80, 20, 15, 5];
+      this.chart.series = [80, 20, 15, 5]; //Quiz summary
       //*/
       /*
-      this.chart.series = [
+      this.chart.series = [ //Quiz comparison by topic
         {
-          name: "Risposte corrette",
-          data: [80,60,90]
+          name: "Correct answers",
+          data: [80,60,90,15,10,10,20,30,15]
         }, {
-          name: "Risposte sbagliate",
-          data: [20,30,15]
+          name: "Wrong answers",
+          data: [20,30,15,80,60,90,15,10,10]
         }, {
-          name: "Senza risposta",
-          data: [15,10,10]
+          name: "No answers",
+          data: [15,10,10,20,30,15,80,60,90]
         }
       ]
       //*/
-      /*
-      this.chart.series = [
+      ///*
+      this.chart.series = [ //Learning level
         {
           name: "Learning level",
-          data: [5,3,4]
+          data: [5,3,4,3,2,3,3,2,5,1,5,3]
         }
       ]
       //*/
-      this.chart.series = [
+      /*
+      this.chart.series = [ //Partecipation level
         {
           name: "Partecipation level",
-          data: [5,4,3]
+          data: [5,4,3,5,1,5,3,3,2,3,3,2]
         }
-      ]
+      ];
+      //*/
       console.log("ChartUpdated");
     },
     updateTable() {
@@ -373,7 +384,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("storePage", { title: "Analytic", back: false });
+    this.$store.dispatch("storePage", { title: this.title, back: false });
     if (!this.components.table && this.components.chart) {
       this.mode = "CHART";
     }
@@ -387,10 +398,24 @@ export default {
 </script>
 
 <style>
-table,
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 th,
 td {
   border: 1px solid black;
   border-collapse: collapse;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.customSelect {
+  color: black;
+}
+.customOption {
+  color: black;
+}
+select {
+    text-overflow: ellipsis;
 }
 </style>

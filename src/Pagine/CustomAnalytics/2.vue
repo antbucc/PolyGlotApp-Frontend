@@ -2,7 +2,7 @@
   <div class="bg-primary">
     <div class="flex flex-col bg-primary">
       <div class="justify-center text-center w-full text-xl">
-        <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6">
+        <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6 px-6">
           <div class="w-full lg:w-3/5">
             <div
               class="
@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="w-full lg:w-2/5 lg:pl-5">
-            <div class="flex-col p-2 text-white text-gray-700 z-10">
+            <div class="flex-col p-2 text-white text-gray-700">
               <div class="flex-col">
                 <div class="flex-col pb-4">
                   <span class="text-3xl font-bold">{{

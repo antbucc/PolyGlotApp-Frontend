@@ -48,7 +48,7 @@
             <!-- gestire no courses se mycampaign è vuoto -->
             <template style="overflow: hidden">
               <analytic-card
-                class=""
+                class="sm:px-2"
                 :key="analytic.id"
                 :id="analytic.id"
                 :title="analytic.title"

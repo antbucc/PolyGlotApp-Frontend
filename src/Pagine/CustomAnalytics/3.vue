@@ -497,11 +497,16 @@ export default {
 </script>
 
 <style>
-table,
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 th,
 td {
   border: 1px solid black;
   border-collapse: collapse;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .name {
   background-color: #dfdfdf;
