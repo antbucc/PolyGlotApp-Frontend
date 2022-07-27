@@ -3,6 +3,25 @@
     <div class="flex flex-col bg-primary">
       <div class="justify-center text-center w-full text-xl">
         <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6 px-6">
+          <div
+            class="
+              flex
+              md:hidden
+              flex-col
+              py-2
+              bg-primary
+              text-white
+            "
+          >
+            <div class="flex w-auto place-content-center">
+              <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+            </div>
+            <div class="w-full text-center">
+              <span class="text-2xl font-semibold">{{
+                selectedCourse.title
+              }}</span>
+            </div>
+          </div>
           <div class="w-full lg:w-3/5">
             <div
               class="
@@ -27,9 +46,25 @@
             <div class="flex-col p-2 text-white text-gray-700">
               <div class="flex-col">
                 <div class="flex-col pb-4">
-                  <span class="text-3xl font-bold">{{
-                    selectedCourse.title
-                  }}</span>
+                  <div
+                    class="
+                      hidden
+                      md:flex
+                      flex-row
+                      py-2
+                      bg-primary
+                      text-white
+                    "
+                  >
+                    <div class="flex w-auto place-content-left">
+                      <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+                    </div>
+                    <div class="w-full text-left">
+                      <span class="text-2xl font-semibold">{{
+                        selectedCourse.title
+                      }}</span>
+                    </div>
+                  </div>
                   <div class="text-left">
                     <span class="text-2xl font-semibold">Summary </span>
                   </div>
@@ -134,6 +169,7 @@ export default {
   props: {
     id: String,
     title: String,
+    category: Number
   },
 
   data: function () {
@@ -212,9 +248,20 @@ export default {
     };
   },
   methods: {
-    changeMode(mode) {
-      if (this.mode == mode) return;
-      this.mode = mode;
+    goBack() {
+      let path;
+      switch (this.category) {
+        case 0:
+          path = "/learningStatus";
+          break;
+        case 1:
+          path = "/gameStatus";
+          break;
+        default:
+          path = "/courses";
+          break;
+      }
+      this.$router.push(path);
     },
     getEvaluation(value, tresholds) { //Give evaluation text based on data wrt tresholds
       let again = true;

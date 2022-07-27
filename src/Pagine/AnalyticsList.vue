@@ -7,15 +7,20 @@
             flex
             px-6
             bg-primary
-            text-white text-gray-700
+            text-white
             z-10
             justify-center
           "
         >
-          <div class="flex">
-            <span class="text-2xl font-semibold">{{
-              selectedCourse.title
-            }}</span>
+          <div class="flex flex-col md:flex-row">
+            <div class="flex w-auto place-content-center md:place-content-left">
+              <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+            </div>
+            <div class="w-full text-center md:text-left">
+              <span class="text-2xl font-semibold">{{
+                selectedCourse.title
+              }}</span>
+            </div>
           </div>
         </div>
         <div
@@ -52,6 +57,7 @@
                 :key="analytic.id"
                 :id="analytic.id"
                 :title="analytic.title"
+                :category="category"
                 :custom="analytic.custom"
                 :chartType="analytic.chartType"
                 :buildTable="analytic.buildTable"

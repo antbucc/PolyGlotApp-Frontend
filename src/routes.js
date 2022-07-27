@@ -25,6 +25,22 @@ import Newchallenge from "./Pagine/Newchallenge.vue";
 import Createdchallenge from "./Pagine/Createdchallenge";
 import Recap from "./Pagine/Recap";
 
+function checkParams(params,properties) { //Check if params contains certain properties
+  let correct = true;
+  if (params == undefined || Object.keys(params).length === 0) {
+    correct = false;
+  } else {
+    let count = 0;
+    while (correct && count < properties.length) {
+      if (params[properties[count]] == undefined) {
+        correct = false;
+      }
+      count++;
+    }
+  }
+  return correct;
+}
+
 const routes = [
   {
     path: '/',
@@ -90,7 +106,14 @@ const routes = [
     path: '/analytic',
     name: 'analytic',
     component: AnalyticSwitch,
-    props: true
+    props: true,
+    beforeEnter: (to, from, next) => {
+      if (checkParams(to.params,["id","title","category","custom","chartType","buildTable","buildFilters"])) {
+        next();
+      } else {
+        next('/courses');
+      }
+    }
   },
   {
     path: '/callback',

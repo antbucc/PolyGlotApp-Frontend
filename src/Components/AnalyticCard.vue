@@ -5,6 +5,7 @@
       params: {
         id: id,
         title: title,
+        category: category,
         custom: custom,
         chartType: chartType,
         buildTable: buildTable,
@@ -49,6 +50,7 @@ export default {
   props: {
     id: String,
     title: String,
+    category: Number,
     custom: Boolean,
     chartType: String,
     buildTable: Boolean,

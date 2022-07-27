@@ -2,15 +2,8 @@
   <div class="bg-primary">
     <div class="flex flex-col bg-primary relative">
       <div class="bg-opacity-0 py-2">
-        <div class="justify-center text-center w-full text-xl">
-          <div
-            class="
-              flex flex-col
-              sm:flex-row sm:flex-wrap sm:justify-center
-              px-8
-            "
-            ref="sibiling"
-          >
+        <div class="text-center w-full text-xl">
+          <div class="flex flex-col px-8">
             <template v-if="/*!this.analytics[0].length*/ false">
               <div
                 class="
@@ -31,8 +24,35 @@
               </div>
             </template>
             <template v-else>
-              <div class="flex-col p-2 bg-primary text-white text-gray-700">
-                <div class="flex">
+              <div
+                class="
+                  py-2
+                  bg-primary
+                  text-white
+                  w-full
+                  text-left
+                  flex flex-col
+                  md:flex-row
+                "
+              >
+                <div
+                  class="flex w-auto place-content-center md:place-content-left"
+                >
+                  <button
+                    class="
+                      mr-3
+                      px-3
+                      rounded-full
+                      text-primary
+                      bg-white
+                      self-center
+                    "
+                    @click="goBack()"
+                  >
+                    Back
+                  </button>
+                </div>
+                <div class="w-full text-center md:text-left">
                   <span class="text-2xl font-semibold">{{
                     selectedCourse.title
                   }}</span>
@@ -89,7 +109,9 @@
                       <tr :key="rowIndex + '-name'">
                         <td align="center" colspan="6 " class="name">
                           {{ row.name }}
-                          <button @click="viewQuiz(rowIndex)" :disabled="show"><eye-icon /></button>
+                          <button @click="viewQuiz(rowIndex)" :disabled="show">
+                            <eye-icon />
+                          </button>
                         </td>
                       </tr>
                       <tr :key="rowIndex + '-informations_1'">
@@ -112,8 +134,7 @@
                               'bg-warning': cell == 'PARTIAL',
                               'bg-danger': cell == 'NOK',
                               'bg-gray': cell == 'NOANSWER',
-                            }
-                            "
+                            }"
                           >
                             {{
                               index != "outcome"
@@ -150,7 +171,11 @@
                             :colspan="
                               index == 'type' || index == 'date' ? 2 : 1
                             "
-                            :class="rowIndex != quizes.length-1 ? 'informations' : ''"
+                            :class="
+                              rowIndex != quizes.length - 1
+                                ? 'informations'
+                                : ''
+                            "
                           >
                             {{
                               index != "type"
@@ -371,7 +396,10 @@
                         <div class="flex flex-row w-full pl-3">
                           <label class="text-left pl-1"
                             >Visualize quiz:
-                            <button @click="viewQuiz(quizIndex)" :disabled="show">
+                            <button
+                              @click="viewQuiz(quizIndex)"
+                              :disabled="show"
+                            >
                               <eye-icon /></button
                           ></label>
                         </div>
@@ -397,6 +425,7 @@ export default {
   props: {
     id: String,
     title: String,
+    category: Number,
   },
   components: {
     QuizResultsDialog,
@@ -424,6 +453,21 @@ export default {
     };
   },
   methods: {
+    goBack() {
+      let path;
+      switch (this.category) {
+        case 0:
+          path = "/learningStatus";
+          break;
+        case 1:
+          path = "/gameStatus";
+          break;
+        default:
+          path = "/courses";
+          break;
+      }
+      this.$router.push(path);
+    },
     viewQuiz(position) {
       this.$refs["dialog"].changeQuiz(
         this.quizes[position].idnumber,
@@ -477,13 +521,6 @@ export default {
         }
       }
       this.quizes.shift();
-    },
-  },
-  computed: {
-    absoluteAlternatives() {
-      return {
-        "margin-top": -this.$refs["sibiling"].offsetHeight + "px",
-      };
     },
   },
   created() {

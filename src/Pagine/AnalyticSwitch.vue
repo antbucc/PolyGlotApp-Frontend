@@ -5,6 +5,7 @@
     :key="Analytic.__file"
     :id="id"
     :title="title"
+    :category="category"
     :chartType="chartType"
     :buildTable="buildTable"
     :buildFilters="buildFilters"
@@ -17,6 +18,7 @@ export default {
   props: {
     id: String,
     title: String,
+    category: Number,
     custom: Boolean,
     chartType: String,
     buildTable: Boolean,

@@ -43,7 +43,7 @@
           </select>
         </nav>
       </div>
-      <div class="bg-opacity-0 py-2">
+      <div class="bg-opacity-0 py-2 flex-col">
         <template v-if="components.table">
           <div
             v-show="mode == 'TAB'"
@@ -77,13 +77,18 @@
                 <div class="w-full" :class="{'lg:w-3/5':components.filters}">
                   <div
                     class="
+                      flex
                       flex-col
-                      p-2
+                      md:flex-row
+                      py-2
                       bg-primary
-                      text-white text-gray-700
+                      text-white
                     "
                   >
-                    <div class="flex">
+                    <div class="flex w-auto place-content-center md:place-content-left">
+                      <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+                    </div>
+                    <div class="w-full text-center md:text-left">
                       <span class="text-2xl font-semibold">{{
                         selectedCourse.title
                       }}</span>
@@ -169,13 +174,18 @@
                 <div class="w-full m-auto flex flex-col lg:w-3/5">
                   <div
                     class="
+                      flex
                       flex-col
-                      p-2
+                      md:flex-row
+                      py-2
                       bg-primary
-                      text-white text-gray-700
+                      text-white
                     "
                   >
-                    <div class="flex">
+                    <div class="flex w-auto place-content-center md:place-content-left">
+                      <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+                    </div>
+                    <div class="w-full text-center md:text-left">
                       <span class="text-2xl font-semibold">{{
                         selectedCourse.title
                       }}</span>
@@ -210,6 +220,50 @@
             </div>
           </div>
         </template>
+        <template v-if="!(components.table && components.chart)">
+          <div
+            class="
+              flex flex-col px-6
+            "
+          >
+            <div
+              class="
+                flex
+                flex-col
+                md:flex-row
+                py-2
+                bg-primary
+                text-white
+              "
+            >
+              <div class="flex w-auto place-content-center md:place-content-left">
+                <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+              </div>
+              <div class="w-full text-center md:text-left">
+                <span class="text-2xl font-semibold">{{
+                  selectedCourse.title
+                }}</span>
+              </div>
+            </div>
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                w-full
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+              "
+            >
+              This analytic is empty
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -223,6 +277,7 @@ export default {
   props: {
     id: String,
     title: String,
+    category: Number,
     chartType: String,
     buildTable: Boolean,
     buildFilters: Boolean,
@@ -260,6 +315,21 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
+    goBack() {
+      let path;
+      switch (this.category) {
+        case 0:
+          path = "/learningStatus";
+          break;
+        case 1:
+          path = "/gameStatus";
+          break;
+        default:
+          path = "/courses";
+          break;
+      }
+      this.$router.push(path);
+    },
     initPage(id) {
       var apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
@@ -279,9 +349,8 @@ export default {
         }
         //chart static building
         if (this.components.chart && response.data.chart.options) {
-          console.log(response.data);
           let tmpChart = response.data.chart;
-          if (tmpChart.functions != undefined && tmpChart.functions.length) {
+          if (tmpChart.functions != undefined && tmpChart.functions.length) { //Convert functions parameters and body into functions
             let fn;
             for (const path of tmpChart.functions) {
               fn = tmpChart["options"];
@@ -290,7 +359,6 @@ export default {
                 fn = fn[path[i]] ?? (fn[path[i]] = { });
               }
               fn[path[limit]] = Function(fn[path[limit]].arguments,fn[path[limit]].body);
-              //fn[path[limit]] = eval("(" + fn[path[limit]] + ")");
             }
           }
           this.chart.options = response.data.chart.options;
