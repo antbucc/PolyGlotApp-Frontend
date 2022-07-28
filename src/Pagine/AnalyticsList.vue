@@ -14,7 +14,7 @@
         >
           <div class="flex flex-col md:flex-row">
             <div class="flex w-auto place-content-center md:place-content-left">
-              <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+              <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="$router.push('/courses')">Back</button>
             </div>
             <div class="w-full text-center md:text-left">
               <span class="text-2xl font-semibold">{{
