@@ -1,41 +1,14 @@
 <template>
   <div class="bg-primary">
-    <div class="text-md w-full">
-      <nav class="flex flex-row text-white bg-primary">
-        <button
-          class="
-            flex-1
-            py-2
-            px-6
-            block
-            focus:outline-none
-            font-medium
-            sm:bg-green-400
-            hover:bg-blue-700
-            w-full
-          "
-          :class="mode == 'I' ? 'border-blue-300 border-b-4 text-blue-300' : ''"
-          @click="changeMode('I')"
-          style="font-size: 1.1em"
-        >
-          Statistics</button
-        ><button
-          class="flex-1 py-2 px-6 block focus:outline-none hover:bg-blue-700"
-          :class="
-            mode == 'B' ? ' border-blue-300 border-b-4 text-blue-300' : ''
-          "
-          @click="changeMode('B')"
-          style="font-size: 1.1em"
-        >
-          Leaderboard
-        </button>
-      </nav>
-    </div>
     <div class="bg-opacity-0 py-2">
       <div
-        v-show="mode == 'I'"
         class="justify-center text-center w-full text-xl"
       >
+        <div class="w-full place-content-center flex text-white">
+          <span class="text-2xl font-semibold">{{
+            selectedCourse.title
+          }}</span>
+        </div>
         <template>
           <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
           <div
@@ -118,21 +91,15 @@
           </div>
         </template>
       </div>
-      <leaderboard
-        id="chart_container"
-        v-show="mode == 'B'"
-      />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import Leaderboard from "./CustomAnalytics/6.vue";
-//import CourseCard from "../Components/CourseCard.vue";
+
 export default {
   name: "StudentGameStatus",
-  components: { Leaderboard },
   props: {
     title: String
   },
@@ -153,10 +120,6 @@ export default {
       return arr.slice().sort(function (a, b) {
         return b.state.PointConcept[2].score - a.state.PointConcept[2].score;
       });
-    },
-    changeMode(mode) {
-      if (this.mode == mode) return;
-      this.mode = mode;
     },
     retrievePoints() {
       const player = sessionStorage.getItem("player");

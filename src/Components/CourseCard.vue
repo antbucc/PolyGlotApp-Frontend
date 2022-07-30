@@ -34,9 +34,9 @@
         <div class="flex flex-row justify-self-center text-sm">
           <!-- <span class="font-light">{{ printDate }} </span> -->
         </div>
-        <div class="pt-4 break-words text-sm">
-          <!-- <p class="card-description">{{ description }}</p> -->
-        </div>
+        <!--<div class="pt-4 break-words text-sm">
+          <p class="card-description">{{ description }}</p>
+        </div>-->
       </div>
 
       <div
@@ -60,9 +60,29 @@
               px-2
             "
             style="margin: auto; border-radius: 15px"
+            @click="selectAndRedirect('/courseHome')"
+          >
+            <home-icon class="pr-1" />Home
+          </button>
+          <button
+            type="button"
+            class="
+              p-0
+              text-primary
+              hover:bg-primary
+              my-1
+              inline-flex
+              items-center
+              bg-transparent
+              font-semibold
+              hover:text-white
+              py-1
+              px-2
+            "
+            style="margin: auto; border-radius: 15px"
             @click="selectAndRedirect('/gameStatus')"
           >
-            <game-status-icon class="pr-1" />Game diary
+            <game-status-icon class="pr-1" />Game Status
           </button>
           <button
             type="button"

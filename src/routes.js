@@ -16,7 +16,8 @@ import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
 import store from './store/store'
 import AnalyticSwitch from "./Pagine/AnalyticSwitch.vue";
 import AnalyticsList from "./Pagine/AnalyticsList.vue";
-import GameStatusSwitch from "./Pagine/GameStatusSwitch.vue";
+//import GameStatusSwitch from "./Pagine/GameStatusSwitch.vue";
+import CourseHome from "./Pagine/CourseHome.vue";
 import Challenges from "./Pagine/Challenges.vue";
 import History from "./Pagine/History.vue";
 import Pendings from "./Pagine/Pendings.vue";
@@ -85,11 +86,16 @@ const routes = [
     // }
   },
   {
+    path: '/courseHome',
+    name: 'courseHome',
+    component: CourseHome,
+  },
+  {
     path: '/gameStatus',
     name: 'gameStatus',
-    component: GameStatusSwitch,
+    component: AnalyticsList,
     props: {
-      title: "Game diary",
+      title: "Game status",
       category: 1
     }
   },
