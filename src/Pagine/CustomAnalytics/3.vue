@@ -20,7 +20,7 @@
                   p-12
                 "
               >
-                There are no quizes.
+                There are no quizzes.
               </div>
             </template>
             <template v-else>
@@ -105,7 +105,7 @@
                     </tr>-->
                   </thead>
                   <tbody>
-                    <template v-for="(row, rowIndex) in quizes">
+                    <template v-for="(row, rowIndex) in quizzes">
                       <tr :key="rowIndex + '-name'">
                         <td align="center" colspan="6 " class="name">
                           {{ row.name }}
@@ -172,13 +172,15 @@
                               index == 'type' || index == 'date' ? 2 : 1
                             "
                             :class="
-                              rowIndex != quizes.length - 1
+                              rowIndex != quizzes.length - 1
                                 ? 'informations'
                                 : ''
                             "
                           >
                             {{
-                              index != "type"
+                              index == "date"
+                                ? cell.toLocaleDateString("en-GB")
+                                : index != "type"
                                 ? cell
                                 : cell == "multichoice"
                                 ? "Multichoice"
@@ -222,7 +224,7 @@
                               'bg-warning': cell == 'PARTIAL',
                               'bg-danger': cell == 'NOK',
                               'bg-gray': cell == 'NOANSWER',
-                              'informations': rowIndex != quizes.length-1 && index != 'topic',
+                              'informations': rowIndex != quizzes.length-1 && index != 'topic',
                             }"
                           >
                             {{
@@ -242,10 +244,10 @@
                         </template>
                       </tr>
                       <tr :key="rowIndex + '-informations_2'">
-                        <td colspan="3">{{ row.date }}</td>
+                        <td colspan="3">{{ row.date.toLocaleDateString('en-GB') }}</td>
                       </tr>
                       <tr :key="rowIndex + '-informations_3'">
-                        <td colspan="3" :class="rowIndex != quizes.length-1 ? 'informations' : ''">
+                        <td colspan="3" :class="rowIndex != quizzes.length-1 ? 'informations' : ''">
                           {{
                             row.type == "multichoice"
                               ? "Multichoice"
@@ -260,7 +262,7 @@
                 </table>
               </div>
               <div class="flex md:hidden w-full flex-col">
-                <template v-for="(quiz, quizIndex) in quizes">
+                <template v-for="(quiz, quizIndex) in quizzes">
                   <div :key="quizIndex" class="w-full py-2 text-black">
                     <div
                       class="
@@ -274,14 +276,15 @@
                         w-full
                       "
                       @click="
-                        quizes[quizIndex].expanded = !quizes[quizIndex].expanded
+                        quizzes[quizIndex].expanded =
+                          !quizzes[quizIndex].expanded
                       "
                     >
                       <label class="text-black w-full text-left pl-2">{{
                         quiz.name
                       }}</label>
                       <select-arrow-down-icon
-                        v-if="!quizes[quizIndex].expanded"
+                        v-if="!quizzes[quizIndex].expanded"
                         fillColor="#000000"
                         :size="29"
                         class="pr-2"
@@ -297,8 +300,8 @@
                     <div
                       class="w-full z-10 bg-white rounded flex-col sm:flex-row"
                       :class="{
-                        hidden: !quizes[quizIndex].expanded,
-                        flex: quizes[quizIndex].expanded,
+                        hidden: !quizzes[quizIndex].expanded,
+                        flex: quizzes[quizIndex].expanded,
                       }"
                     >
                       <div class="w-full flex-col">
@@ -342,7 +345,9 @@
                               "
                             >
                               {{
-                                property != "outcome"
+                                property == "date"
+                                  ? value.toLocaleDateString("en-GB")
+                                  : property != "outcome"
                                   ? value
                                   : value == "OK"
                                   ? "Success"
@@ -432,16 +437,16 @@ export default {
   },
   data() {
     return {
-      quizes: [
+      quizzes: [
         {
-          idnumber: "",
+          questionid: "",
           name: "",
           topic: "",
           type: "",
           difficulty: 0,
           questiontext: "",
           answer: [],
-          date: "",
+          date: new Date(),
           outcome: "",
           time: 0,
           points: 0,
@@ -470,57 +475,55 @@ export default {
     },
     viewQuiz(position) {
       this.$refs["dialog"].changeQuiz(
-        this.quizes[position].idnumber,
-        this.quizes[position].difficulty,
-        this.quizes[position].type,
-        this.quizes[position].questiontext,
-        this.quizes[position].answer
+        this.quizzes[position].questionid,
+        this.quizzes[position].difficulty,
+        this.quizzes[position].type,
+        this.quizzes[position].questiontext,
+        this.quizzes[position].answer
       );
       this.show = true;
     },
-    async retrieveQuizes() {
-      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTIONS;
-      let url = apiUrl + "?course=" + this.selectedCourse.title;
+    async retrieveQuizzes() {
+      let toRetrieve = "";
+      var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANSWERS;
+      let url = apiUrl + "?playerId=" + sessionStorage.getItem("player");
+      await axios.get(url).then((response) =>
+        response.data.forEach((answer) => {
+          this.quizzes.push({
+            questionid: answer.questionid,
+            date: new Date(answer.date),
+            outcome: answer.outcome,
+            time: answer.time,
+            points: 103,
+            expanded: false,
+          });
+          toRetrieve += answer.questionid + ",";
+        })
+      );
+      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTIONS;
+      url =
+        apiUrl +
+        "?course=" +
+        this.selectedCourse.title +
+        "&quizzes=" +
+        toRetrieve.substring(0, toRetrieve.length - 1);
+      let pos;
       await axios.get(url).then((response) =>
         response.data.forEach((quiz) => {
-          this.quizes.push({
-            id: quiz.idnumber,
+          pos = this.quizzes.findIndex(
+            (aQuiz) => aQuiz.questionid == quiz.idnumber
+          );
+          Object.assign(this.quizzes[pos], {
             name: quiz.name,
             topic: quiz.topic,
             type: quiz.type,
             difficulty: Number.parseInt(quiz.difficulty.split("-")[1]),
             questiontext: quiz.questiontext,
             answer: quiz.answer,
-            expanded: false,
           });
         })
       );
-      let answeredQuizes = [
-        {
-          idnumber: "8",
-          date: new Date().toLocaleDateString("en-GB"),
-          outcome: "OK",
-          time: 7,
-          points: 103,
-        },
-      ]; //Mettere dati dinamici
-      let tmpQuiz;
-      for (const quiz of this.quizes) {
-        tmpQuiz = answeredQuizes.find(
-          (aQuiz) => aQuiz.idnumber == aQuiz.idnumber
-        );
-        if (tmpQuiz == undefined) {
-          Object.assign(quiz, {
-            date: "Never answered",
-            outcome: "Expired quiz",
-            time: 0,
-            points: 0,
-          });
-        } else {
-          Object.assign(quiz, tmpQuiz);
-        }
-      }
-      this.quizes.shift();
+      this.quizzes.shift();
     },
   },
   created() {
@@ -528,7 +531,7 @@ export default {
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[
       sessionStorage.getItem("selectedCourse")
     ];
-    this.retrieveQuizes();
+    this.retrieveQuizzes();
   },
 };
 </script>

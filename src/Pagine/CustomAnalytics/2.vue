@@ -3,18 +3,14 @@
     <div class="flex flex-col bg-primary">
       <div class="justify-center text-center w-full text-xl">
         <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6 px-6">
-          <div
-            class="
-              flex
-              md:hidden
-              flex-col
-              py-2
-              bg-primary
-              text-white
-            "
-          >
+          <div class="flex md:hidden flex-col py-2 bg-primary text-white">
             <div class="flex w-auto place-content-center">
-              <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+              <button
+                class="mr-3 px-3 rounded-full text-primary bg-white self-center"
+                @click="goBack()"
+              >
+                Back
+              </button>
             </div>
             <div class="w-full text-center">
               <span class="text-2xl font-semibold">{{
@@ -42,37 +38,42 @@
               <!--Da sistemare pallino tagliato sulla destra-->
             </div>
           </div>
-          <div class="w-full lg:w-2/5 lg:pl-5">
-            <div class="flex-col p-2 text-white text-gray-700">
-              <div class="flex-col">
-                <div class="flex-col pb-4">
-                  <div
-                    class="
-                      hidden
-                      md:flex
-                      flex-row
-                      py-2
-                      bg-primary
-                      text-white
-                    "
-                  >
-                    <div class="flex w-auto place-content-left">
-                      <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
-                    </div>
-                    <div class="w-full text-left">
-                      <span class="text-2xl font-semibold">{{
-                        selectedCourse.title
-                      }}</span>
-                    </div>
+          <div class="w-full lg:w-2/5 lg:pl-5 text-left">
+            <div class="flex-col p-2 text-white">
+              <div class="flex-col w-fit self-center md:self-start" style="width: fit-content;">
+                <div
+                  class="hidden md:flex flex-row py-2 bg-primary text-white"
+                >
+                  <div class="flex w-auto place-content-left">
+                    <button
+                      class="
+                        mr-3
+                        px-3
+                        rounded-full
+                        text-primary
+                        bg-white
+                        self-center
+                      "
+                      @click="goBack()"
+                    >
+                      Back
+                    </button>
                   </div>
-                  <div class="text-left">
-                    <span class="text-2xl font-semibold">Summary </span>
+                  <div>
+                    <span class="text-2xl font-semibold">{{
+                      selectedCourse.title
+                    }}</span>
+                  </div>
+                </div>
+                <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
+                  <div>
+                    <span class="text-2xl font-semibold">Summary</span>
                   </div>
                   <div class="flex">
                     <span class="pr-1">Learning level:</span>
                     <span
                       :class="evaluations.learning[evalPos.learning].class"
-                      >{{ evaluations.learning[evalPos.learning].title }}</span
+                      >{{ fixedFloatOrInt(summary.values.course.learning,2) }}% - {{ evaluations.learning[evalPos.learning].title }}</span
                     >
                   </div>
                   <div class="flex">
@@ -81,7 +82,7 @@
                       :class="
                         evaluations.partecipation[evalPos.partecipation].class
                       "
-                      >{{
+                      >{{ fixedFloatOrInt(summary.values.course.partecipation,2) }}% - {{
                         evaluations.partecipation[evalPos.partecipation].title
                       }}</span
                     >
@@ -95,8 +96,8 @@
                     >
                   </div>
                 </div>
-                <div class="flex-col py-4">
-                  <div class="text-left">
+                <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
+                  <div>
                     <span class="text-2xl font-semibold pr-1">Last quiz:</span>
                     <span class="text-2xl">{{ lastQuiz }}</span>
                   </div>
@@ -104,7 +105,7 @@
                     <span class="pr-1">Learning level:</span>
                     <span
                       :class="evaluations.learning[evalPos.lQLearning].class"
-                      >{{
+                      >{{ fixedFloatOrInt(summary.values.lQ.learning,2) }}% - {{
                         evaluations.learning[evalPos.lQLearning].title
                       }}</span
                     >
@@ -115,7 +116,7 @@
                       :class="
                         evaluations.partecipation[evalPos.lQPartecipation].class
                       "
-                      >{{
+                      >{{ fixedFloatOrInt(summary.values.lQ.partecipation,2) }}% - {{
                         evaluations.partecipation[evalPos.lQPartecipation].title
                       }}</span
                     >
@@ -169,7 +170,7 @@ export default {
   props: {
     id: String,
     title: String,
-    category: Number
+    category: Number,
   },
 
   data: function () {
@@ -190,6 +191,10 @@ export default {
             learning: 0, //TypeOfValue: percentuale
             partecipation: 0, //TypeOfValue: percentuale
           },
+          lQ: {
+            learning: 0, //TypeOfValue: percentuale
+            partecipation: 0, //TypeOfValue: percentuale
+          }
         },
         tresholds: {
           learning: [], //TypeOfValue: percentuale
@@ -248,6 +253,9 @@ export default {
     };
   },
   methods: {
+    fixedFloatOrInt(n,decimals) { //es. n=9 decimals=2 => 9, n=8.789 decimals=2 => 8,79
+      return n % 1 === 0 ? n : n.toFixed(decimals);
+    },
     goBack() {
       let path;
       switch (this.category) {
@@ -263,7 +271,8 @@ export default {
       }
       this.$router.push(path);
     },
-    getEvaluation(value, tresholds) { //Give evaluation text based on data wrt tresholds
+    getEvaluation(value, tresholds) {
+      //Give evaluation text based on data wrt tresholds
       let again = true;
       let i = 0;
       let result = 0;
@@ -282,55 +291,100 @@ export default {
       return result;
     },
     async retrieveCharts() {
-        //Retrieve data
-        this.summary = {
-          values: {
-            course: {
-              learning: 85, //TypeOfValue: percentuale
-              partecipation: 75, //TypeOfValue: percentuale
-            },
-            lQ: {
-              //Last quiz
-              learning: 65, //TypeOfValue: percentuale
-              partecipation: 95, //TypeOfValue: percentuale
-            },
-          },
-          tresholds: {
-            learning: [50, 70], //TypeOfValue: percentuale
-            partecipation: [50, 70], //TypeOfValue: percentuale
-          },
-        };
+      //Retrieve data
+      let totalPlayers = 0;
+      let apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
+      await axios
+        .get(apiUrl)
+        .then(response => totalPlayers = response.data.content.length);
 
-        //Retrieve chart structure
-        var apiUrl =
-          process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
-        let url = apiUrl + "?analyticId=" + this.id;
-        await axios.get(url).then((response) => {
-          this.sumChart.options = response.data.chart.options;
+      let quizzes = {};
+      let lastQuiz = {
+        questionid: "",
+        date: new Date("2000-01-01T00:00:00.000Z"),
+        attendants: 0,
+      }
+      let answerDate;
+      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANSWERS;
+      let url = apiUrl + "?course=" + this.selectedCourse.title;
+      await axios.get(url).then(response => {
+        response.data.forEach(answer => {
+          if (!Object.prototype.hasOwnProperty.call(quizzes,answer.questionid)) {
+            quizzes[answer.questionid] = {
+              OK: 0,
+              NOK: 0,
+              NOANSWER: 0,
+            }
+          }
+          quizzes[answer.questionid][answer.outcome]++;
+          if (lastQuiz.date < (answerDate = new Date(answer.date))) {
+            lastQuiz = {
+              questionid: answer.questionid,
+              date: answerDate,
+              attendants: 0,
+            }
+          }
         });
+      });
+      let attendants;
+      let tmpLearning = 0;
+      let tmpPartecipation = 0;
+      for (const questionid of Object.keys(quizzes)) {
+        attendants = quizzes[questionid].OK+quizzes[questionid].NOK+quizzes[questionid].NOANSWER;
+        tmpLearning += quizzes[questionid].OK/attendants;
+        tmpPartecipation += attendants;
+        if (questionid == lastQuiz.questionid) {
+          lastQuiz.attendants = attendants;
+        }
+      }
+      this.summary = {
+        values: {
+          course: {
+            learning: tmpLearning*100/Object.keys(quizzes).length, //TypeOfValue: percentuale
+            partecipation: tmpPartecipation*100/(totalPlayers*Object.keys(quizzes).length), //TypeOfValue: percentuale
+          },
+          lQ: {
+            //Last quiz
+            learning: quizzes[lastQuiz.questionid].OK*100/lastQuiz.attendants, //TypeOfValue: percentuale
+            partecipation: lastQuiz.attendants*100/totalPlayers, //TypeOfValue: percentuale
+          },
+        },
+        tresholds: {
+          learning: [50, 70], //TypeOfValue: percentuale
+          partecipation: [50, 70], //TypeOfValue: percentuale
+        },
+      };
 
-        //Put data into chart
-        this.sumChart.series = [
-          {
-            name: "Course summary",
-            data: [
-              [
-                this.summary.values.course.partecipation,
-                this.summary.values.course.learning,
-              ],
+      //Retrieve chart structure
+      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
+      url = apiUrl + "?analyticId=" + this.id;
+      await axios.get(url).then((response) => {
+        this.sumChart.options = response.data.chart.options;
+      });
+
+      //Put data into chart
+      this.sumChart.series = [
+        {
+          name: "Course summary",
+          data: [
+            [
+              this.summary.values.course.partecipation,
+              this.summary.values.course.learning,
             ],
-          },
-          {
-            name: "Last quiz",
-            data: [
-              [
-                this.summary.values.lQ.partecipation,
-                this.summary.values.lQ.learning,
-              ],
+          ],
+        },
+        {
+          name: "Last quiz",
+          data: [
+            [
+              this.summary.values.lQ.partecipation,
+              this.summary.values.lQ.learning,
             ],
-          },
-        ];
-        this.lastQuiz = "BPMN";
+          ],
+        },
+      ];
+      this.lastQuiz = "BPMN";
     },
     retrieveEvaluations() {
       //Texts and colors for evaluation on the right and colors for chart areas
@@ -401,7 +455,8 @@ export default {
         this.evalPos.lQPartecipation
       ); //Pensare ad una conversione più generica
     },
-    addEvaluationAreas() { //Adds annotation areas to the chart to create evaluations areas
+    addEvaluationAreas() {
+      //Adds annotation areas to the chart to create evaluations areas
       let tTemp = this.summary.tresholds.learning;
       let eTemp = this.evaluations.learning;
 
