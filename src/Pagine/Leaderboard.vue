@@ -1,12 +1,12 @@
 <template>
   <div
-    class="justify-center text-center w-full text-xl"
+      class="justify-center text-center w-full text-xl"
   >
     <div class="box">
       <template>
         <!-- controllo se ho la classifica di questo corso, se non la ho mostro questo -->
         <div
-          class="
+            class="
             flex flex-col-reverse
             bg-white
             rounded-lg
@@ -14,7 +14,7 @@
             shadow-xl
             p-12
           "
-          style="text-align: center"
+            style="text-align: center"
         >
           <table>
             <thead>
@@ -65,7 +65,7 @@ export default {
     },
     retrieveBoard() {
       var apiUrl =
-        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
+          process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
       axios.get(apiUrl).then((response) => {
         if (response.data == "error") {
           console.log("Error during game extraction");
@@ -83,8 +83,8 @@ export default {
   created() {
     this.$store.dispatch("storePage", { title: this.title, back: false });
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[
-      sessionStorage.getItem("selectedCourse")
-    ];
+        sessionStorage.getItem("selectedCourse")
+        ];
     this.response = this.retrieveBoard();
     this.table = {
       head: [
@@ -103,3 +103,4 @@ td {
   text-overflow: ellipsis;
 }
 </style>
+
