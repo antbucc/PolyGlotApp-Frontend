@@ -310,17 +310,17 @@ export default {
       let url = apiUrl + "?course=" + this.selectedCourse.title;
       await axios.get(url).then(response => {
         response.data.forEach(answer => {
-          if (!Object.prototype.hasOwnProperty.call(quizzes,answer.questionid)) {
-            quizzes[answer.questionid] = {
+          if (!Object.prototype.hasOwnProperty.call(quizzes,answer.question.idnumber)) {
+            quizzes[answer.question.idnumber] = {
               OK: 0,
               NOK: 0,
               NOANSWER: 0,
             }
           }
-          quizzes[answer.questionid][answer.outcome]++;
+          quizzes[answer.question.idnumber][answer.outcome]++;
           if (lastQuiz.date < (answerDate = new Date(answer.date))) {
             lastQuiz = {
-              questionid: answer.questionid,
+              questionid: answer.question.idnumber,
               date: answerDate,
               attendants: 0,
             }

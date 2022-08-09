@@ -490,7 +490,13 @@ export default {
       await axios.get(url).then((response) =>
         response.data.forEach((answer) => {
           this.quizzes.push({
-            questionid: answer.questionid,
+            questionid: answer.question.idnumber,
+            name: answer.question.name,
+            topic: answer.question.topic,
+            type: answer.question.type,
+            difficulty: Number.parseInt(answer.question.difficulty.split("-")[1]),
+            questiontext: answer.question.questiontext,
+            answer: answer.question.answer,
             date: new Date(answer.date),
             outcome: answer.outcome,
             time: answer.time,
@@ -498,29 +504,6 @@ export default {
             expanded: false,
           });
           toRetrieve += answer.questionid + ",";
-        })
-      );
-      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_QUESTIONS;
-      url =
-        apiUrl +
-        "?course=" +
-        this.selectedCourse.title +
-        "&quizzes=" +
-        toRetrieve.substring(0, toRetrieve.length - 1);
-      let pos;
-      await axios.get(url).then((response) =>
-        response.data.forEach((quiz) => {
-          pos = this.quizzes.findIndex(
-            (aQuiz) => aQuiz.questionid == quiz.idnumber
-          );
-          Object.assign(this.quizzes[pos], {
-            name: quiz.name,
-            topic: quiz.topic,
-            type: quiz.type,
-            difficulty: Number.parseInt(quiz.difficulty.split("-")[1]),
-            questiontext: quiz.questiontext,
-            answer: quiz.answer,
-          });
         })
       );
       this.quizzes.shift();
