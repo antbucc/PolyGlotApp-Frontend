@@ -358,7 +358,7 @@ export default {
 
       //Retrieve chart structure
       apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
-      url = apiUrl + "?analyticId=" + this.id;
+      url = apiUrl + "?id=" + this.id;
       await axios.get(url).then((response) => {
         this.sumChart.options = response.data.chart.options;
       });

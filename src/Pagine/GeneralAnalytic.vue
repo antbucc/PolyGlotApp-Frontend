@@ -1,7 +1,10 @@
 <template>
   <div class="bg-primary">
     <div class="flex flex-col bg-primary">
-      <div class="invisible lg:visible text-md w-full" v-if="components.table && components.chart">
+      <div
+        class="invisible lg:visible text-md w-full"
+        v-if="components.table && components.chart"
+      >
         <nav class="flex flex-row text-white bg-primary">
           <button
             class="
@@ -35,10 +38,20 @@
           </button>
         </nav>
       </div>
-      <div class="visible lg:invisible text-md w-full" v-if="components.table && components.chart">
+      <div
+        class="visible lg:invisible text-md w-full"
+        v-if="components.table && components.chart"
+      >
         <nav class="flex text-white bg-primary mx-5">
-          <select ref="nav" class="w-full text-center customSelect text-xl font-semibold" @change="changeMode($event.target.value)" v-model="mode">
-            <option value="TAB" selected="selected" class="customOption">Table</option>
+          <select
+            ref="nav"
+            class="w-full text-center customSelect text-xl font-semibold"
+            @change="changeMode($event.target.value)"
+            v-model="mode"
+          >
+            <option value="TAB" selected="selected" class="customOption">
+              Table
+            </option>
             <option value="CHART" class="customOption">Chart</option>
           </select>
         </nav>
@@ -49,11 +62,7 @@
             v-show="mode == 'TAB'"
             class="justify-center text-center w-full text-xl"
           >
-            <div
-              class="
-                flex flex-col lg:flex-row px-6
-              "
-            >
+            <div class="flex flex-col lg:flex-row px-6">
               <template v-if="/*!this.analytics[0].length*/ false">
                 <div
                   class="
@@ -74,23 +83,45 @@
                 </div>
               </template>
               <template v-else>
-                <div class="w-full" :class="{'lg:w-3/5':components.filters}">
+                <div class="w-full" :class="{ 'lg:w-3/5': components.filters }">
                   <div
-                    class="
-                      flex
-                      flex-col
-                      md:flex-row
-                      py-2
-                      bg-primary
-                      text-white
-                    "
+                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
                   >
-                    <div class="flex w-auto place-content-center md:place-content-left">
-                      <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+                    <div
+                      class="
+                        flex
+                        w-auto
+                        place-content-center
+                        md:place-content-left
+                      "
+                    >
+                      <button
+                        class="
+                          mr-3
+                          px-3
+                          rounded-full
+                          text-primary
+                          bg-white
+                          self-center
+                        "
+                        @click="goBack()"
+                      >
+                        Back
+                      </button>
                     </div>
                     <div class="w-full text-center md:text-left">
                       <span class="text-2xl font-semibold">{{
                         selectedCourse.title
+                      }}</span>
+                    </div>
+                  </div>
+                  <div
+                    v-if="subtitle.length != 0"
+                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                  >
+                    <div class="w-full text-center md:text-left">
+                      <span class="text-xl font-semibold">{{
+                        subtitle
                       }}</span>
                     </div>
                   </div>
@@ -123,14 +154,19 @@
                             >
                               {{ cell }}
                             </th>
-                            <td v-else class="" :key="index">{{ cell }}</td>
+                            <td v-else class="" :key="index">
+                              {{ fixedFloatOrInt(cell, 2) }}
+                            </td>
                           </template>
                         </tr>
                       </template>
                     </tbody>
                   </table>
                 </div>
-                <div v-if="components.filters" class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5">
+                <div
+                  v-if="components.filters"
+                  class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
+                >
                   <!--filtro-->
                   <template>
                     <analytic-filter :filters="filters" @update="update" />
@@ -146,11 +182,7 @@
             v-show="mode == 'CHART'"
             class="justify-center text-center w-full text-xl"
           >
-            <div
-              class="
-                flex flex-col lg:flex-row px-6
-              "
-            >
+            <div class="flex flex-col lg:flex-row px-6">
               <template v-if="/*!this.analytics[1].length*/ false">
                 <div
                   class="
@@ -173,21 +205,43 @@
               <template v-else>
                 <div class="w-full m-auto flex flex-col lg:w-3/5">
                   <div
-                    class="
-                      flex
-                      flex-col
-                      md:flex-row
-                      py-2
-                      bg-primary
-                      text-white
-                    "
+                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
                   >
-                    <div class="flex w-auto place-content-center md:place-content-left">
-                      <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+                    <div
+                      class="
+                        flex
+                        w-auto
+                        place-content-center
+                        md:place-content-left
+                      "
+                    >
+                      <button
+                        class="
+                          mr-3
+                          px-3
+                          rounded-full
+                          text-primary
+                          bg-white
+                          self-center
+                        "
+                        @click="goBack()"
+                      >
+                        Back
+                      </button>
                     </div>
                     <div class="w-full text-center md:text-left">
                       <span class="text-2xl font-semibold">{{
                         selectedCourse.title
+                      }}</span>
+                    </div>
+                  </div>
+                  <div
+                    v-if="subtitle.length != 0"
+                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                  >
+                    <div class="w-full text-center md:text-left">
+                      <span class="text-xl font-semibold">{{
+                        subtitle
                       }}</span>
                     </div>
                   </div>
@@ -204,13 +258,18 @@
                   >
                     <!--grafico-->
                     <apexchart
+                      v-if="chart.loaded"
+                      ref="chart"
                       height="430"
                       :options="chart.options"
                       :series="chart.series"
                     />
                   </div>
                 </div>
-                <div v-if="components.filters" class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5">
+                <div
+                  v-if="components.filters"
+                  class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
+                >
                   <!--filtro-->
                   <template>
                     <analytic-filter :filters="filters" @update="update" />
@@ -221,23 +280,24 @@
           </div>
         </template>
         <template v-if="!(components.table && components.chart)">
-          <div
-            class="
-              flex flex-col px-6
-            "
-          >
-            <div
-              class="
-                flex
-                flex-col
-                md:flex-row
-                py-2
-                bg-primary
-                text-white
-              "
-            >
-              <div class="flex w-auto place-content-center md:place-content-left">
-                <button class="mr-3 px-3 rounded-full text-primary bg-white self-center" @click="goBack()">Back</button>
+          <div class="flex flex-col px-6">
+            <div class="flex flex-col md:flex-row py-2 bg-primary text-white">
+              <div
+                class="flex w-auto place-content-center md:place-content-left"
+              >
+                <button
+                  class="
+                    mr-3
+                    px-3
+                    rounded-full
+                    text-primary
+                    bg-white
+                    self-center
+                  "
+                  @click="goBack()"
+                >
+                  Back
+                </button>
               </div>
               <div class="w-full text-center md:text-left">
                 <span class="text-2xl font-semibold">{{
@@ -272,6 +332,7 @@
 <script>
 import axios from "axios";
 import AnalyticFilter from "../Components/AnalyticFilter.vue";
+import dynamicDataConverter from "../Components/analyticsDDC.js";
 export default {
   name: "GeneralAnalytic",
   props: {
@@ -285,8 +346,25 @@ export default {
   components: { AnalyticFilter },
   data: function () {
     return {
-      aId: this.id,
       mode: "TAB",
+      allOutcomes: [
+        {
+          code: "OK",
+          title: "Correct answer",
+        },
+        {
+          code: "NOK",
+          title: "Wrong answer",
+        },
+        {
+          code: "NOANSWER",
+          title: "No Answer",
+        },
+        {
+          code: "NOP",
+          title: "No partecipation",
+        },
+      ],
       selectedCourse: {},
       retrievedData: {},
       components: {
@@ -300,6 +378,8 @@ export default {
         firstHead: true,
       },
       chart: {
+        loaded: false,
+        dynamicAdditions: [],
         series: [],
         options: {
           chart: {
@@ -308,12 +388,38 @@ export default {
         },
       },
       filters: [],
+      totalStudents: 0,
+      subtitle: "",
     };
   },
   methods: {
     changeMode(mode) {
       if (this.mode == mode) return;
       this.mode = mode;
+    },
+    fixedFloatOrInt(n, decimals) {
+      //es. n=9 decimals=2 => 9, n=8.789 decimals=2 => 8,79
+      return isNaN(n) || n % 1 === 0 ? n : n.toFixed(decimals);
+    },
+    getPathTarget(target, path, strictPath) {
+      let again = true;
+      let i = 0;
+      const limit = path.length - 1;
+      while (again && i < limit) {
+        if (target[path[i]] != undefined) {
+          target = target[path[i]];
+        } else if (strictPath) {
+          again = false;
+        } else {
+          target = target[path[i]] = {};
+        }
+        i++;
+      }
+      if ((again && target[path[limit]] != undefined) || !strictPath) {
+        return target;
+      } else {
+        return null;
+      }
     },
     goBack() {
       let path;
@@ -330,11 +436,10 @@ export default {
       }
       this.$router.push(path);
     },
-    initPage(id) {
-      var apiUrl =
-        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
-      let url = apiUrl + "?analyticId=" + id;
-      axios.get(url).then((response) => {
+    async initPage() {
+      let apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
+      let url = apiUrl + "?id=" + this.id;
+      await axios.get(url).then((response) => {
         if (
           this.components.table &&
           Object.keys(response.data.table).length !== 0
@@ -350,18 +455,23 @@ export default {
         //chart static building
         if (this.components.chart && response.data.chart.options) {
           let tmpChart = response.data.chart;
-          if (tmpChart.functions != undefined && tmpChart.functions.length) { //Convert functions parameters and body into functions
+          if (tmpChart.functions != undefined && tmpChart.functions.length) {
+            //Convert functions parameters and body into functions
             let fn;
             for (const path of tmpChart.functions) {
               fn = tmpChart["options"];
               const limit = path.length - 1;
               for (let i = 0; i < limit; ++i) {
-                fn = fn[path[i]] ?? (fn[path[i]] = { });
+                fn = fn[path[i]] ?? (fn[path[i]] = {});
               }
-              fn[path[limit]] = Function(fn[path[limit]].arguments,fn[path[limit]].body);
+              fn[path[limit]] = Function(
+                fn[path[limit]].arguments,
+                fn[path[limit]].body
+              );
             }
           }
           this.chart.options = response.data.chart.options;
+          this.chart.dynamicAdditions = response.data.chart.dynamicAdditions;
         }
         //Adding filters
         this.filters =
@@ -369,85 +479,170 @@ export default {
             ? response.data.filters
             : [];
       });
-      this.retrievedData = {}; //Da recuperare dati da trasformare per chart e tabella in update
-      //Qualche chart ha bisogno di avere anche categorie o giù di lì (es. quiz come asse x in categories dei grafi a colonne)
-      console.log("Retrieved analytic ", id);
+
+      apiUrl =
+        process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS_DATA;
+      switch (
+        this.id //Request
+      ) {
+        case "0":
+        case "1":
+        case "4":
+        case "5":
+          url =
+            apiUrl + "?id=" + this.id + "&course=" + this.selectedCourse.title;
+          break;
+        default:
+          this.$router.push("/courses");
+          break;
+      }
+      await axios
+        .get(url)
+        .then((response) => (this.retrievedData = response.data));
+      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
+      await axios
+        .get(apiUrl)
+        .then(
+          (response) => (this.totalStudents = response.data.content.length)
+        ); //Forse necessario filtro studenti
+      switch (
+        this.id //Additional informations
+      ) {
+        case "0":
+          this.retrievedData.data.forEach((quiz) =>
+            quiz.outcomes.push({
+              code: "NOP",
+              students:
+                this.totalStudents -
+                quiz.outcomes.reduce((a, b) => {
+                  return a + b.students;
+                }, 0),
+            })
+          );
+          break;
+        case "1":
+          for (const topic of this.retrievedData.data) {
+            topic.quizzes = this.retrievedData.topicQuizzes.find(
+              (t) => t._id == topic._id
+            ).quizzes;
+            topic.outcomes.push({
+              code: "NOP",
+              students:
+                topic.quizzes * this.totalStudents -
+                topic.outcomes.reduce((a, b) => {
+                  return a + b.students;
+                }, 0),
+            });
+          }
+          break;
+        case "4":
+        case "5":
+          for (const topic of this.retrievedData.data) {
+            topic.quizzes = this.retrievedData.topicQuizzes.find(
+              (t) => t._id == topic._id
+            ).quizzes;
+          }
+          break;
+      }
+      this.update(true);
+      console.log("Retrieved analytic ", this.id);
     },
-    update() {
+    update(mounted) {
       if (this.components.chart) {
-        this.updateChart();
+        this.updateChart(mounted);
       }
       if (this.components.table) {
-        this.updateTable();
+        this.updateTable(mounted);
       }
       console.log("Updated");
     },
-    updateChart() {
-      /*
-      this.chart.series = [80, 20, 15, 5]; //Quiz summary
-      //*/
-      /*
-      this.chart.series = [ //Quiz comparison by topic
-        {
-          name: "Correct answers",
-          data: [80,60,90,15,10,10,20,30,15]
-        }, {
-          name: "Wrong answers",
-          data: [20,30,15,80,60,90,15,10,10]
-        }, {
-          name: "No answers",
-          data: [15,10,10,20,30,15,80,60,90]
+    async updateChart(mounted) {
+      let params = {};
+      let toAdd, target;
+      switch (this.id) {
+        case "0":
+          this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
+          params = {
+            allOutcomes: this.allOutcomes,
+            questionid: this.retrievedData.data[0]._id.questionid,
+          };
+          break;
+        case "1":
+          params = {
+            allOutcomes: this.allOutcomes.filter(
+              (outcome) => outcome.code != "NOP"
+            ),
+          };
+          break;
+        case "5":
+          params = {
+            totalStudents: this.totalStudents,
+          };
+          break;
+      }
+      this.chart.series = dynamicDataConverter(
+        this.id,
+        2,
+        this.retrievedData,
+        params
+      );
+      if (mounted) {
+        toAdd = dynamicDataConverter(this.id, 3, this.retrievedData, params);
+        for (const key of Object.keys(toAdd)) {
+          target = this.getPathTarget(
+            this.chart.options,
+            this.chart.dynamicAdditions[key],
+            true
+          );
+          if (target != null) {
+            target[
+              this.chart.dynamicAdditions[key][
+                this.chart.dynamicAdditions[key].length - 1
+              ]
+            ] = toAdd[key];
+          }
         }
-      ]
-      //*/
-      ///*
-      this.chart.series = [ //Learning level
-        {
-          name: "Learning level",
-          data: [5,3,4,3,2,3,3,2,5,1,5,3]
-        }
-      ]
-      //*/
-      /*
-      this.chart.series = [ //Partecipation level
-        {
-          name: "Partecipation level",
-          data: [5,4,3,5,1,5,3,3,2,3,3,2]
-        }
-      ];
-      //*/
+        this.chart.loaded = true;
+      } else {
+        this.$refs.chart.updateSeries(this.chart.series);
+      }
       console.log("ChartUpdated");
     },
-    updateTable() {
-      /*
-      this.table.data = [
-        ["Risposte corrette",80],
-        ["Risposte sbagliate",20],
-        ["Senza risposta",15],
-        ["Senza partecipazione",5]
-      ]
-      //*/
-      /*
-      this.table.data = [
-        ["BPMN",80,20,15],
-        ["Requisiti non funzionali",60,30,10],
-        ["Requisiti funzionali",90,15,10]
-      ]
-      */
-      /*
-      this.table.data = [
-        ["BPMN",5],
-        ["Requisiti non funzionali",3],
-        ["Requisiti funzionali",4]
-      ]
-      //*/
-      /*
-      this.table.data = [
-        ["BPMN",5],
-        ["Requisiti non funzionali",4],
-        ["Requisiti funzionali",3]
-      ]
-      //*/
+    updateTable(mounted) {
+      let params = {};
+      switch (this.id) {
+        case "0":
+          this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
+          params = {
+            allOutcomes: this.allOutcomes,
+            questionid: this.retrievedData.data[0]._id.questionid,
+          };
+          break;
+        case "1":
+          params = {
+            allOutcomes: this.allOutcomes,
+          };
+          break;
+        case "5":
+          params = {
+            totalStudents: this.totalStudents,
+          };
+          break;
+      }
+      if (mounted && this.retrievedData.head != undefined) {
+        this.table.head = dynamicDataConverter(
+          this.id,
+          1,
+          this.retrievedData,
+          params
+        );
+      }
+      this.table.data = dynamicDataConverter(
+        this.id,
+        0,
+        this.retrievedData,
+        params
+      );
       console.log("TableUpdated");
     },
   },
@@ -459,8 +654,9 @@ export default {
     this.selectedCourse = JSON.parse(sessionStorage.getItem("courses"))[
       sessionStorage.getItem("selectedCourse")
     ];
-    this.initPage(this.aId); //mettere id
-    this.update();
+  },
+  mounted() {
+    this.initPage();
   },
 };
 </script>
@@ -484,6 +680,6 @@ td {
   color: black;
 }
 select {
-    text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 </style>
