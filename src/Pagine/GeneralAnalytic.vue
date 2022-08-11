@@ -457,17 +457,16 @@ export default {
           let tmpChart = response.data.chart;
           if (tmpChart.functions != undefined && tmpChart.functions.length) {
             //Convert functions parameters and body into functions
-            let fn;
+            let fn,last;
             for (const path of tmpChart.functions) {
-              fn = tmpChart["options"];
-              const limit = path.length - 1;
-              for (let i = 0; i < limit; ++i) {
-                fn = fn[path[i]] ?? (fn[path[i]] = {});
+              fn = this.getPathTarget(tmpChart["options"],path,true);
+              if (fn != null) {
+                last = path.length - 1;
+                fn[path[last]] = Function(
+                  fn[path[last]].arguments,
+                  fn[path[last]].body
+                );
               }
-              fn[path[limit]] = Function(
-                fn[path[limit]].arguments,
-                fn[path[limit]].body
-              );
             }
           }
           this.chart.options = response.data.chart.options;
