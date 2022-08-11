@@ -79,22 +79,20 @@
                     <tr>
                       <th colspan="4" class="bg-white">Topic</th>
                       <th class="bg-white">Difficulty</th>
-                      <th class="bg-white">Outcome</th>
+                      <th class="bg-white">Time</th>
                     </tr>
                     <tr>
                       <th colspan="2" class="bg-white informations">Date</th>
                       <th colspan="2" class="bg-white informations">Type</th>
-                      <th class="bg-white informations">Time</th>
-                      <th class="bg-white informations">Points</th>
+                      <th colspan="2" class="bg-white informations">Outcome</th>
                     </tr>
                     <!--<tr>
-                      <th colspan="7" class="name">Name</th>
+                      <th colspan="6" class="name">Name</th>
                     </tr>
                     <tr>
                       <th colspan="3" class="bg-white">Topic</th>
                       <th class="bg-white informations" rowspan="3">Difficulty</th>
                       <th class="bg-white informations" rowspan="3">Time</th>
-                      <th class="bg-white informations" rowspan="3">Points</th>
                       <th class="bg-white informations" rowspan="3">Outcome</th>
                     </tr>
                     <tr>
@@ -119,36 +117,18 @@
                           v-for="(cell, index) in (({
                             topic,
                             difficulty,
-                            outcome,
+                            time,
                           }) => ({
                             topic,
                             difficulty,
-                            outcome,
+                            time,
                           }))(row)"
                         >
                           <td
                             :key="index"
                             :colspan="index == 'topic' ? 4 : 1"
-                            :class="{
-                              'bg-secondary': cell == 'OK',
-                              'bg-warning': cell == 'PARTIAL',
-                              'bg-danger': cell == 'NOK',
-                              'bg-gray': cell == 'NOANSWER',
-                            }"
                           >
-                            {{
-                              index != "outcome"
-                                ? cell
-                                : cell == "OK"
-                                ? "Success"
-                                : cell == "PARTIAL"
-                                ? "Partial"
-                                : cell == "NOK"
-                                ? "Failed"
-                                : cell == "NOANSWER"
-                                ? "No Answer"
-                                : ""
-                            }}
+                            {{ cell }}{{ index == "time" ? "s" : "" }}
                           </td>
                         </template>
                       </tr>
@@ -157,42 +137,47 @@
                           v-for="(cell, index) in (({
                             date,
                             type,
-                            time,
-                            points,
+                            outcome,
                           }) => ({
                             date,
                             type,
-                            time,
-                            points,
+                            outcome,
                           }))(row)"
                         >
                           <td
                             :key="index"
-                            :colspan="
-                              index == 'type' || index == 'date' ? 2 : 1
-                            "
-                            :class="
-                              rowIndex != quizzes.length - 1
-                                ? 'informations'
-                                : ''
-                            "
+                            colspan="2"
+                            :class="{
+                              'informations': rowIndex != quizzes.length - 1,
+                              'bg-secondary': cell == 'OK',
+                              'bg-warning': cell == 'PARTIAL',
+                              'bg-danger': cell == 'NOK',
+                              'bg-gray': cell == 'NOANSWER',
+                            }"
                           >
                             {{
                               index == "date"
                                 ? cell.toLocaleDateString("en-GB")
-                                : index != "type"
-                                ? cell
+                                : cell == "OK"
+                                ? "Success"
+                                : cell == "PARTIAL"
+                                ? "Partial"
+                                : cell == "NOK"
+                                ? "Failed"
+                                : cell == "NOANSWER"
+                                ? "No Answer"
                                 : cell == "multichoice"
                                 ? "Multichoice"
                                 : cell == "truefalse"
                                 ? "True/False"
                                 : cell
-                            }}{{ index == "time" ? "s" : "" }}
+                                
+                            }}
                           </td>
                         </template>
                       </tr>
                       <!--<tr :key="rowIndex + '-name'">
-                        <td align="center" colspan="7" class="name">
+                        <td align="center" colspan="6" class="name">
                           {{ row.name }}
                           <button @click="viewQuiz(rowIndex)" :disabled="show">
                             <eye-icon />
@@ -205,13 +190,11 @@
                             topic,
                             difficulty,
                             time,
-                            points,
                             outcome,
                           }) => ({
                             topic,
                             difficulty,
                             time,
-                            points,
                             outcome,
                           }))(row)"
                         >
@@ -368,11 +351,9 @@
                           v-for="(value, property) in (({
                             type,
                             time,
-                            points,
                           }) => ({
                             type,
                             time,
-                            points,
                           }))(quiz)"
                         >
                           <div
@@ -449,7 +430,6 @@ export default {
           date: new Date(),
           outcome: "",
           time: 0,
-          points: 0,
           expanded: false,
         },
       ],
@@ -484,7 +464,6 @@ export default {
       this.show = true;
     },
     async retrieveQuizzes() {
-      let toRetrieve = "";
       var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANSWERS;
       let url = apiUrl + "?playerId=" + sessionStorage.getItem("player");
       await axios.get(url).then((response) =>
@@ -500,10 +479,8 @@ export default {
             date: new Date(answer.date),
             outcome: answer.outcome,
             time: answer.time,
-            points: 103,
             expanded: false,
           });
-          toRetrieve += answer.questionid + ",";
         })
       );
       this.quizzes.shift();
