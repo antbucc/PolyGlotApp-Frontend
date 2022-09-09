@@ -67,14 +67,7 @@
                 </div>
                 <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
                   <div>
-                    <span class="text-2xl font-semibold">Summary</span>
-                  </div>
-                  <div class="flex">
-                    <span class="pr-1">Learning level:</span>
-                    <span
-                      :class="evaluations.learning[evalPos.learning].class"
-                      >{{ fixedFloatOrInt(summary.values.course.learning,2) }}% - {{ evaluations.learning[evalPos.learning].title }}</span
-                    >
+                    <span class="text-2xl font-semibold">Course summary</span>
                   </div>
                   <div class="flex">
                     <span class="pr-1">Partecipation level:</span>
@@ -88,11 +81,18 @@
                     >
                   </div>
                   <div class="flex">
+                    <span class="pr-1">Learning level:</span>
+                    <span
+                      :class="evaluations.learning[evalPos.learning].class"
+                      >{{ fixedFloatOrInt(summary.values.course.learning,2) }}% - {{ evaluations.learning[evalPos.learning].title }}</span
+                    >
+                  </div>
+                  <div class="flex">
                     <span class="text-xl font-semibold pr-1">Situation: </span>
                     <span
                       class="text-xl font-semibold"
-                      :class="evaluations.summary[evalPos.summary].class"
-                      >{{ evaluations.summary[evalPos.summary].title }}</span
+                      :class="evaluations.situation[evalPos.summary].class"
+                      >{{ evaluations.situation[evalPos.summary].title }}</span
                     >
                   </div>
                 </div>
@@ -100,15 +100,6 @@
                   <div>
                     <span class="text-2xl font-semibold pr-1">Last quiz:</span>
                     <span class="text-2xl">{{ lastQuiz }}</span>
-                  </div>
-                  <div class="flex">
-                    <span class="pr-1">Learning level:</span>
-                    <span
-                      :class="evaluations.learning[evalPos.lQLearning].class"
-                      >{{ fixedFloatOrInt(summary.values.lQ.learning,2) }}% - {{
-                        evaluations.learning[evalPos.lQLearning].title
-                      }}</span
-                    >
                   </div>
                   <div class="flex">
                     <span class="pr-1">Partecipation level:</span>
@@ -122,15 +113,20 @@
                     >
                   </div>
                   <div class="flex">
-                    <span class="text-xl font-semibold pr-1"
-                      >Performances:
-                    </span>
+                    <span class="pr-1">Learning level:</span>
+                    <span
+                      :class="evaluations.learning[evalPos.lQLearning].class"
+                      >{{ fixedFloatOrInt(summary.values.lQ.learning,2) }}% - {{
+                        evaluations.learning[evalPos.lQLearning].title
+                      }}</span
+                    >
+                  </div>
+                  <div class="flex">
+                    <span class="text-xl font-semibold pr-1">Situation: </span>
                     <span
                       class="text-xl font-semibold"
-                      :class="evaluations.performance[evalPos.lQSummary].class"
-                      >{{
-                        evaluations.performance[evalPos.lQSummary].title
-                      }}</span
+                      :class="evaluations.situation[evalPos.lQSummary].class"
+                      >{{ evaluations.situation[evalPos.lQSummary].title }}</span
                     >
                   </div>
                 </div>
@@ -163,10 +159,9 @@
 
 <script>
 import axios from "axios";
-//import CourseCard from "../Components/CourseCard.vue";
+
 export default {
   name: "LPSummary",
-  //components: { CourseCard },
   props: {
     id: String,
     title: String,
@@ -221,6 +216,7 @@ export default {
             areaColor: "#ffffff",
           },
         ],
+        
         partecipation: [
           {
             title: "",
@@ -228,27 +224,13 @@ export default {
             areaColor: "#ffffff",
           },
         ],
-        understanding: [
+        situation: [
           {
             title: "",
             class: "text-white",
             areaColor: "#ffffff",
           },
-        ],
-        performance: [
-          {
-            title: "",
-            class: "text-white",
-            areaColor: "#ffffff",
-          },
-        ],
-        summary: [
-          {
-            title: "",
-            class: "text-white",
-            areaColor: "#ffffff",
-          },
-        ],
+        ]
       },
     };
   },
@@ -290,7 +272,7 @@ export default {
       }
       return result;
     },
-    async retrieveCharts() {
+    async retrieveChart() {
       //Retrieve data
       let totalPlayers = 0;
       let apiUrl =
@@ -302,6 +284,7 @@ export default {
       let quizzes = {};
       let lastQuiz = {
         questionid: "",
+        name: "",
         date: new Date("2000-01-01T00:00:00.000Z"),
         attendants: 0,
       }
@@ -321,11 +304,13 @@ export default {
           if (lastQuiz.date < (answerDate = new Date(answer.date))) {
             lastQuiz = {
               questionid: answer.question.idnumber,
+              name: answer.question.name,
               date: answerDate,
               attendants: 0,
             }
           }
         });
+        this.lastQuiz = lastQuiz.name;
       });
       let attendants;
       let tmpLearning = 0;
@@ -350,7 +335,7 @@ export default {
             partecipation: lastQuiz.attendants*100/totalPlayers, //TypeOfValue: percentuale
           },
         },
-        tresholds: {
+        tresholds: { //Da implementare la modifica dei tresholds. Prerequisito: decidere dove saranno messe tutte le impostazioni dell'applicazione ed aggiungere una voce lì
           learning: [50, 70], //TypeOfValue: percentuale
           partecipation: [50, 70], //TypeOfValue: percentuale
         },
@@ -384,7 +369,6 @@ export default {
           ],
         },
       ];
-      this.lastQuiz = "BPMN";
     },
     retrieveEvaluations() {
       //Texts and colors for evaluation on the right and colors for chart areas
@@ -407,10 +391,8 @@ export default {
       ];
       this.evaluations.learning = temp;
       this.evaluations.partecipation = temp;
-      this.evaluations.understanding = temp;
-      this.evaluations.performance = temp;
 
-      this.evaluations.summary = [
+      this.evaluations.situation = [
         {
           title: "Action needed",
           class: "text-danger",
@@ -513,7 +495,7 @@ export default {
       this.$refs.sumChart.updateOptions(this.sumChart.options);
     },
     async initTeacherStats() {
-      await this.retrieveCharts();
+      await this.retrieveChart();
       this.retrieveEvaluations();
       this.addEvaluationAreas();
     },

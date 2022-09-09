@@ -334,7 +334,7 @@ import axios from "axios";
 import AnalyticFilter from "../Components/AnalyticFilter.vue";
 import dynamicDataConverter from "../Components/analyticsDDC.js";
 export default {
-  name: "GeneralAnalytic",
+  name: "ModelBasedAnalytic",
   props: {
     id: String,
     title: String,
@@ -351,18 +351,17 @@ export default {
         {
           code: "OK",
           title: "Correct answer",
+          shortTitle: "Correct",
         },
         {
           code: "NOK",
           title: "Wrong answer",
+          shortTitle: "Wrong",
         },
         {
           code: "NOANSWER",
           title: "No Answer",
-        },
-        {
-          code: "NOP",
-          title: "No partecipation",
+          shortTitle: "None",
         },
       ],
       selectedCourse: {},
@@ -397,8 +396,7 @@ export default {
       if (this.mode == mode) return;
       this.mode = mode;
     },
-    fixedFloatOrInt(n, decimals) {
-      //es. n=9 decimals=2 => 9, n=8.789 decimals=2 => 8,79
+    fixedFloatOrInt(n, decimals) { //es. n=9 decimals=2 => 9, n=8.789 decimals=2 => 8,79
       return isNaN(n) || n % 1 === 0 ? n : n.toFixed(decimals);
     },
     getPathTarget(target, path, strictPath) {
@@ -450,7 +448,6 @@ export default {
             this.table.data.push([element]);
           });
           this.table.firstHead = !!response.data.table.firstColumn.length;
-          //Quando arrivano i dati vedere come mettere colonne prese dinamicamente (es. quiz)
         }
         //chart static building
         if (this.components.chart && response.data.chart.options) {
@@ -473,17 +470,29 @@ export default {
           this.chart.dynamicAdditions = response.data.chart.dynamicAdditions;
         }
         //Adding filters
-        this.filters =
+        /*this.filters =
           this.components.filters && response.data.filters != undefined
             ? response.data.filters
-            : [];
+            : [];*/
       });
+
+      //Additional informations prior to the requests
+      switch (this.id) {
+        case "0":
+        case "1":
+        case "5":
+          apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
+          await axios
+            .get(apiUrl)
+            .then(
+              response => this.totalStudents = response.data.content.length //Forse necessario filtro studenti
+            );
+          break;
+      }
 
       apiUrl =
         process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS_DATA;
-      switch (
-        this.id //Request
-      ) {
+      switch (this.id) { //Dynamic data request
         case "0":
         case "1":
         case "4":
@@ -498,43 +507,8 @@ export default {
       await axios
         .get(url)
         .then((response) => (this.retrievedData = response.data));
-      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_GAME_STATUS;
-      await axios
-        .get(apiUrl)
-        .then(
-          (response) => (this.totalStudents = response.data.content.length)
-        ); //Forse necessario filtro studenti
-      switch (
-        this.id //Additional informations
-      ) {
-        case "0":
-          this.retrievedData.data.forEach((quiz) =>
-            quiz.outcomes.push({
-              code: "NOP",
-              students:
-                this.totalStudents -
-                quiz.outcomes.reduce((a, b) => {
-                  return a + b.students;
-                }, 0),
-            })
-          );
-          break;
-        case "1":
-          for (const topic of this.retrievedData.data) {
-            topic.quizzes = this.retrievedData.topicQuizzes.find(
-              (t) => t._id == topic._id
-            ).quizzes;
-            topic.outcomes.push({
-              code: "NOP",
-              students:
-                topic.quizzes * this.totalStudents -
-                topic.outcomes.reduce((a, b) => {
-                  return a + b.students;
-                }, 0),
-            });
-          }
-          break;
-        case "4":
+      
+      switch (this.id) { //Client-side post elaboration
         case "5":
           for (const topic of this.retrievedData.data) {
             topic.quizzes = this.retrievedData.topicQuizzes.find(
@@ -558,19 +532,18 @@ export default {
     async updateChart(mounted) {
       let params = {};
       let toAdd, target;
-      switch (this.id) {
-        case "0":
+      switch (this.id) { //Updates preparations (dynamicDataConverter params and chart subtitle setting)
+        case "0": //Al momento fa riferimento solo all'ultimo quiz. Implementando i filtri si potrà scegliere
           this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
           params = {
             allOutcomes: this.allOutcomes,
             questionid: this.retrievedData.data[0]._id.questionid,
+            totalAnswers: this.retrievedData.data[0].outcomes.reduce((a, b) => {return a + b.students}, 0)
           };
           break;
         case "1":
           params = {
-            allOutcomes: this.allOutcomes.filter(
-              (outcome) => outcome.code != "NOP"
-            ),
+            allOutcomes: this.allOutcomes,
           };
           break;
         case "5":
@@ -584,23 +557,23 @@ export default {
         2,
         this.retrievedData,
         params
-      );
-      if (mounted) {
-        toAdd = dynamicDataConverter(this.id, 3, this.retrievedData, params);
-        for (const key of Object.keys(toAdd)) {
-          target = this.getPathTarget(
-            this.chart.options,
-            this.chart.dynamicAdditions[key],
-            true
-          );
-          if (target != null) {
-            target[
-              this.chart.dynamicAdditions[key][
-                this.chart.dynamicAdditions[key].length - 1
-              ]
-            ] = toAdd[key];
-          }
+      ); //Chart series update
+      toAdd = dynamicDataConverter(this.id, 3, this.retrievedData, params); //dynamic chart options update
+      for (const key of Object.keys(toAdd)) {
+        target = this.getPathTarget(
+          this.chart.options,
+          this.chart.dynamicAdditions[key],
+          true
+        );
+        if (target != null) {
+          target[
+            this.chart.dynamicAdditions[key][
+              this.chart.dynamicAdditions[key].length - 1
+            ]
+          ] = toAdd[key];
         }
+      }
+      if (mounted) { //Updating on chart creation
         this.chart.loaded = true;
       } else {
         this.$refs.chart.updateSeries(this.chart.series);
@@ -609,12 +582,13 @@ export default {
     },
     updateTable(mounted) {
       let params = {};
-      switch (this.id) {
+      switch (this.id) { //Updates preparations (dynamicDataConverter params and chart subtitle setting)
         case "0":
           this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
           params = {
             allOutcomes: this.allOutcomes,
             questionid: this.retrievedData.data[0]._id.questionid,
+            totalAnswers: this.retrievedData.data[0].outcomes.reduce((a, b) => {return a + b.students}, 0)
           };
           break;
         case "1":
@@ -628,7 +602,7 @@ export default {
           };
           break;
       }
-      if (mounted && this.retrievedData.head != undefined) {
+      if (mounted && this.retrievedData.head != undefined) { //Updating on chart creation and if head need to be set
         this.table.head = dynamicDataConverter(
           this.id,
           1,
@@ -641,7 +615,7 @@ export default {
         0,
         this.retrievedData,
         params
-      );
+      ); //Table series update
       console.log("TableUpdated");
     },
   },

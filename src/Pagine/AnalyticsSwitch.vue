@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "AnalyticSwitch",
+  name: "AnalyticsSwitch",
   props: {
     id: String,
     title: String,
@@ -37,7 +37,7 @@ export default {
           this.Analytic = module.default;
         });
       } else {
-        import("./GeneralAnalytic.vue").then((module) => {
+        import("./ModelBasedAnalytic.vue").then((module) => {
           this.Analytic = module.default;
         });
       }

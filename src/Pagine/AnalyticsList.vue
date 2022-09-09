@@ -86,8 +86,7 @@ export default {
   data: function () {
     return {
       selectedCourse: {},
-      analytics: [],
-      mode: "EDU",
+      analytics: []
     };
   },
   methods: {

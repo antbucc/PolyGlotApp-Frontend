@@ -14,7 +14,7 @@ import MyPerformance from "./Pagine/Campagna/MyPerformance.vue";
 import Quiz from "./Pagine/Quiz.vue";
 import InviaRichiesta from "./Pagine/Campagna/InviaRichiesta.vue"
 import store from './store/store'
-import AnalyticSwitch from "./Pagine/AnalyticSwitch.vue";
+import AnalyticsSwitch from "./Pagine/AnalyticsSwitch.vue";
 import AnalyticsList from "./Pagine/AnalyticsList.vue";
 //import GameStatusSwitch from "./Pagine/GameStatusSwitch.vue";
 import CourseHome from "./Pagine/CourseHome.vue";
@@ -111,7 +111,7 @@ const routes = [
   {
     path: '/analytic',
     name: 'analytic',
-    component: AnalyticSwitch,
+    component: AnalyticsSwitch,
     props: true,
     beforeEnter: (to, from, next) => {
       if (checkParams(to.params,["id","title","category","custom","chartType","buildTable","buildFilters"])) {

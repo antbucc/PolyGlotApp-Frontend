@@ -23,11 +23,13 @@
         flex flex-col
         items-center
         rounded-lg
+        m-2
+        max-w-sm
       "
     >
       <div
-        class="form flex flex-col bg-white p-6 lg:rounded-xl justify-center"
-        style="text-align: center; width: 25em;"
+        class="form flex flex-col bg-white lg:rounded-xl justify-center"
+        style="text-align: center;"
       >
         <div class="quiz-header">
           <!-- Header della card -->
@@ -39,7 +41,22 @@
         </div>
 
         <!-- Barra di progresso del quiz -->
-        <pre><h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;"><b id="type"></b></h1><h2 style="display: inline; margin-left: auto; margin-right: auto; font-size:0.7em"><b>TOPIC: THIS TOPIC  -  DIFFICULTY: {{this.difficulty}}</b></h2></pre>
+          <h1 style="text-decoration: underline; margin-top:5px; margin-bottom:5px;">
+            <b>{{ quiz.name }}</b>
+          </h1>
+          <h2 class="mb-2" style="display: inline; margin-left: auto; margin-right: auto; font-size:0.7em">
+            <b>{{
+              quiz.type == "multichoice"
+                ? "MULTICHOICE QUESTION"
+                : quiz.type == "truefalse"
+                ? "TRUE/FALSE QUESTION"
+                : ""
+            }}</b><br />
+            <b>TOPIC: {{ quiz.topic }}</b><br />
+            <b>DIFFICULTY: {{ quiz.difficulty }}</b><br />
+            <b>DATE: {{ quiz.date.toLocaleDateString("en-GB") }}</b><br />
+            <b>TIME SPENT: {{ quiz.time }}</b><br />
+          </h2>
         <b
           ><h1
             style="font-size: 1em; margin-left: auto; margin-right: auto"
@@ -91,38 +108,35 @@ export default {
   data: function () {
     return {
       correct: [],
-      id: "",
-      difficulty: 0,
-      type: "",
-      questiontext: "",
-      answers: []
+      quiz: {
+        questionid: "",
+        name: "",
+        topic: "",
+        type: "",
+        difficulty: 0,
+        questiontext: "",
+        answers: [],
+        date: new Date(),
+        outcome: "",
+        time: 0,
+      }
     };
   },
   methods: {
-    changeQuiz(id,difficulty,type,questiontext,answers) {
-      this.id = id;
-      this.difficulty = difficulty;
-      this.type = type;
-      this.questiontext = questiontext;
-      this.answers = answers;
+    changeQuiz(quiz) {
+      this.quiz = quiz;
       this.viewQuiz();
     },
     viewQuiz() {
-      document.getElementById("text").innerHTML = this.questiontext;
-      
-      if (this.type == "multichoice") {
-        document.getElementById("type").innerHTML = "MULTICHOICE QUESTION";
-      } else if (this.type == "truefalse") {
-        document.getElementById("type").innerHTML = "TRUE/FALSE QUESTION";
-      }
+      document.getElementById("text").innerHTML = this.quiz.questiontext;
 
       let list = document.getElementById("ansUl");
       list.innerHTML = "";
       this.correct = [];
 
-      for (let obj in this.answers) {
+      for (let obj in this.quiz.answers) {
         //check if correct
-        if (this.answers[obj].fraction > 0) {
+        if (this.quiz.answers[obj].fraction > 0) {
           this.correct.push(obj);
         }
 
@@ -131,9 +145,9 @@ export default {
 
         answer.id = obj; //nel db le risposte non hanno un id
         answer.className = "answers";
-        switch (this.answers[obj].format) {
+        switch (this.quiz.answers[obj].format) {
           case "html":
-            answer.innerHTML = this.answers[obj].text;
+            answer.innerHTML = this.quiz.answers[obj].text;
             break;
         }
 
@@ -147,12 +161,12 @@ export default {
         if (this.correct.includes(resps[i].id)) {
           resps[i].setAttribute(
             "style",
-            "background-color:#19b533; text-align: center; color:white; width: 15em; font-size: 1.1em;  "
+            "background-color:#19b533; text-align: center; color:white; font-size: 1.1em;  "
           );
         } else {
           resps[i].setAttribute(
             "style",
-            "background-color:#b52919; text-align: center; color:white; width: 15em;font-size: 1.1em; "
+            "background-color:#b52919; text-align: center; color:white; font-size: 1.1em; "
           );
         }
       }
