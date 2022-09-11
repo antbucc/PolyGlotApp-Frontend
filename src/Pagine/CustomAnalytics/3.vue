@@ -4,26 +4,6 @@
       <div class="bg-opacity-0 py-2">
         <div class="text-center w-full text-xl">
           <div class="flex flex-col px-8">
-            <template v-if="/*!this.analytics[0].length*/ false">
-              <div
-                class="
-                  m-auto
-                  justify-center
-                  flex flex-col-reverse
-                  bg-white
-                  rounded-lg
-                  w-full
-                  my-4
-                  text-center
-                  justify-center
-                  shadow-xl
-                  p-12
-                "
-              >
-                There are no quizzes.
-              </div>
-            </template>
-            <template v-else>
               <div
                 class="
                   py-2
@@ -58,128 +38,148 @@
                   }}</span>
                 </div>
               </div>
-              <!--tabella/Elenco-->
-              <div class="hidden md:flex w-full">
-                <table
-                  cellspacing="0"
+              <template v-if="!this.quizzes.length">
+                <div
                   class="
-                    table-fixed
+                    m-auto
                     justify-center
-                    text-center
-                    w-full
-                    text-xl
+                    flex flex-col-reverse
                     bg-white
-                    border-separate
+                    rounded-lg
+                    w-full
+                    my-4
+                    text-center
+                    justify-center
+                    shadow-xl
+                    p-12
                   "
                 >
-                  <thead class="sticky" style="top: 62px">
-                    <tr>
-                      <th colspan="2" class="bg-white">Date</th>
-                      <th colspan="2" class="bg-white">Topic</th>
-                      <th class="bg-white">Outcome</th>
-                      <th class="bg-white">Solution</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <template v-for="(row, rowIndex) in quizzes">
-                      <tr :key="rowIndex">
-                        <td colspan="2">{{ row.date.toLocaleDateString("en-GB") }}</td>
-                        <td colspan="2">{{ row.topic }}</td>
-                        <td :class="{
-                              'bg-secondary': row.outcome == 'OK',
-                              'bg-warning': row.outcome == 'PARTIAL',
-                              'bg-danger': row.outcome == 'NOK',
-                              'bg-gray': row.outcome == 'NOANSWER',
-                            }"
-                        >
-                          {{
-                            row.outcome == "OK"
-                              ? "Success"
-                              : row.outcome == "PARTIAL"
-                              ? "Partial"
-                              : row.outcome == "NOK"
-                              ? "Failed"
-                              : row.outcome == "NOANSWER"
-                              ? "No Answer"
-                              : "-"
-                          }}
-                        </td>
-                        <td>
-                          <button @click="viewQuiz(rowIndex)" :disabled="show">
-                            <eye-icon />
-                          </button>
-                        </td>
+                  There are no quizzes.
+                </div>
+              </template>
+              <template v-else>
+                <!--tabella/Elenco-->
+                <div class="hidden md:flex w-full">
+                  <table
+                    cellspacing="0"
+                    class="
+                      table-fixed
+                      justify-center
+                      text-center
+                      w-full
+                      text-xl
+                      bg-white
+                      border-separate
+                    "
+                  >
+                    <thead class="sticky" style="top: 62px">
+                      <tr>
+                        <th colspan="2" class="bg-white">Date</th>
+                        <th colspan="2" class="bg-white">Topic</th>
+                        <th class="bg-white">Outcome</th>
+                        <th class="bg-white">Solution</th>
                       </tr>
-                    </template>
-                  </tbody>
-                </table>
-              </div>
-              <div class="flex md:hidden w-full flex-col">
-                <template v-for="(quiz, quizIndex) in quizzes">
-                  <div :key="quizIndex" class="w-full py-2 text-black">
-                    <div
-                      class="flex flex-wrap w-full bg-white rounded"
-                    >
-                      <div class="flex w-full sm:w-1/2 flex-col">
-                        <div class="flex pl-3">
-                          <label class="text-left">Date:</label>
-                          <label class="text-black text-left pl-2">{{
-                            quiz.date.toLocaleDateString("en-GB")
-                          }}</label>
-                        </div>
-                        <div class="flex pl-3">
-                          <label class="text-left">Topic:</label>
-                          <label class="text-black text-left pl-2">{{
-                            quiz.topic
-                          }}</label>
-                        </div>
-                      </div>
-                      <div class="flex w-full sm:w-1/2 flex-col">
-                        <div class="flex pl-3">
-                          <label class="text-left">Outcome:</label>
-                          <label
-                            class="text-left pl-2"
-                            :class="
-                              quiz.outcome == 'OK'
-                                ? 'text-secondary'
-                                : quiz.outcome == 'PARTIAL'
-                                ? 'text-warning'
-                                : quiz.outcome == 'NOK'
-                                ? 'text-danger'
-                                : quiz.outcome == 'NOANSWER'
-                                ? 'text-gray'
-                                : ''
-                            "
+                    </thead>
+                    <tbody>
+                      <template v-for="(row, rowIndex) in quizzes">
+                        <tr :key="rowIndex">
+                          <td colspan="2">{{ row.date.toLocaleDateString("en-GB") }}</td>
+                          <td colspan="2">{{ row.topic }}</td>
+                          <td :class="{
+                                'bg-secondary': row.outcome == 'OK',
+                                'bg-warning': row.outcome == 'PARTIAL',
+                                'bg-danger': row.outcome == 'NOK',
+                                'bg-gray': row.outcome == 'NOANSWER',
+                              }"
                           >
                             {{
-                              quiz.outcome == "OK"
+                              row.outcome == "OK"
                                 ? "Success"
-                                : quiz.outcome == "PARTIAL"
+                                : row.outcome == "PARTIAL"
                                 ? "Partial"
-                                : quiz.outcome == "NOK"
+                                : row.outcome == "NOK"
                                 ? "Failed"
-                                : quiz.outcome == "NOANSWER"
+                                : row.outcome == "NOANSWER"
                                 ? "No Answer"
                                 : "-"
                             }}
-                          </label>
+                          </td>
+                          <td>
+                            <button @click="viewQuiz(rowIndex)" :disabled="show">
+                              <eye-icon />
+                            </button>
+                          </td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="flex md:hidden w-full flex-col">
+                  <template v-for="(quiz, quizIndex) in quizzes">
+                    <div :key="quizIndex" class="w-full py-2 text-black">
+                      <div
+                        class="flex flex-wrap w-full bg-white rounded"
+                      >
+                        <div class="flex w-full sm:w-1/2 flex-col">
+                          <div class="flex pl-3">
+                            <label class="text-left">Date:</label>
+                            <label class="text-black text-left pl-2">{{
+                              quiz.date.toLocaleDateString("en-GB")
+                            }}</label>
+                          </div>
+                          <div class="flex pl-3">
+                            <label class="text-left">Topic:</label>
+                            <label class="text-black text-left pl-2">{{
+                              quiz.topic
+                            }}</label>
+                          </div>
                         </div>
-                        <div class="flex pl-3">
-                          <label class="text-left pl-1"
-                            >View quiz:
-                            <button
-                              @click="viewQuiz(quizIndex)"
-                              :disabled="show"
+                        <div class="flex w-full sm:w-1/2 flex-col">
+                          <div class="flex pl-3">
+                            <label class="text-left">Outcome:</label>
+                            <label
+                              class="text-left pl-2"
+                              :class="
+                                quiz.outcome == 'OK'
+                                  ? 'text-secondary'
+                                  : quiz.outcome == 'PARTIAL'
+                                  ? 'text-warning'
+                                  : quiz.outcome == 'NOK'
+                                  ? 'text-danger'
+                                  : quiz.outcome == 'NOANSWER'
+                                  ? 'text-gray'
+                                  : ''
+                              "
                             >
-                              <eye-icon /></button
-                          ></label>
+                              {{
+                                quiz.outcome == "OK"
+                                  ? "Success"
+                                  : quiz.outcome == "PARTIAL"
+                                  ? "Partial"
+                                  : quiz.outcome == "NOK"
+                                  ? "Failed"
+                                  : quiz.outcome == "NOANSWER"
+                                  ? "No Answer"
+                                  : "-"
+                              }}
+                            </label>
+                          </div>
+                          <div class="flex pl-3">
+                            <label class="text-left pl-1"
+                              >View quiz:
+                              <button
+                                @click="viewQuiz(quizIndex)"
+                                :disabled="show"
+                              >
+                                <eye-icon /></button
+                            ></label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </template>
-              </div>
-            </template>
+                  </template>
+                </div>
+              </template>
           </div>
         </div>
       </div>
@@ -243,7 +243,7 @@ export default {
     },
     async retrieveQuizzes() {
       var apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANSWERS;
-      let url = apiUrl + "?playerId=" + sessionStorage.getItem("player");
+      let url = apiUrl + "?course=" + this.selectedCourse.title + "&playerId=" + sessionStorage.getItem("player");
       await axios.get(url).then((response) =>
         response.data.forEach((answer) => {
           this.quizzes.push({

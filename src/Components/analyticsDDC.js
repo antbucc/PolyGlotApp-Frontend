@@ -15,64 +15,62 @@ function getGroupPL(data,totalStudents) {
 
 function dynamicDataConverter(id,type,data,params) { //type: 0 = table.data, 1 = table.head, 2 = chart.series, 3 = chart.dynamicAdditions
   
-  let outcomePos,quiz,row,outcome,remainingItems,categories,sum;
-  let convertedData = categories = [];
+  let outcomePos,quiz,row,outcome,remainingItems,sum;
+  let convertedData = null;
+  let categories = [];
   
   switch (id) {
     case "0":
       switch (type) {
         case 0:
           quiz = data.data.find(quiz => quiz._id.questionid == params.questionid);
-          for (const rowTitle of params.allOutcomes) {
-            outcome = quiz.outcomes[quiz.outcomes.findIndex(outcome => outcome.code == rowTitle.code)]
-            convertedData.push([rowTitle.shortTitle,(outcome != undefined ? outcome.students*100/params.totalAnswers : 0) + "%"])
+          if (quiz != undefined) {
+            convertedData = [];
+            for (const rowTitle of params.allOutcomes) {
+              outcome = quiz.outcomes[quiz.outcomes.findIndex(outcome => outcome.code == rowTitle.code)]
+              convertedData.push([rowTitle.shortTitle,(outcome != undefined ? outcome.students*100/params.totalAnswers : 0) + "%"])
+            }
           }
           break;
         case 2:
-          convertedData = new Array(params.allOutcomes.length).fill(0);
-          data.data.find(quiz => quiz._id.questionid == params.questionid).outcomes.forEach(outcome => {
-            outcomePos = params.allOutcomes.findIndex(oc => oc.code == outcome.code);
-            convertedData[outcomePos] = outcome.students*100/params.totalAnswers;
-          });
+          quiz = data.data.find(quiz => quiz._id.questionid == params.questionid);
+          if (quiz != undefined) {
+            convertedData = [];
+            for (const outcome of params.allOutcomes) {
+              outcomePos = quiz.outcomes.findIndex(oc => oc.code == outcome.code);
+              convertedData.push(outcomePos != -1 ? quiz.outcomes[outcomePos].students*100/params.totalAnswers : 0);
+            }
+          }
           break;
       }
       break;
     case "1":
       switch (type) {
         case 0:
-          for (const rowData of data.data) {
-            row = new Array(params.allOutcomes.length+1).fill("0%");
-            row[0] = rowData._id;
-            for (const outcome of rowData.outcomes) {
-              outcomePos = params.allOutcomes.findIndex(oc => oc.code == outcome.code) + 1;
-              row[outcomePos] = Math.round(outcome.students*100/rowData.outcomes.reduce((a, b) => {return a + b.students}, 0)) + "%";
+          if (data.data.length > 0) {
+            convertedData = [];
+            for (const rowData of data.data) {
+              row = [rowData._id];
+              for (const outcome of params.allOutcomes) {
+                outcomePos = rowData.outcomes.findIndex(oc => oc.code == outcome.code);
+                row.push(Math.round(outcomePos != -1 ? rowData.outcomes[outcomePos].students*100/rowData.outcomes.reduce((a, b) => {return a + b.students}, 0) : 0) + "%");
+              }
+              convertedData.push(row);
             }
-            convertedData.push(row);
           }
           break;
         case 2:
-          for (const outcome of params.allOutcomes) {
-            convertedData.push({
-              name: outcome.title,
-              data: []
-            });
-          }
-          for (const topic of data.data) {
-            remainingItems = params.allOutcomes.map((outcome,index) => { //System to make series with same length
-              return {
-                code: outcome.code,
-                position: index
+          if (data.data.length > 0) {
+            convertedData = [];
+            for (const topic of data.data) {
+              for (const outcome of params.allOutcomes) {
+                convertedData.push({
+                  name: outcome.title,
+                  data: []
+                });
+                outcomePos = topic.outcomes.findIndex(oc => oc.code == outcome.code);
+                convertedData[convertedData.length - 1].data.push(Math.round(outcomePos != -1 ? topic.outcomes[outcomePos].students*100/topic.outcomes.reduce((a, b) => {return a + b.students}, 0) : 0));
               }
-            });
-            for (const outcome of topic.outcomes) {
-              outcomePos = params.allOutcomes.findIndex(oc => oc.code == outcome.code);
-              if (outcomePos != -1) {
-                convertedData[outcomePos].data.push(Math.round(outcome.students*100/topic.outcomes.reduce((a, b) => {return a + b.students}, 0)));
-                remainingItems = remainingItems.filter(oc => oc.code != outcome.code);
-              }
-            }
-            for (const outcome of remainingItems) {
-              convertedData[outcome.position].data.push(0);
             }
           }
           break;
@@ -89,27 +87,32 @@ function dynamicDataConverter(id,type,data,params) { //type: 0 = table.data, 1 =
     case "4":
       switch (type) {
         case 0:
-          for (const topic of data.topicQuizzes) {
-            sum = 0
-            remainingItems = data.data.filter(q => q._id.topic == topic._id);
-            for (const q of remainingItems) {
-              sum += getLearningLevel(q);
+          if (data.data.length > 0) {
+            convertedData = [];
+            for (const topic of data.topicQuizzes) {
+              sum = 0
+              remainingItems = data.data.filter(q => q._id.topic == topic._id);
+              for (const q of remainingItems) {
+                sum += getLearningLevel(q);
+              }
+              convertedData.push([topic._id,Math.round(sum/topic.quizzes)]);
             }
-            convertedData.push([topic._id,Math.round(sum/topic.quizzes)]);
           }
           break;
         case 2:
-          convertedData = [{
-            name: "Learning level",
-            data: []
-          }]
-          for (const topic of data.topicQuizzes) {
-            sum = 0;
-            remainingItems = data.data.filter(q => q._id.topic == topic._id);
-            for (const q of remainingItems) {
-              sum += getLearningLevel(q);
+          if (data.data.length > 0) {
+            convertedData = [{
+              name: "Learning level",
+              data: []
+            }]
+            for (const topic of data.topicQuizzes) {
+              sum = 0;
+              remainingItems = data.data.filter(q => q._id.topic == topic._id);
+              for (const q of remainingItems) {
+                sum += getLearningLevel(q);
+              }
+              convertedData[0].data.push(Math.round(sum/topic.quizzes));
             }
-            convertedData[0].data.push(Math.round(sum/topic.quizzes));
           }
           break;
         case 3:
@@ -125,17 +128,22 @@ function dynamicDataConverter(id,type,data,params) { //type: 0 = table.data, 1 =
     case "5":
       switch (type) {
         case 0:
-          for (const rowData of data.data) {
-            convertedData.push([rowData._id,Math.round(getGroupPL(rowData,params.totalStudents))]);
+          if (data.data.length > 0) {
+            convertedData = [];
+            for (const rowData of data.data) {
+              convertedData.push([rowData._id,Math.round(getGroupPL(rowData,params.totalStudents))]);
+            }
           }
           break;
         case 2:
-          convertedData = [{
-            name: "Partecipation level",
-            data: []
-          }]
-          for (const rowData of data.data) {
-            convertedData[0].data.push(Math.round(getGroupPL(rowData,params.totalStudents)));
+          if (data.data.length > 0) {
+            convertedData = [{
+              name: "Partecipation level",
+              data: []
+            }]
+            for (const rowData of data.data) {
+              convertedData[0].data.push(Math.round(getGroupPL(rowData,params.totalStudents)));
+            }
           }
           break;
         case 3:

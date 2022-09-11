@@ -63,68 +63,68 @@
             class="justify-center text-center w-full text-xl"
           >
             <div class="flex flex-col lg:flex-row px-6">
-              <template v-if="/*!this.analytics[0].length*/ false">
+              <div class="w-full" :class="{ 'lg:w-3/5': components.filters }">
                 <div
-                  class="
-                    m-auto
-                    justify-center
-                    flex flex-col-reverse
-                    bg-white
-                    rounded-lg
-                    w-full
-                    my-4
-                    text-center
-                    justify-center
-                    shadow-xl
-                    p-12
-                  "
+                  class="flex flex-col md:flex-row py-2 bg-primary text-white"
                 >
-                  There are no data.
-                </div>
-              </template>
-              <template v-else>
-                <div class="w-full" :class="{ 'lg:w-3/5': components.filters }">
                   <div
-                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                    class="
+                      flex
+                      w-auto
+                      place-content-center
+                      md:place-content-left
+                    "
                   >
-                    <div
+                    <button
                       class="
-                        flex
-                        w-auto
-                        place-content-center
-                        md:place-content-left
+                        mr-3
+                        px-3
+                        rounded-full
+                        text-primary
+                        bg-white
+                        self-center
                       "
+                      @click="goBack()"
                     >
-                      <button
-                        class="
-                          mr-3
-                          px-3
-                          rounded-full
-                          text-primary
-                          bg-white
-                          self-center
-                        "
-                        @click="goBack()"
-                      >
-                        Back
-                      </button>
-                    </div>
-                    <div class="w-full text-center md:text-left">
-                      <span class="text-2xl font-semibold">{{
-                        selectedCourse.title
-                      }}</span>
-                    </div>
+                      Back
+                    </button>
                   </div>
+                  <div class="w-full text-center md:text-left">
+                    <span class="text-2xl font-semibold">{{
+                      selectedCourse.title
+                    }}</span>
+                  </div>
+                </div>
+                <div
+                  v-if="subtitle.length != 0"
+                  class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                >
+                  <div class="w-full text-center md:text-left">
+                    <span class="text-xl font-semibold">{{
+                      subtitle
+                    }}</span>
+                  </div>
+                </div>
+                <template v-if="this.isEmpty(this.chart.series)">
                   <div
-                    v-if="subtitle.length != 0"
-                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                    class="
+                      m-auto
+                      justify-center
+                      flex flex-col-reverse
+                      bg-white
+                      rounded-lg
+                      w-full
+                      my-4
+                      text-center
+                      justify-center
+                      shadow-xl
+                      p-12
+                    "
                   >
-                    <div class="w-full text-center md:text-left">
-                      <span class="text-xl font-semibold">{{
-                        subtitle
-                      }}</span>
-                    </div>
+                    There is no data.
                   </div>
+                </template>
+                <template v-else>
                   <!--tabella-->
                   <table
                     class="
@@ -162,17 +162,17 @@
                       </template>
                     </tbody>
                   </table>
-                </div>
-                <div
-                  v-if="components.filters"
-                  class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
-                >
-                  <!--filtro-->
-                  <template>
-                    <analytic-filter :filters="filters" @update="update" />
-                  </template>
-                </div>
-              </template>
+                </template>
+              </div>
+              <div
+                v-if="components.filters"
+                class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
+              >
+                <!--filtro-->
+                <template>
+                  <analytic-filter :filters="filters" @update="update" />
+                </template>
+              </div>
             </div>
           </div>
         </template>
@@ -183,68 +183,68 @@
             class="justify-center text-center w-full text-xl"
           >
             <div class="flex flex-col lg:flex-row px-6">
-              <template v-if="/*!this.analytics[1].length*/ false">
+              <div class="w-full m-auto flex flex-col lg:w-3/5">
                 <div
-                  class="
-                    m-auto
-                    justify-center
-                    flex flex-col-reverse
-                    bg-white
-                    rounded-lg
-                    w-full
-                    my-4
-                    text-center
-                    justify-center
-                    shadow-xl
-                    p-12
-                  "
+                  class="flex flex-col md:flex-row py-2 bg-primary text-white"
                 >
-                  There are no data.
-                </div>
-              </template>
-              <template v-else>
-                <div class="w-full m-auto flex flex-col lg:w-3/5">
                   <div
-                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                    class="
+                      flex
+                      w-auto
+                      place-content-center
+                      md:place-content-left
+                    "
                   >
-                    <div
+                    <button
                       class="
-                        flex
-                        w-auto
-                        place-content-center
-                        md:place-content-left
+                        mr-3
+                        px-3
+                        rounded-full
+                        text-primary
+                        bg-white
+                        self-center
                       "
+                      @click="goBack()"
                     >
-                      <button
-                        class="
-                          mr-3
-                          px-3
-                          rounded-full
-                          text-primary
-                          bg-white
-                          self-center
-                        "
-                        @click="goBack()"
-                      >
-                        Back
-                      </button>
-                    </div>
-                    <div class="w-full text-center md:text-left">
-                      <span class="text-2xl font-semibold">{{
-                        selectedCourse.title
-                      }}</span>
-                    </div>
+                      Back
+                    </button>
                   </div>
+                  <div class="w-full text-center md:text-left">
+                    <span class="text-2xl font-semibold">{{
+                      selectedCourse.title
+                    }}</span>
+                  </div>
+                </div>
+                <div
+                  v-if="subtitle.length != 0"
+                  class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                >
+                  <div class="w-full text-center md:text-left">
+                    <span class="text-xl font-semibold">{{
+                      subtitle
+                    }}</span>
+                  </div>
+                </div>
+                <template v-if="this.isEmpty(this.chart.series)">
                   <div
-                    v-if="subtitle.length != 0"
-                    class="flex flex-col md:flex-row py-2 bg-primary text-white"
+                    class="
+                      m-auto
+                      justify-center
+                      flex flex-col-reverse
+                      bg-white
+                      rounded-lg
+                      w-full
+                      my-4
+                      text-center
+                      justify-center
+                      shadow-xl
+                      p-12
+                    "
                   >
-                    <div class="w-full text-center md:text-left">
-                      <span class="text-xl font-semibold">{{
-                        subtitle
-                      }}</span>
-                    </div>
+                    There is no data.
                   </div>
+                </template>
+                <template v-else>
                   <div
                     class="
                       bg-white
@@ -265,17 +265,17 @@
                       :series="chart.series"
                     />
                   </div>
-                </div>
-                <div
-                  v-if="components.filters"
-                  class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
-                >
-                  <!--filtro-->
-                  <template>
-                    <analytic-filter :filters="filters" @update="update" />
-                  </template>
-                </div>
-              </template>
+                </template>
+              </div>
+              <div
+                v-if="components.filters"
+                class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
+              >
+                <!--filtro-->
+                <template>
+                  <analytic-filter :filters="filters" @update="update" />
+                </template>
+              </div>
             </div>
           </div>
         </template>
@@ -360,9 +360,14 @@ export default {
         },
         {
           code: "NOANSWER",
-          title: "No Answer",
+          title: "No answer",
           shortTitle: "None",
         },
+        /*{
+          code: "PARTIAL",
+          title: "Partial answer",
+          shortTitle: "Partial"
+        }*/
       ],
       selectedCourse: {},
       retrievedData: {},
@@ -451,21 +456,6 @@ export default {
         }
         //chart static building
         if (this.components.chart && response.data.chart.options) {
-          let tmpChart = response.data.chart;
-          if (tmpChart.functions != undefined && tmpChart.functions.length) {
-            //Convert functions parameters and body into functions
-            let fn,last;
-            for (const path of tmpChart.functions) {
-              fn = this.getPathTarget(tmpChart["options"],path,true);
-              if (fn != null) {
-                last = path.length - 1;
-                fn[path[last]] = Function(
-                  fn[path[last]].arguments,
-                  fn[path[last]].body
-                );
-              }
-            }
-          }
           this.chart.options = response.data.chart.options;
           this.chart.dynamicAdditions = response.data.chart.dynamicAdditions;
         }
@@ -534,12 +524,18 @@ export default {
       let toAdd, target;
       switch (this.id) { //Updates preparations (dynamicDataConverter params and chart subtitle setting)
         case "0": //Al momento fa riferimento solo all'ultimo quiz. Implementando i filtri si potrà scegliere
-          this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
-          params = {
-            allOutcomes: this.allOutcomes,
-            questionid: this.retrievedData.data[0]._id.questionid,
-            totalAnswers: this.retrievedData.data[0].outcomes.reduce((a, b) => {return a + b.students}, 0)
-          };
+          if (this.retrievedData.data.length > 0) {
+            this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
+            params = {
+              allOutcomes: this.allOutcomes,
+              questionid: this.retrievedData.data[0]._id.questionid,
+              totalAnswers: this.retrievedData.data[0].outcomes.reduce((a, b) => {return a + b.students}, 0)
+            };
+          } else {
+            params = {
+              questionid: -1,
+            };
+          }
           break;
         case "1":
           params = {
@@ -584,12 +580,18 @@ export default {
       let params = {};
       switch (this.id) { //Updates preparations (dynamicDataConverter params and chart subtitle setting)
         case "0":
-          this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
-          params = {
-            allOutcomes: this.allOutcomes,
-            questionid: this.retrievedData.data[0]._id.questionid,
-            totalAnswers: this.retrievedData.data[0].outcomes.reduce((a, b) => {return a + b.students}, 0)
-          };
+          if (this.retrievedData.data.length > 0) {
+            this.subtitle = "Quiz: " + this.retrievedData.data[0]._id.name;
+            params = {
+              allOutcomes: this.allOutcomes,
+              questionid: this.retrievedData.data[0]._id.questionid,
+              totalAnswers: this.retrievedData.data[0].outcomes.reduce((a, b) => {return a + b.students}, 0)
+            };
+          } else {
+            params = {
+              questionid: -1,
+            };
+          }
           break;
         case "1":
           params = {
@@ -618,6 +620,16 @@ export default {
       ); //Table series update
       console.log("TableUpdated");
     },
+    isEmpty(data,id,type) { //type: 0 = table.data, 1 = chart.series
+      if (id != undefined && type != undefined) {
+        switch (id) {
+          default:
+            return true;
+        }
+      } else {
+        return data == null;
+      }
+    }
   },
   created() {
     this.$store.dispatch("storePage", { title: this.title, back: false });

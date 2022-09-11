@@ -2,156 +2,208 @@
   <div class="bg-primary">
     <div class="flex flex-col bg-primary">
       <div class="justify-center text-center w-full text-xl">
-        <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6 px-6">
-          <div class="flex md:hidden flex-col py-2 bg-primary text-white">
-            <div class="flex w-auto place-content-center">
+        <template v-if="!this.quizzesRetrieved">
+          <div
+            class="flex flex-col md:flex-row py-2 bg-primary text-white"
+          >
+            <div
+              class="
+                flex
+                w-auto
+                place-content-center
+                md:place-content-left
+              "
+            >
               <button
-                class="mr-3 px-3 rounded-full text-primary bg-white self-center"
+                class="
+                  mr-3
+                  px-3
+                  rounded-full
+                  text-primary
+                  bg-white
+                  self-center
+                "
                 @click="goBack()"
               >
                 Back
               </button>
             </div>
-            <div class="w-full text-center">
+            <div class="w-full text-center md:text-left">
               <span class="text-2xl font-semibold">{{
                 selectedCourse.title
               }}</span>
             </div>
           </div>
-          <div class="w-full lg:w-3/5">
-            <div
-              class="
-                bg-white
-                rounded-lg
-                shadow-xl
-                lg:min-h-full
-                justify-center
-                pr-6
-              "
-            >
-              <!--grafico-->
-              <apexchart
-                ref="sumChart"
-                :options="sumChart.options"
-                :series="sumChart.series"
-              />
-              <!--Da sistemare pallino tagliato sulla destra-->
-            </div>
+          <div
+            class="
+              m-auto
+              justify-center
+              flex flex-col-reverse
+              bg-white
+              rounded-lg
+              w-full
+              my-4
+              text-center
+              justify-center
+              shadow-xl
+              p-12
+            "
+          >
+            There are no quizzes.
           </div>
-          <div class="w-full lg:w-2/5 lg:pl-5 text-left">
-            <div class="flex-col p-2 text-white">
-              <div class="flex-col w-fit self-center md:self-start" style="width: fit-content;">
-                <div
-                  class="hidden md:flex flex-row py-2 bg-primary text-white"
-                >
-                  <div class="flex w-auto place-content-left">
-                    <button
-                      class="
-                        mr-3
-                        px-3
-                        rounded-full
-                        text-primary
-                        bg-white
-                        self-center
-                      "
-                      @click="goBack()"
-                    >
-                      Back
-                    </button>
-                  </div>
-                  <div>
-                    <span class="text-2xl font-semibold">{{
-                      selectedCourse.title
-                    }}</span>
-                  </div>
+        </template>
+        <template v-else>
+          <div class="bg-opacity-0 flex flex-col lg:flex-row pt-6 px-6">
+              <div class="flex md:hidden flex-col py-2 bg-primary text-white">
+                <div class="flex w-auto place-content-center">
+                  <button
+                    class="mr-3 px-3 rounded-full text-primary bg-white self-center"
+                    @click="goBack()"
+                  >
+                    Back
+                  </button>
                 </div>
-                <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
-                  <div>
-                    <span class="text-2xl font-semibold">Course summary</span>
-                  </div>
-                  <div class="flex">
-                    <span class="pr-1">Partecipation level:</span>
-                    <span
-                      :class="
-                        evaluations.partecipation[evalPos.partecipation].class
-                      "
-                      >{{ fixedFloatOrInt(summary.values.course.partecipation,2) }}% - {{
-                        evaluations.partecipation[evalPos.partecipation].title
-                      }}</span
-                    >
-                  </div>
-                  <div class="flex">
-                    <span class="pr-1">Learning level:</span>
-                    <span
-                      :class="evaluations.learning[evalPos.learning].class"
-                      >{{ fixedFloatOrInt(summary.values.course.learning,2) }}% - {{ evaluations.learning[evalPos.learning].title }}</span
-                    >
-                  </div>
-                  <div class="flex">
-                    <span class="text-xl font-semibold pr-1">Situation: </span>
-                    <span
-                      class="text-xl font-semibold"
-                      :class="evaluations.situation[evalPos.summary].class"
-                      >{{ evaluations.situation[evalPos.summary].title }}</span
-                    >
-                  </div>
+                <div class="w-full text-center">
+                  <span class="text-2xl font-semibold">{{
+                    selectedCourse.title
+                  }}</span>
                 </div>
-                <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
-                  <div>
-                    <span class="text-2xl font-semibold pr-1">Last quiz:</span>
-                    <span class="text-2xl">{{ lastQuiz }}</span>
-                  </div>
-                  <div class="flex">
-                    <span class="pr-1">Partecipation level:</span>
-                    <span
-                      :class="
-                        evaluations.partecipation[evalPos.lQPartecipation].class
-                      "
-                      >{{ fixedFloatOrInt(summary.values.lQ.partecipation,2) }}% - {{
-                        evaluations.partecipation[evalPos.lQPartecipation].title
-                      }}</span
-                    >
-                  </div>
-                  <div class="flex">
-                    <span class="pr-1">Learning level:</span>
-                    <span
-                      :class="evaluations.learning[evalPos.lQLearning].class"
-                      >{{ fixedFloatOrInt(summary.values.lQ.learning,2) }}% - {{
-                        evaluations.learning[evalPos.lQLearning].title
-                      }}</span
-                    >
-                  </div>
-                  <div class="flex">
-                    <span class="text-xl font-semibold pr-1">Situation: </span>
-                    <span
-                      class="text-xl font-semibold"
-                      :class="evaluations.situation[evalPos.lQSummary].class"
-                      >{{ evaluations.situation[evalPos.lQSummary].title }}</span
-                    >
-                  </div>
-                </div>
-                <!--<div class="flex pt-4">
-                  <router-link :to="{ name: 'analytic' }" tag="button">
-                    <span
-                      class="
-                        flex
-                        items-center
-                        p-2
-                        rounded-full
-                        bg-white
-                        text-primary
-                      "
-                      ><span class="mr-2">
-                        <performance-icon />
-                      </span>
-                      <span>History</span></span
-                    >
-                  </router-link>
-                </div>-->
               </div>
-            </div>
+              <div class="w-full lg:w-3/5">
+                <div
+                  class="
+                    bg-white
+                    rounded-lg
+                    shadow-xl
+                    lg:min-h-full
+                    justify-center
+                    pr-6
+                  "
+                >
+                  <!--grafico-->
+                  <apexchart
+                    ref="sumChart"
+                    :options="sumChart.options"
+                    :series="sumChart.series"
+                  />
+                  <!--Da sistemare pallino tagliato sulla destra-->
+                </div>
+              </div>
+              <div class="w-full lg:w-2/5 lg:pl-5 text-left">
+                <div class="flex-col p-2 text-white">
+                  <div class="flex-col w-fit self-center md:self-start" style="width: fit-content;">
+                    <div
+                      class="hidden md:flex flex-row py-2 bg-primary text-white"
+                    >
+                      <div class="flex w-auto place-content-left">
+                        <button
+                          class="
+                            mr-3
+                            px-3
+                            rounded-full
+                            text-primary
+                            bg-white
+                            self-center
+                          "
+                          @click="goBack()"
+                        >
+                          Back
+                        </button>
+                      </div>
+                      <div>
+                        <span class="text-2xl font-semibold">{{
+                          selectedCourse.title
+                        }}</span>
+                      </div>
+                    </div>
+                    <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
+                      <div>
+                        <span class="text-2xl font-semibold">Course summary</span>
+                      </div>
+                      <div class="flex">
+                        <span class="pr-1">Partecipation level:</span>
+                        <span
+                          :class="
+                            evaluations.partecipation[evalPos.partecipation].class
+                          "
+                          >{{ fixedFloatOrInt(summary.values.course.partecipation,2) }}% - {{
+                            evaluations.partecipation[evalPos.partecipation].title
+                          }}</span
+                        >
+                      </div>
+                      <div class="flex">
+                        <span class="pr-1">Learning level:</span>
+                        <span
+                          :class="evaluations.learning[evalPos.learning].class"
+                          >{{ fixedFloatOrInt(summary.values.course.learning,2) }}% - {{ evaluations.learning[evalPos.learning].title }}</span
+                        >
+                      </div>
+                      <div class="flex">
+                        <span class="text-xl font-semibold pr-1">Situation: </span>
+                        <span
+                          class="text-xl font-semibold"
+                          :class="evaluations.situation[evalPos.summary].class"
+                          >{{ evaluations.situation[evalPos.summary].title }}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="flex-col my-4 bg-white rounded-md text-primary p-4 w-full">
+                      <div>
+                        <span class="text-2xl font-semibold pr-1">Last quiz:</span>
+                        <span class="text-2xl">{{ lastQuiz }}</span>
+                      </div>
+                      <div class="flex">
+                        <span class="pr-1">Partecipation level:</span>
+                        <span
+                          :class="
+                            evaluations.partecipation[evalPos.lQPartecipation].class
+                          "
+                          >{{ fixedFloatOrInt(summary.values.lQ.partecipation,2) }}% - {{
+                            evaluations.partecipation[evalPos.lQPartecipation].title
+                          }}</span
+                        >
+                      </div>
+                      <div class="flex">
+                        <span class="pr-1">Learning level:</span>
+                        <span
+                          :class="evaluations.learning[evalPos.lQLearning].class"
+                          >{{ fixedFloatOrInt(summary.values.lQ.learning,2) }}% - {{
+                            evaluations.learning[evalPos.lQLearning].title
+                          }}</span
+                        >
+                      </div>
+                      <div class="flex">
+                        <span class="text-xl font-semibold pr-1">Situation: </span>
+                        <span
+                          class="text-xl font-semibold"
+                          :class="evaluations.situation[evalPos.lQSummary].class"
+                          >{{ evaluations.situation[evalPos.lQSummary].title }}</span
+                        >
+                      </div>
+                    </div>
+                    <!--<div class="flex pt-4">
+                      <router-link :to="{ name: 'analytic' }" tag="button">
+                        <span
+                          class="
+                            flex
+                            items-center
+                            p-2
+                            rounded-full
+                            bg-white
+                            text-primary
+                          "
+                          ><span class="mr-2">
+                            <performance-icon />
+                          </span>
+                          <span>History</span></span
+                        >
+                      </router-link>
+                    </div>-->
+                  </div>
+                </div>
+              </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -172,6 +224,7 @@ export default {
     return {
       selectedCourse: {},
 
+      quizzesRetrieved: false,
       sumChart: {
         series: [],
         options: {
@@ -292,83 +345,88 @@ export default {
       apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANSWERS;
       let url = apiUrl + "?course=" + this.selectedCourse.title;
       await axios.get(url).then(response => {
-        response.data.forEach(answer => {
-          if (!Object.prototype.hasOwnProperty.call(quizzes,answer.question.idnumber)) {
-            quizzes[answer.question.idnumber] = {
-              OK: 0,
-              NOK: 0,
-              NOANSWER: 0,
+        if (response.data.length > 0) {
+          this.quizzesRetrieved = true;
+          response.data.forEach(answer => {
+            if (!Object.prototype.hasOwnProperty.call(quizzes,answer.question.idnumber)) {
+              quizzes[answer.question.idnumber] = {
+                OK: 0,
+                NOK: 0,
+                NOANSWER: 0,
+              }
             }
-          }
-          quizzes[answer.question.idnumber][answer.outcome]++;
-          if (lastQuiz.date < (answerDate = new Date(answer.date))) {
-            lastQuiz = {
-              questionid: answer.question.idnumber,
-              name: answer.question.name,
-              date: answerDate,
-              attendants: 0,
+            quizzes[answer.question.idnumber][answer.outcome]++;
+            if (lastQuiz.date < (answerDate = new Date(answer.date))) {
+              lastQuiz = {
+                questionid: answer.question.idnumber,
+                name: answer.question.name,
+                date: answerDate,
+                attendants: 0,
+              }
             }
-          }
-        });
-        this.lastQuiz = lastQuiz.name;
-      });
-      let attendants;
-      let tmpLearning = 0;
-      let tmpPartecipation = 0;
-      for (const questionid of Object.keys(quizzes)) {
-        attendants = quizzes[questionid].OK+quizzes[questionid].NOK+quizzes[questionid].NOANSWER;
-        tmpLearning += quizzes[questionid].OK/attendants;
-        tmpPartecipation += attendants;
-        if (questionid == lastQuiz.questionid) {
-          lastQuiz.attendants = attendants;
+          });
+          this.lastQuiz = lastQuiz.name;
         }
-      }
-      this.summary = {
-        values: {
-          course: {
-            learning: tmpLearning*100/Object.keys(quizzes).length, //TypeOfValue: percentuale
-            partecipation: tmpPartecipation*100/(totalPlayers*Object.keys(quizzes).length), //TypeOfValue: percentuale
-          },
-          lQ: {
-            //Last quiz
-            learning: quizzes[lastQuiz.questionid].OK*100/lastQuiz.attendants, //TypeOfValue: percentuale
-            partecipation: lastQuiz.attendants*100/totalPlayers, //TypeOfValue: percentuale
-          },
-        },
-        tresholds: { //Da implementare la modifica dei tresholds. Prerequisito: decidere dove saranno messe tutte le impostazioni dell'applicazione ed aggiungere una voce lì
-          learning: [50, 70], //TypeOfValue: percentuale
-          partecipation: [50, 70], //TypeOfValue: percentuale
-        },
-      };
-
-      //Retrieve chart structure
-      apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
-      url = apiUrl + "?id=" + this.id;
-      await axios.get(url).then((response) => {
-        this.sumChart.options = response.data.chart.options;
       });
+      if (this.quizzesRetrieved) {
+        let attendants;
+        let tmpLearning = 0;
+        let tmpPartecipation = 0;
+        for (const questionid of Object.keys(quizzes)) {
+          attendants = quizzes[questionid].OK+quizzes[questionid].NOK+quizzes[questionid].NOANSWER;
+          tmpLearning += quizzes[questionid].OK/attendants;
+          tmpPartecipation += attendants;
+          if (questionid == lastQuiz.questionid) {
+            lastQuiz.attendants = attendants;
+          }
+        }
+        this.summary = {
+          values: {
+            course: {
+              learning: tmpLearning*100/Object.keys(quizzes).length, //TypeOfValue: percentuale
+              partecipation: tmpPartecipation*100/(totalPlayers*Object.keys(quizzes).length), //TypeOfValue: percentuale
+            },
+            lQ: {
+              //Last quiz
+              learning: quizzes[lastQuiz.questionid].OK*100/lastQuiz.attendants, //TypeOfValue: percentuale
+              partecipation: lastQuiz.attendants*100/totalPlayers, //TypeOfValue: percentuale
+            },
+          },
+          tresholds: { //Da implementare la modifica dei tresholds. Prerequisito: decidere dove saranno messe tutte le impostazioni dell'applicazione ed aggiungere una voce lì
+            learning: [50, 70], //TypeOfValue: percentuale
+            partecipation: [50, 70], //TypeOfValue: percentuale
+          },
+        };
 
-      //Put data into chart
-      this.sumChart.series = [
-        {
-          name: "Course summary",
-          data: [
-            [
-              this.summary.values.course.partecipation,
-              this.summary.values.course.learning,
+        //Retrieve chart structure
+        apiUrl = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ANALYTICS;
+        url = apiUrl + "?id=" + this.id;
+        await axios.get(url).then((response) => {
+          this.sumChart.options = response.data.chart.options;
+        });
+
+        //Put data into chart
+        this.sumChart.series = [
+          {
+            name: "Course summary",
+            data: [
+              [
+                this.summary.values.course.partecipation,
+                this.summary.values.course.learning,
+              ],
             ],
-          ],
-        },
-        {
-          name: "Last quiz",
-          data: [
-            [
-              this.summary.values.lQ.partecipation,
-              this.summary.values.lQ.learning,
+          },
+          {
+            name: "Last quiz",
+            data: [
+              [
+                this.summary.values.lQ.partecipation,
+                this.summary.values.lQ.learning,
+              ],
             ],
-          ],
-        },
-      ];
+          },
+        ];
+      }
     },
     retrieveEvaluations() {
       //Texts and colors for evaluation on the right and colors for chart areas
@@ -496,8 +554,10 @@ export default {
     },
     async initTeacherStats() {
       await this.retrieveChart();
-      this.retrieveEvaluations();
-      this.addEvaluationAreas();
+      if (this.quizzesRetrieved) {
+        this.retrieveEvaluations();
+        this.addEvaluationAreas();
+      }
     },
   },
   computed: {},

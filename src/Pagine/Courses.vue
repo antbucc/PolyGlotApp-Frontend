@@ -80,7 +80,7 @@
                   class=""
                   :key="campaign.id"
                   :id="campaign.id"
-                  :coursePosition="index"
+                  :coursePosition="myCampaignsPos[index]"
                   :title="campaign.title"
                   :registered="campaign.registered"
                 /> </template
@@ -124,6 +124,7 @@
                   class=""
                   :key="campaign.id"
                   :id="campaign.id"
+                  :coursePosition="-1"
                   :title="campaign.fullname"
                 /> </template
             ></template>
@@ -155,6 +156,7 @@ export default {
     return {
       fakeCampaigns: [],
       myCampaigns: [],
+      myCampaignsPos: [],
       allCampaigns: [],
       courses: true,
       mode: "MY",
@@ -203,6 +205,7 @@ export default {
 
               if (currentRegistered.id == currentAll.id) {
                 this.myCampaigns.push(currentRegistered);
+                this.myCampaignsPos.push(Number.parseInt(obj1));
                 found = true;
                 break;
               }
