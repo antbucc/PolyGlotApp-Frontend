@@ -59,9 +59,11 @@
                 :title="analytic.title"
                 :category="category"
                 :custom="analytic.custom"
-                :chartType="analytic.chartType"
-                :buildTable="analytic.buildTable"
-                :buildFilters="analytic.buildFilters"
+                :componentsInfo="{
+                  chartType: analytic.chartType,
+                  buildTable: analytic.buildTable,
+                  //buildFilters: analytic.buildFilters,
+                }"
               />
               <!--Mettere id corso-->
             </template>
@@ -105,7 +107,7 @@ export default {
                 ? element.chart.options.chart.type
                 : "",
             buildTable: element.buildTable,
-            buildFilters: element.buildFilters,
+            /*buildFilters: element.buildFilters,*/
           });
         });
       });

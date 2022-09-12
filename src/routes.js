@@ -114,7 +114,7 @@ const routes = [
     component: AnalyticsSwitch,
     props: true,
     beforeEnter: (to, from, next) => {
-      if (checkParams(to.params,["id","title","category","custom","chartType","buildTable","buildFilters"])) {
+    if (checkParams(to.params,["id","title","category","custom"]) && to.query != undefined && checkParams(to.query.componentsInfo,["chartType","buildTable"/*,"buildFilters"*/])) {
         next();
       } else {
         next('/courses');

@@ -62,12 +62,12 @@ function dynamicDataConverter(id,type,data,params) { //type: 0 = table.data, 1 =
         case 2:
           if (data.data.length > 0) {
             convertedData = [];
-            for (const topic of data.data) {
-              for (const outcome of params.allOutcomes) {
-                convertedData.push({
-                  name: outcome.title,
-                  data: []
-                });
+            for (const outcome of params.allOutcomes) {
+              convertedData.push({
+                name: outcome.title,
+                data: []
+              });
+              for (const topic of data.data) {
                 outcomePos = topic.outcomes.findIndex(oc => oc.code == outcome.code);
                 convertedData[convertedData.length - 1].data.push(Math.round(outcomePos != -1 ? topic.outcomes[outcomePos].students*100/topic.outcomes.reduce((a, b) => {return a + b.students}, 0) : 0));
               }

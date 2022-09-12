@@ -3,53 +3,55 @@
     <div class="flex flex-col bg-primary">
       <div class="justify-center text-center w-full text-xl">
         <template v-if="!this.quizzesRetrieved">
-          <div
-            class="flex flex-col md:flex-row py-2 bg-primary text-white"
-          >
+          <div class="bg-opacity-0 flex flex-col pt-6 px-6">
+            <div
+              class="flex flex-col md:flex-row py-2 bg-primary text-white"
+            >
+              <div
+                class="
+                  flex
+                  w-auto
+                  place-content-center
+                  md:place-content-left
+                "
+              >
+                <button
+                  class="
+                    mr-3
+                    px-3
+                    rounded-full
+                    text-primary
+                    bg-white
+                    self-center
+                  "
+                  @click="goBack()"
+                >
+                  Back
+                </button>
+              </div>
+              <div class="w-full text-center md:text-left">
+                <span class="text-2xl font-semibold">{{
+                  selectedCourse.title
+                }}</span>
+              </div>
+            </div>
             <div
               class="
-                flex
-                w-auto
-                place-content-center
-                md:place-content-left
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                w-full
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
               "
             >
-              <button
-                class="
-                  mr-3
-                  px-3
-                  rounded-full
-                  text-primary
-                  bg-white
-                  self-center
-                "
-                @click="goBack()"
-              >
-                Back
-              </button>
+              There are no quizzes.
             </div>
-            <div class="w-full text-center md:text-left">
-              <span class="text-2xl font-semibold">{{
-                selectedCourse.title
-              }}</span>
-            </div>
-          </div>
-          <div
-            class="
-              m-auto
-              justify-center
-              flex flex-col-reverse
-              bg-white
-              rounded-lg
-              w-full
-              my-4
-              text-center
-              justify-center
-              shadow-xl
-              p-12
-            "
-          >
-            There are no quizzes.
           </div>
         </template>
         <template v-else>

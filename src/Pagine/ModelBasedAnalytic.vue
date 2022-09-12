@@ -63,7 +63,7 @@
             class="justify-center text-center w-full text-xl"
           >
             <div class="flex flex-col lg:flex-row px-6">
-              <div class="w-full" :class="{ 'lg:w-3/5': components.filters }">
+              <div class="w-full"><!--:class="{ 'lg:w-3/5': components.filters }">-->
                 <div
                   class="flex flex-col md:flex-row py-2 bg-primary text-white"
                 >
@@ -164,15 +164,15 @@
                   </table>
                 </template>
               </div>
-              <div
+              <!--<div
                 v-if="components.filters"
                 class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
-              >
+              >-->
                 <!--filtro-->
-                <template>
+                <!--<template>
                   <analytic-filter :filters="filters" @update="update" />
                 </template>
-              </div>
+              </div>-->
             </div>
           </div>
         </template>
@@ -267,15 +267,15 @@
                   </div>
                 </template>
               </div>
-              <div
+              <!--<div
                 v-if="components.filters"
                 class="w-full lg:w-2/5 pt-5 lg:pt-0 lg:pl-5"
-              >
+              >-->
                 <!--filtro-->
-                <template>
+                <!--<template>
                   <analytic-filter :filters="filters" @update="update" />
                 </template>
-              </div>
+              </div>-->
             </div>
           </div>
         </template>
@@ -331,7 +331,7 @@
 
 <script>
 import axios from "axios";
-import AnalyticFilter from "../Components/AnalyticFilter.vue";
+//import AnalyticFilter from "../Components/AnalyticFilter.vue";
 import dynamicDataConverter from "../Components/analyticsDDC.js";
 export default {
   name: "ModelBasedAnalytic",
@@ -339,11 +339,9 @@ export default {
     id: String,
     title: String,
     category: Number,
-    chartType: String,
-    buildTable: Boolean,
-    buildFilters: Boolean,
+    componentsInfo: Object,
   },
-  components: { AnalyticFilter },
+  //components: { AnalyticFilter },
   data: function () {
     return {
       mode: "TAB",
@@ -372,9 +370,9 @@ export default {
       selectedCourse: {},
       retrievedData: {},
       components: {
-        table: this.buildTable,
-        chart: this.chartType != "",
-        filters: this.buildFilters,
+        table: this.componentsInfo.buildTable,
+        chart: this.componentsInfo.chartType != "",
+        //filters: this.componentsInfo.buildFilters,
       },
       table: {
         head: [],
@@ -391,7 +389,7 @@ export default {
           },
         },
       },
-      filters: [],
+      //filters: [],
       totalStudents: 0,
       subtitle: "",
     };
@@ -554,7 +552,7 @@ export default {
         this.retrievedData,
         params
       ); //Chart series update
-      toAdd = dynamicDataConverter(this.id, 3, this.retrievedData, params); //dynamic chart options update
+      toAdd = dynamicDataConverter(this.id, 3, this.retrievedData, params) ?? {}; //dynamic chart options update
       for (const key of Object.keys(toAdd)) {
         target = this.getPathTarget(
           this.chart.options,
@@ -610,7 +608,7 @@ export default {
           1,
           this.retrievedData,
           params
-        );
+        ) ?? {};
       }
       this.table.data = dynamicDataConverter(
         this.id,

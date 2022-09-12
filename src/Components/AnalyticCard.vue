@@ -7,10 +7,10 @@
         title: title,
         category: category,
         custom: custom,
-        chartType: chartType,
-        buildTable: buildTable,
-        buildFilters: buildFilters,
       },
+      query: {
+          componentsInfo: componentsInfo,
+      }
     }"
   >
     <div
@@ -52,9 +52,7 @@ export default {
     title: String,
     category: Number,
     custom: Boolean,
-    chartType: String,
-    buildTable: Boolean,
-    buildFilters: Boolean,
+    componentsInfo: Object,
   },
 };
 </script>

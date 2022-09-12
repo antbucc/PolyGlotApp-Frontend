@@ -6,9 +6,7 @@
     :id="id"
     :title="title"
     :category="category"
-    :chartType="chartType"
-    :buildTable="buildTable"
-    :buildFilters="buildFilters"
+    :componentsInfo="$route.query.componentsInfo"
   ></component>
 </template>
 
@@ -20,9 +18,6 @@ export default {
     title: String,
     category: Number,
     custom: Boolean,
-    chartType: String,
-    buildTable: Boolean,
-    buildFilters: Boolean,
   },
   data() {
     return {

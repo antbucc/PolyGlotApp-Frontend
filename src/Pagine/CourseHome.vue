@@ -1,50 +1,102 @@
 <template>
   <div class="bg-primary">
     <div class="bg-opacity-0 py-2">
-      <div
-        class="justify-center text-center w-full text-xl"
-      >
-        <div class="w-full place-content-center flex text-white">
-          <span class="text-2xl font-semibold">{{
-            selectedCourse.title
-          }}</span>
-        </div>
-        <template>
-          <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
-          <div
-            class="
-              m-auto
-              justify-center
-              flex flex-col-reverse
-              bg-white
-              rounded-lg
-              my-4
-              text-center
-              justify-center
-              shadow-xl
-              p-12
-              grow
-            "
-            style="
-              width: 18em;
-              height: 10em;
-              font-size: 1em;
-              margin-bottom: 1em;
-            "
-          >
-            <div v-for="obj in this.retPoints" :key="obj.name">
-              <!--obj.id è uguale per tutti-->
-              <p v-if="obj.name != 'CoursesCoins'">
-                {{ obj.name }}: <b>{{ obj.score }}</b
+      <template v-if="this.isStudent()">
+        <div
+          class="justify-center text-center w-full text-xl"
+        >
+          <div class="w-full place-content-center flex text-white">
+            <span class="text-2xl font-semibold">{{
+              selectedCourse.title
+            }}</span>
+          </div>
+          <template>
+            <!-- controllo se ho statistiche di questo studente in questo corso, se non ne ho mostro questo -->
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+                grow
+              "
+              style="
+                width: 18em;
+                height: 10em;
+                font-size: 1em;
+                margin-bottom: 1em;
+              "
+            >
+              <div v-for="obj in this.retPoints" :key="obj.name">
+                <!--obj.id è uguale per tutti-->
+                <p v-if="obj.name != 'CoursesCoins'">
+                  {{ obj.name }}: <b>{{ obj.score }}</b
+                  ><br />
+                </p>
+              </div>
+              <img
+                src="../../public/logo.png"
+                alt="PolyGlot"
+                style="width: 5em; margin-top: 1.8em; margin-bottom: 1em"
+              />
+            </div>
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+                grow
+              "
+              style="width: 18em; font-size: 1em; margin-bottom: 1em"
+            >
+              <p>
+                Your Level: <b>{{ this.level[0] }}</b
                 ><br />
+                <b>Keep going!</b>
               </p>
             </div>
-            <img
-              src="../../public/logo.png"
-              alt="PolyGlot"
-              style="width: 5em; margin-top: 1.8em; margin-bottom: 1em"
-            />
-          </div>
+            <div
+              class="
+                m-auto
+                justify-center
+                flex flex-col-reverse
+                bg-white
+                rounded-lg
+                my-4
+                text-center
+                justify-center
+                shadow-xl
+                p-12
+                grow
+              "
+              style="width: 18em; height: 10em; font-size: 1em"
+            >
+              <p>
+                You're <b>{{ this.leaderboardPos }}{{ suffixPos }}</b>
+                <br />
+                in the leaderboard
+              </p>
+            </div>
+          </template>
+        </div>
+      </template>
+      <template v-else>
+        <div
+          class="justify-center text-center w-full text-xl"
+        >
           <div
             class="
               m-auto
@@ -52,45 +104,18 @@
               flex flex-col-reverse
               bg-white
               rounded-lg
+              w-full
               my-4
               text-center
               justify-center
               shadow-xl
               p-12
-              grow
             "
-            style="width: 18em; font-size: 1em; margin-bottom: 1em"
           >
-            <p>
-              Your Level: <b>{{ this.level[0] }}</b
-              ><br />
-              <b>Keep going!</b>
-            </p>
+            Work in progress
           </div>
-          <div
-            class="
-              m-auto
-              justify-center
-              flex flex-col-reverse
-              bg-white
-              rounded-lg
-              my-4
-              text-center
-              justify-center
-              shadow-xl
-              p-12
-              grow
-            "
-            style="width: 18em; height: 10em; font-size: 1em"
-          >
-            <p>
-              You're <b>{{ this.leaderboardPos }}{{ suffixPos }}</b>
-              <br />
-              in the leaderboard
-            </p>
-          </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -120,6 +145,10 @@ export default {
       return arr.slice().sort(function (a, b) {
         return b.state.PointConcept[2].score - a.state.PointConcept[2].score;
       });
+    },
+    isStudent() {
+      let roles = sessionStorage.getItem("roles");
+      return roles != "no-role" && roles.includes("student");
     },
     retrievePoints() {
       const player = sessionStorage.getItem("player");
